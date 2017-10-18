@@ -24,7 +24,7 @@ namespace StrategyChess
             return true;
         }
 
-        public bool PlaceUnit(string teamName, IChessPiece piece, int row, int col)
+        public bool PlaceUnit(string teamName, IUnit piece, int row, int col)
         {
             return true;
         }
@@ -39,7 +39,7 @@ namespace StrategyChess
             return true;
         }
 
-        public bool MakeAMove(IChessPiece piece, int row, int col)
+        public bool MakeAMove(IUnit piece, int row, int col)
         {
             return true;
         }

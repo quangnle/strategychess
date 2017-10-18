@@ -5,6 +5,6 @@ namespace StrategyChess
     public class Team
     {
         public string Name { get; set; }
-        public List<IChessPiece> Pieces { get; set; }
+        public List<IUnit> Units { get; set; }
     }
 }

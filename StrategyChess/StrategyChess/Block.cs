@@ -8,7 +8,7 @@ namespace StrategyChess
 {
     public class Block
     {   
-        public IChessPiece ChessPiece { get; set; }
+        public IUnit Unit { get; set; }
         public int Row { get; set; }
         public int Column { get; set; }
     }

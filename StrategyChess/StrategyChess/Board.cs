@@ -17,10 +17,12 @@ namespace StrategyChess
         {
             get
             {
-                var block = Blocks.FirstOrDefault(b => b.ChessPiece != null && b.ChessPiece.Id == idPiece);
+                var block = Blocks.FirstOrDefault(b => b.Unit != null && b.Unit.Id == idPiece);
                 return block;
             }
         }
+
+        public int Size { get; internal set; }
 
         public Team UpperTeam { get; set; }
         public Team LowerTeam { get; set; }
@@ -28,6 +30,7 @@ namespace StrategyChess
 
         public Board(int size)
         {
+            Size = size;
             Blocks = new List<Block>();
             for (int r = 0; r < size; r++)
             {

@@ -9,7 +9,7 @@ namespace StrategyChess
     public class GameMsg
     {   
         public string Sender { get; set; }
-        public string MessageType { get; set; }
+        public string Command { get; set; }
         public string Content { get; set; }
     }
 }

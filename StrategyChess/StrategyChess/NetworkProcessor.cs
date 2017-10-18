@@ -2,9 +2,14 @@
 
 namespace StrategyChess
 {
-    class NetworkProcessor
+    public class NetworkProcessor
     {
-        void Run()
+        public void Start()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Stop()
         {
             throw new NotImplementedException();
         }
