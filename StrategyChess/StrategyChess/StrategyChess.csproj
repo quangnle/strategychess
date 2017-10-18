@@ -52,6 +52,7 @@
     <Compile Include="GameController.cs" />
     <Compile Include="GameMsg.cs" />
     <Compile Include="IChessPiece.cs" />
+    <Compile Include="NetworkProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ranger.cs" />

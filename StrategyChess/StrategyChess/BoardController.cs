@@ -15,12 +15,6 @@ namespace StrategyChess
             _board = board;
         }
 
-        private List<Block> GetAllAroundingBlocks(IChessPiece piece, int radius)
-        {
-            var block = _board[piece.Id];
-            return _board.Blocks.Where(b => (block.Column - radius <= 0) && (block.Row - radius <= 0)).ToList();
-        }
-
         private Team GetTeamOfChessPiece(IChessPiece piece)
         {
             if (_board.UpperTeam.Pieces.Any(p => p.Id == piece.Id)) return _board.UpperTeam;
@@ -60,9 +54,10 @@ namespace StrategyChess
 
         public List<Block> GetAvailableTargets(IChessPiece piece)
         {
-            var availableBlocks = GetAllAroundingBlocks(piece, piece.Range);
+            var block = _board[piece.Id];
+            var inRangeBlocks = _board.Blocks.Where(b => (block.Column - piece.Range <= 0) && (block.Row - piece.Range <= 0)).ToList();
             var team = GetTeamOfChessPiece(piece);
-            var targets = availableBlocks.Where(b => b.ChessPiece != null && !team.Pieces.Any(p => p.Id == b.ChessPiece.Id)).ToList();
+            var targets = inRangeBlocks.Where(b => b.ChessPiece != null && !team.Pieces.Any(p => p.Id == b.ChessPiece.Id)).ToList();
             return targets;
         }
 
@@ -100,9 +95,11 @@ namespace StrategyChess
             }
         }
 
-        public int GetWinner()
+        public Team GetWinner()
         {
-            return -1;
+            if (_board.UpperTeam.Pieces.Where(p => p.PieceType == ChessPieceType.Base) == null) return _board.LowerTeam;
+            if (_board.LowerTeam.Pieces.Where(p => p.PieceType == ChessPieceType.Base) == null) return _board.UpperTeam;
+            return null;
         }
     }
 }

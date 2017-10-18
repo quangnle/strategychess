@@ -7,19 +7,16 @@ using System.Threading.Tasks;
 namespace StrategyChess
 {
     public class GameController
-    {   
+    {
+        private NetworkProcessor _connector;
+
         public void Run()
         {
-            // open socket to listen for clients
-            while (true) // continuously receiving messages from client
-            {
-                // msg = received mesage
-                // if (msg.MsgType == "Register")
-                //  run event Register
-                // else if (msg.MsgType == "PlaceAUnit")
-                //  run event place a unit
-                // ....
-            }
+            // _connector.OnClientRegister += Connector_OnClientRegister;
+            // _connector.OnClientReady += Connector_OnClientReady;
+            // _connector.OnClientMove += Connector_OnClientMove;
+
+            _connector.Start();
         }
 
         public bool Register(string teamName)
@@ -27,12 +24,12 @@ namespace StrategyChess
             return true;
         }
 
-        public bool PlaceAUnit(string teamName, IChessPiece piece, int row, int col)
+        public bool PlaceUnit(string teamName, IChessPiece piece, int row, int col)
         {
             return true;
         }
 
-        public bool RemoveAUnitAt(int row, int col)
+        public bool RemoveUnitAt(int row, int col)
         {
             return true;
         }
