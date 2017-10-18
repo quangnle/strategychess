@@ -24,9 +24,19 @@ namespace StrategyChess.UnitDefinitions
             CurrentCoolDown = 0;
         }
 
+        /// <summary>
+        /// A ranger wont be able to shoot if there is an enemy adjacent to it
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <returns></returns>
         public List<IUnit> GetTargets(BoardController controller)
         {
-            // there might be some logics here
+            var adjacents = controller.GetEnemyAround(this, 1);
+
+            // if there's enemy adjacent to the unit
+            if (adjacents != null)
+                return null;
+
             return controller.GetEnemyAround(this, Range);
         }
 
