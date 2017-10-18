@@ -29,8 +29,33 @@ namespace StrategyChess
 
         public List<Block> GetAvailableMoves(IChessPiece piece)
         {
-            var availableBlocks = GetAllAroundingBlocks(piece, piece.Speed);
-            return availableBlocks.Where(b => b.ChessPiece == null).ToList();
+            var orgBlock = _board[piece.Id];
+            var queue = new Queue<Block>();
+
+            var dx = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
+            var dy = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
+            var dict = new Dictionary<Block, int>();
+
+            queue.Enqueue(orgBlock);
+
+            while (queue.Count > 0)
+            {
+                var b = queue.Dequeue();
+                for (int i = 0; i < 8; i++)
+                {
+                    var aBlock = _board[b.Row + dx[i], b.Column + dy[i]];
+                    if (aBlock != null && aBlock.ChessPiece == null && !dict.ContainsKey(aBlock))
+                    {                        
+                        if (dict[b] + 1 <= piece.Speed)
+                        {
+                            queue.Enqueue(aBlock);
+                            dict.Add(aBlock, dict[b] + 1);
+                        }   
+                    }   
+                }
+            }
+
+            return dict.Select(db => db.Key).ToList();
         }
 
         public List<Block> GetAvailableTargets(IChessPiece piece)
