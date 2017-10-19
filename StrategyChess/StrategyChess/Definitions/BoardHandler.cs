@@ -1,13 +1,13 @@
-﻿using StrategyChess.UnitDefinitions;
+﻿using StrategyChess.Definitions.Units;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrategyChess
+namespace StrategyChess.Definitions
 {
-    public class BoardController
+    public class BoardHandler
     {
         private Board _board;
         public Board Board
@@ -15,15 +15,27 @@ namespace StrategyChess
             get { return _board; }
         }
 
-        public BoardController(Board board)
+        public Team UpperTeam { get; set; }
+        public Team LowerTeam { get; set; }
+
+        public BoardHandler(Board board)
         {
             _board = board;
         }
 
+
+        public Team GetTeamByName(string teamName)
+        {
+            if (UpperTeam.Name == teamName) return UpperTeam;
+            else if (LowerTeam.Name == teamName) return LowerTeam;
+            return null;
+        }
+
         public Team GetTeam(IUnit unit)
         {
-            if (_board.UpperTeam.Units.Any(p => p.Id == unit.Id)) return _board.UpperTeam;
-            return _board.LowerTeam;
+            if (UpperTeam.Units.Any(p => p.Id == unit.Id)) return UpperTeam;
+            else if (LowerTeam.Units.Any(p => p.Id == unit.Id)) return LowerTeam;
+            return null;
         }
 
         public List<Block> GetEmptyGroundBlocksWithinDistance(Block orgBlock, int distance)
@@ -64,14 +76,6 @@ namespace StrategyChess
             return inRangeBlocks.ToList();
         }
 
-        public List<IUnit> GetAllyAround(IUnit unit, int radius)
-        {
-            var team = GetTeam(unit);
-            var aroundUnits = GetBlocksAround(_board[unit.Id], radius, false).Where(b => b.Unit != null).Select(b => b.Unit);
-            var allies = aroundUnits.Where(u => team.Units.Exists(un => un.Id == u.Id)).ToList();
-            return allies;
-        }
-
         public List<IUnit> GetEnemyAround(IUnit unit, int radius)
         {
             var team = GetTeam(unit);
@@ -82,8 +86,8 @@ namespace StrategyChess
 
         public Team GetWinner()
         {
-            if (_board.UpperTeam.Units.Where(p => p is Base) == null) return _board.LowerTeam;
-            if (_board.LowerTeam.Units.Where(p => p is Base) == null) return _board.UpperTeam;
+            if (UpperTeam.Units.Where(p => p is Camp) == null) return LowerTeam;
+            if (LowerTeam.Units.Where(p => p is Camp) == null) return UpperTeam;
             return null;
         }
     }

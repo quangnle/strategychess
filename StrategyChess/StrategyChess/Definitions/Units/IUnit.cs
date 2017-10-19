@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace StrategyChess
+namespace StrategyChess.Definitions.Units
 {
     public interface IUnit
     {
@@ -10,8 +10,5 @@ namespace StrategyChess
         int Range { get; set; }
         int CoolDown { get; set; }
         int CurrentCoolDown { get; set; }
-
-        List<IUnit> GetTargets(BoardController controller);
-        List<Block> GetMovableBlocks(BoardController controller);
     }
 }

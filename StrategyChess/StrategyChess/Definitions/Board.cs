@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrategyChess
+namespace StrategyChess.Definitions
 {
     public class Board
     {
@@ -23,9 +23,7 @@ namespace StrategyChess
         }
 
         public int Size { get; internal set; }
-
-        public Team UpperTeam { get; set; }
-        public Team LowerTeam { get; set; }
+        
         public List<Block> Blocks { get; set; }
 
         public Board(int size)

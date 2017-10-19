@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using StrategyChess.Definitions.Units;
+using System.Collections.Generic;
 
-namespace StrategyChess
+namespace StrategyChess.Definitions
 {
     public class Team
     {

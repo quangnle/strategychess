@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace StrategyChess.UnitDefinitions
+namespace StrategyChess.Definitions.Units
 {
     public class Tanker : IUnit
     {
@@ -22,18 +22,6 @@ namespace StrategyChess.UnitDefinitions
             Speed = 1;
             CoolDown = 2;
             CurrentCoolDown = 0;
-        }
-
-        public List<IUnit> GetTargets(BoardController controller)
-        {
-            // there might be some logics here
-            return controller.GetEnemyAround(this, Range);
-        }
-
-        public List<Block> GetMovableBlocks(BoardController controller)
-        {
-            // there might be some logics here
-            return controller.GetEmptyGroundBlocksWithinDistance(controller.Board[Id], Speed);
         }
     }
 }

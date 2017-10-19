@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace StrategyChess.UnitDefinitions
+namespace StrategyChess.Definitions.Units
 {
-    public class Base : IUnit
+    public class Camp : IUnit
     {
         public int Id { get; set; }
         public int HP { get; set; }
@@ -12,7 +12,7 @@ namespace StrategyChess.UnitDefinitions
         public int CoolDown { get; set; }
         public int CurrentCoolDown { get; set; }
 
-        public Base(int id, int row, int col)
+        public Camp(int id, int row, int col)
         {
             Id = id;
 
@@ -22,16 +22,6 @@ namespace StrategyChess.UnitDefinitions
             Range = 0;
             CoolDown = 0;
             CurrentCoolDown = 0;
-        }
-
-        public List<IUnit> GetTargets(BoardController controller)
-        {
-            return null;
-        }
-
-        public List<Block> GetMovableBlocks(BoardController controller)
-        {
-            return null;
         }
     }
 }
