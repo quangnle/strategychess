@@ -29,9 +29,9 @@ namespace StrategyChessGraphics
             get { return _cells.FirstOrDefault(x => x.Block.Row == row && x.Block.Column == col); }
         }
 
-        public Board(int size, int maxUnits)
+        public Board(int size, int maxUnits, int maxCamps)
         {
-            _gameController = new GameController(size, maxUnits);
+            _gameController = new GameController(size, maxUnits, maxCamps);
             _size = size;
             Init();
         }

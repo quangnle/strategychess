@@ -21,7 +21,7 @@ namespace StrategyChessClient
         public MainForm()
         {
             InitializeComponent();
-            _board = new Board(20, 5);
+            _board = new Board(20, 6, 2);
         }
         #endregion
 

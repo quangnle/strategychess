@@ -85,7 +85,7 @@ namespace StrategyChessCore
 
         public bool GetReady(Team team)
         {
-            if (team.Units.Count(u => u is Camp) == _maxCamps && team.Units.Count == _maxUnits)
+            if ((team.Units.Count(u => u is Camp) == _maxCamps) && (team.Units.Count == _maxUnits + _maxCamps))
             {
                 team.Ready = true;
                 return true;
@@ -100,7 +100,7 @@ namespace StrategyChessCore
             if (team != null)
             {
                 if (team.Units != null && team.Units.Count < _maxUnits + _maxCamps)
-                {
+                {   
                     team.Units.Add(unit);
                     if (availBlocks.Exists(b => b.Column == col && b.Row == row))
                     {
@@ -131,6 +131,63 @@ namespace StrategyChessCore
             return _gameHandler.Board[row, col];
         }
 
+        private bool AOEAttack(IUnit unit, BaseLogic logic)
+        {
+            if (unit.CoolDown > 0) return false;
+
+            var targets = _gameHandler.GetEnemyAround(unit, unit.Range);
+            if (targets != null)
+            {
+                for (int i = 0; i < targets.Count; i++)
+                {
+                    targets[i].HP -= 1;
+                    if (targets[i].HP <= 0)
+                    {
+                        _gameHandler.Board[targets[i].Id].Unit = null;
+                        _gameHandler.GetTeam(targets[i]).Units.Remove(targets[i]);
+                    }
+                }
+
+                unit.CurrentCoolDown = unit.CoolDown;
+                return true;
+            }
+            return false;
+        }
+
+        private bool Attack(IUnit unit, BaseLogic logic, IUnit target)
+        {
+            if (target != null)
+            {
+                var targets = logic.GetAllTargets(unit);
+                if (targets.Exists(t => t.Id == target.Id))
+                {
+                    target.HP -= 1;
+                    if (target.HP <= 0)
+                    {
+                        _gameHandler.Board[target.Id].Unit = null;
+                        _gameHandler.GetTeam(target).Units.Remove(target);
+                    }
+                    unit.CurrentCoolDown = unit.CoolDown;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool Move(IUnit unit, BaseLogic logic, int row, int col)
+        {
+            var moves = logic.GetAllMoveableBlocks(unit);
+            if (moves.Exists(b => b.Row == row && b.Column == col))
+            {
+                _gameHandler.Board[row, col].Unit = unit;
+                _gameHandler.Board[unit.Id].Unit = null;
+                return true;
+            }
+            return false;
+        }
+
         public bool MakeAMove(IUnit unit, int row, int col)
         {
             // check if the game is still on going
@@ -151,34 +208,20 @@ namespace StrategyChessCore
             if (_gameHandler.Board[row, col].Unit == null)
             {
                 // AOE attack
-                if (row == -1 && col == -1 && unit.CurrentCoolDown == 0)
+                if (row == -1 && col == -1)
                 {
-                    logic.Attack(unit, row, col);
-                    unit.CurrentCoolDown = unit.CoolDown;
-                    return true;
+                    return AOEAttack(unit, logic);
                 }
                 else
                 {
-                    var moves = logic.GetAllMoveableBlocks(unit);
-                    if (moves.Exists(b => b.Row == row && b.Column == col))
-                    {
-                        logic.Move(unit, row, col);
-                        return true;
-                    }
+                    return Move(unit, logic, row, col);
                 }
             }
             else
             {
-                var targets = logic.GetAllTargets(unit);
-                if (targets.Exists(t => t.Id == unit.Id) && unit.CoolDown == 0)
-                {
-                    logic.Attack(unit, row, col);
-                    unit.CurrentCoolDown = unit.CoolDown;
-                    return true;
-                } 
+                var target = _gameHandler.Board[row, col].Unit;
+                return Attack(unit, logic, target);
             }
-
-            return false;
         }
 
         private void UpdateCooldown()
