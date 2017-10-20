@@ -47,7 +47,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StrategyChess\StrategyChessCore.csproj">
+    <ProjectReference Include="..\StrategyChessCore\StrategyChessCore.csproj">
       <Project>{2be97367-a322-49f2-8940-3786e3bc214c}</Project>
       <Name>StrategyChessCore</Name>
     </ProjectReference>

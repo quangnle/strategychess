@@ -90,7 +90,7 @@
       <Project>{4dd86043-bc65-45a4-ab14-60eebd2f0a4a}</Project>
       <Name>StrategyChessGraphics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StrategyChess\StrategyChessCore.csproj">
+    <ProjectReference Include="..\StrategyChessCore\StrategyChessCore.csproj">
       <Project>{2be97367-a322-49f2-8940-3786e3bc214c}</Project>
       <Name>StrategyChessCore</Name>
     </ProjectReference>
