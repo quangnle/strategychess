@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using StrategyChess;
-using StrategyChess.Definitions;
+using StrategyChessCore;
+using StrategyChessCore.Definitions;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -32,7 +32,7 @@ namespace StrategyChessGraphics
         public Board(int size, int maxUnits)
         {
             _gameController = new GameController(size, maxUnits);
-            _size = _gameController.BoardSize;
+            _size = size;
             Init();
         }
 

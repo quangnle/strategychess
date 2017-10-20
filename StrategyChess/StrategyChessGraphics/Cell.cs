@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
-using StrategyChess;
-using StrategyChess.Definitions;
+using StrategyChessCore;
+using StrategyChessCore.Definitions;
 
 namespace StrategyChessGraphics
 {

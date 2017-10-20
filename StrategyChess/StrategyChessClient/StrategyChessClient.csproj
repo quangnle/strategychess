@@ -90,9 +90,9 @@
       <Project>{4dd86043-bc65-45a4-ab14-60eebd2f0a4a}</Project>
       <Name>StrategyChessGraphics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\StrategyChess\StrategyChess.csproj">
+    <ProjectReference Include="..\StrategyChess\StrategyChessCore.csproj">
       <Project>{2be97367-a322-49f2-8940-3786e3bc214c}</Project>
-      <Name>StrategyChess</Name>
+      <Name>StrategyChessCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

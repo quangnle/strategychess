@@ -47,9 +47,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StrategyChess\StrategyChess.csproj">
+    <ProjectReference Include="..\StrategyChess\StrategyChessCore.csproj">
       <Project>{2be97367-a322-49f2-8940-3786e3bc214c}</Project>
-      <Name>StrategyChess</Name>
+      <Name>StrategyChessCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
