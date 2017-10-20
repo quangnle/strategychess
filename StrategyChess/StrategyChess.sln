@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyChess", "StrategyChess\StrategyChess.csproj", "{2BE97367-A322-49F2-8940-3786E3BC214C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyChessGraphics", "StrategyChessGraphics\StrategyChessGraphics.csproj", "{4DD86043-BC65-45A4-AB14-60EEBD2F0A4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyChessClient", "StrategyChessClient\StrategyChessClient.csproj", "{D174D91F-EA16-4D7C-86B1-408F0B59B4B4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{2BE97367-A322-49F2-8940-3786E3BC214C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2BE97367-A322-49F2-8940-3786E3BC214C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2BE97367-A322-49F2-8940-3786E3BC214C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DD86043-BC65-45A4-AB14-60EEBD2F0A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DD86043-BC65-45A4-AB14-60EEBD2F0A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DD86043-BC65-45A4-AB14-60EEBD2F0A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DD86043-BC65-45A4-AB14-60EEBD2F0A4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D174D91F-EA16-4D7C-86B1-408F0B59B4B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D174D91F-EA16-4D7C-86B1-408F0B59B4B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D174D91F-EA16-4D7C-86B1-408F0B59B4B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D174D91F-EA16-4D7C-86B1-408F0B59B4B4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

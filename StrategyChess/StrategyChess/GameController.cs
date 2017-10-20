@@ -19,6 +19,16 @@ namespace StrategyChess
 
         private int _maxUnits;
 
+        public Team CurrentTeam
+        {
+            get { return _currentTeam; }
+        }
+
+        public int BoardSize
+        {
+            get { return _gameHandler.Board.Size; }
+        }
+
         public GameController(int size, int maxUnits)
         {            
             _gameHandler = new BoardHandler(new Board(size));
@@ -86,6 +96,11 @@ namespace StrategyChess
                 return true;
             }   
             return false;
+        }
+
+        public Block GetBlock(int row, int col)
+        {
+            return _gameHandler.Board[row, col];
         }
 
         public bool MakeAMove(IUnit unit, int row, int col)
