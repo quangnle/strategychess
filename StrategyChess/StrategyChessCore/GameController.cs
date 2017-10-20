@@ -18,13 +18,16 @@ namespace StrategyChessCore
         private List<BaseLogic> _logics;
 
         private int _maxUnits;
+        private int _maxCamps;
+
+        private bool _isGameStart;
 
         public Team CurrentTeam
         {
             get { return _currentTeam; }
         }
 
-        public GameController(int size, int maxUnits)
+        public GameController(int size, int maxUnits, int maxCamps)
         {            
             _gameHandler = new BoardHandler(new Board(size));
             _logics = new List<BaseLogic>();
@@ -33,6 +36,8 @@ namespace StrategyChessCore
             _currentTeam = _gameHandler.UpperTeam;
 
             _maxUnits = maxUnits;
+            _maxCamps = maxCamps;
+            _isGameStart = false;
         }
 
         public void Run()
@@ -42,6 +47,18 @@ namespace StrategyChessCore
             // _connector.OnClientMove += Connector_OnClientMove;
 
             _connector.Start();
+        }
+
+        public bool StartGame()
+        {
+            if (_gameHandler.LowerTeam.Ready && _gameHandler.UpperTeam.Ready)
+            {
+                _isGameStart = true;
+                _currentTeam = _gameHandler.UpperTeam;
+                return true;
+            }
+
+            return false;
         }
 
         public bool Register(string teamName)
@@ -61,15 +78,31 @@ namespace StrategyChessCore
             else return false;
         }
 
+        public List<Block> GetInitArea(Team team)
+        {
+            return _gameHandler.GetInitArea(team);
+        }
+
+        public bool GetReady(Team team)
+        {
+            if (team.Units.Count(u => u is Camp) == _maxCamps && team.Units.Count == _maxUnits)
+            {
+                team.Ready = true;
+                return true;
+            }   
+            return false;
+        }
+
         public bool PlaceUnit(string teamName, IUnit unit, int row, int col)
         {
             var team = _gameHandler.GetTeamByName(teamName);
+            var availBlocks = _gameHandler.GetInitArea(team);
             if (team != null)
             {
-                if (team.Units != null && team.Units.Count < _maxUnits)
+                if (team.Units != null && team.Units.Count < _maxUnits + _maxCamps)
                 {
                     team.Units.Add(unit);
-                    if (_gameHandler.Board[row, col] != null && _gameHandler.Board[row, col].Unit == null)
+                    if (availBlocks.Exists(b => b.Column == col && b.Row == row))
                     {
                         _gameHandler.Board[row, col].Unit = unit;
                         return true;
@@ -93,20 +126,31 @@ namespace StrategyChessCore
             return false;
         }
 
-        public Block GetBlock(int row, int col)
+        public Block GetBlockAt(int row, int col)
         {
             return _gameHandler.Board[row, col];
         }
 
         public bool MakeAMove(IUnit unit, int row, int col)
         {
+            // check if the game is still on going
+            if (_gameHandler.GetWinner() != null || !_isGameStart)
+                return false;
+
+            // check if the current turn is unit's team
+            var team = _gameHandler.GetTeam(unit);
+            if (_currentTeam.Name != team.Name)
+                return false;
+
+            // select the right logic for the unit
             BaseLogic logic;
             if (unit is Tanker) { logic = _logics.FirstOrDefault(l => l is TankerLogic); }
             else if (unit is Ranger) { logic = _logics.FirstOrDefault(l => l is RangerLogic); }
             else logic = _logics.FirstOrDefault(l => l is AmbusherLogic);
-
+            
             if (_gameHandler.Board[row, col].Unit == null)
             {
+                // AOE attack
                 if (row == -1 && col == -1 && unit.CurrentCoolDown == 0)
                 {
                     logic.Attack(unit, row, col);

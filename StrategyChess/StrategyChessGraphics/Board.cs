@@ -46,7 +46,7 @@ namespace StrategyChessGraphics
                 var x = 0;
                 for (int c = 0; c < _size; c++)
                 {
-                    var block = _gameController.GetBlock(r, c);
+                    var block = _gameController.GetBlockAt(r, c);
                     var rect = new Rectangle(x, y, _cellSize, _cellSize);
                     var cell = new Cell(block, rect);
                     _cells.Add(cell);

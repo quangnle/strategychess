@@ -23,6 +23,29 @@ namespace StrategyChessCore.Definitions
             _board = board;
         }
 
+        public List<Block> GetInitArea(Team team)
+        {   
+            int fromRow, toRow, fromCol, toCol;
+
+            if (team.Name == UpperTeam.Name)
+            {
+                fromRow = 0;
+                toRow = _board.Size / 4;
+                fromCol = 0;
+                toCol = _board.Size;
+            }
+            else
+            {
+                fromRow = 0;
+                toRow = _board.Size * 3 / 4;
+                fromCol = 0;
+                toCol = _board.Size;
+            }
+
+            var result = _board.Blocks.Where(b => b.Column >= fromCol && b.Column < toCol && b.Row >= fromRow && b.Row < toRow && b.Unit == null);
+            return result.ToList();
+        }
+
 
         public Team GetTeamByName(string teamName)
         {

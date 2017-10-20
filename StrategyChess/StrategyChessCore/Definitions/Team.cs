@@ -7,5 +7,6 @@ namespace StrategyChessCore.Definitions
     {
         public string Name { get; set; }
         public List<IUnit> Units { get; set; }
+        public bool Ready { get; set; }
     }
 }
