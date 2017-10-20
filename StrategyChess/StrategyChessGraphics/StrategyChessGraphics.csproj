@@ -42,9 +42,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AmbusherGr.cs" />
     <Compile Include="Board.cs" />
+    <Compile Include="CampGr.cs" />
     <Compile Include="Cell.cs" />
+    <Compile Include="ChessPiece.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RangerGr.cs" />
+    <Compile Include="TankerGr.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StrategyChessCore\StrategyChessCore.csproj">
