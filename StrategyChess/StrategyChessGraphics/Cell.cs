@@ -7,22 +7,44 @@ using System.Windows.Forms;
 using System.Drawing;
 using StrategyChessCore;
 using StrategyChessCore.Definitions;
+using StrategyChessCore.Definitions.Units;
 
 namespace StrategyChessGraphics
 {
     public class Cell
     {
-        public bool Selected { get; set; }
+        private Rectangle _rect;
         private Block _block;
+
+        public bool Selected { get; set; }
+        public bool Movable { get; set; }
+        public bool Attackable { get; set; }
+
+        public ChessPiece ChessPiece { get; internal set; }
+        
         public Block Block
         {
             get { return _block; }
+            set
+            {
+                _block = value;
+                if (_block.Unit != null)
+                {
+                    if (_block.Unit is Ranger)
+                        ChessPiece = new RangerGr(_block, new Rectangle(_rect.Location, _rect.Size));
+                    else if (_block.Unit is Tanker)
+                        ChessPiece = new TankerGr(_block, new Rectangle(_rect.Location, _rect.Size));
+                    else if (_block.Unit is Ambusher)
+                        ChessPiece = new AmbusherGr(_block, new Rectangle(_rect.Location, _rect.Size));
+                    else
+                        ChessPiece = new CampGr(_block, new Rectangle(_rect.Location, _rect.Size));
+                }
+            }
         }
 
-        private Rectangle _rect;
         public Cell(Block block, Rectangle rect, bool selected = false)
         {
-            _block = block;
+            Block = block;
             _rect = rect;
             this.Selected = selected;
         }
@@ -32,6 +54,30 @@ namespace StrategyChessGraphics
             var pen = new Pen(Color.Black);
             g.DrawRectangle(pen, _rect);
             pen.Dispose();
+
+            Brush br;
+            if (Selected)
+            {
+                br = Brushes.Blue;
+            }
+            else
+            {
+                if (Movable)
+                {
+                    br = Brushes.LightGreen;
+                }
+                else if (Attackable)
+                {
+                    br = Brushes.Red;
+                }
+            }
+            
+            // draw a filled rectangle here with selected brush
+
+            if (ChessPiece != null)
+            {
+                ChessPiece.Draw(g);
+            }
         }
 
         public bool Contains(Point p)

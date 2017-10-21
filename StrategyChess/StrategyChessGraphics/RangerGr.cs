@@ -16,7 +16,9 @@ namespace StrategyChessGraphics
 
         public override void Draw(Graphics g)
         {
-            throw new NotImplementedException();
+            base.Draw(g);
+
+            // draw my owwn part here
         }
     }
 }

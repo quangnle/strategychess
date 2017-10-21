@@ -30,6 +30,14 @@ namespace StrategyChessGraphics
         {   
             DrawHPBar(g);
             DrawCoolDown(g);
+
+            if (Selected)
+                DrawBorder(g);
+        }
+
+        private void DrawBorder(Graphics g)
+        {
+            throw new NotImplementedException();
         }
 
         private void DrawCoolDown(Graphics g)
