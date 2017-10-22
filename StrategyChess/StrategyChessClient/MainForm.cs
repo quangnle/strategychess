@@ -10,13 +10,14 @@ using System.Windows.Forms;
 using StrategyChessGraphics;
 using StrategyChessCore.Definitions.Units;
 using StrategyChessClient.Controls;
+using StrategyChessCore.Definitions;
 
 namespace StrategyChessClient
 {
     public partial class MainForm : Form
     {
         #region Members
-        private Board _board;
+        private BoardGr _board;
         private Point _currentPos = Point.Empty;
         private bool _isMouseLeft = false;
         private Cell _currentCell = null;
@@ -42,7 +43,7 @@ namespace StrategyChessClient
 
             pGameSetting.BackColor = Global.GameSettingBackgroundColor;
 
-            _board = new Board(20, 6, 2);
+            _board = new BoardGr(20, 6, 2);
 
             _lowerTeamCtrl.BoardGr = _board;
             _lowerTeamCtrl.TeamColor = Global.TeamGreenColor;
@@ -133,7 +134,7 @@ namespace StrategyChessClient
 
                 _upperTeamCtrl.ClearAll();
                 _lowerTeamCtrl.ClearAll();
-                _board = new Board(20, 6, 2);
+                _board = new BoardGr(20, 6, 2);
                 _upperTeamCtrl.BoardGr = _board;
                 _lowerTeamCtrl.BoardGr = _board;
 

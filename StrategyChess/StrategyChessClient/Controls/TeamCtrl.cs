@@ -23,7 +23,7 @@ namespace StrategyChessClient.Controls
         private int _campCount = 0;
         private int _maxUnits = 6;
         private int _maxCamps = 2;
-        public Board BoardGr { get; set; }
+        public BoardGr BoardGr { get; set; }
         #endregion
 
         #region Constructor
