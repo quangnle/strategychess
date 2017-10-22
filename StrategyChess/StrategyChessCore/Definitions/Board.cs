@@ -13,7 +13,7 @@ namespace StrategyChessCore.Definitions
             get { return Blocks.FirstOrDefault(b => b.Row == row && b.Column == column); }
         }
 
-        public Block this[int idPiece]
+        public Block this[Guid idPiece]
         {
             get
             {

@@ -15,30 +15,36 @@ namespace StrategyChessGraphics
     {
         private Rectangle _rect;
         private Block _block;
-
+        public Color MovableColor { get; set; }
+        public Color SelectedColor { get; set; }
         public bool Selected { get; set; }
         public bool Movable { get; set; }
         public bool Attackable { get; set; }
+        public Color AttackableColor { get; set; }
 
         public ChessPiece ChessPiece { get; internal set; }
         
         public Block Block
         {
             get { return _block; }
-            set
+            set { _block = value; }
+        }
+
+        public void InitChecssPiece(Image chessPieceImage, Color selectedColor)
+        {
+            if (_block.Unit != null)
             {
-                _block = value;
-                if (_block.Unit != null)
-                {
-                    if (_block.Unit is Ranger)
-                        ChessPiece = new RangerGr(_block, new Rectangle(_rect.Location, _rect.Size));
-                    else if (_block.Unit is Tanker)
-                        ChessPiece = new TankerGr(_block, new Rectangle(_rect.Location, _rect.Size));
-                    else if (_block.Unit is Ambusher)
-                        ChessPiece = new AmbusherGr(_block, new Rectangle(_rect.Location, _rect.Size));
-                    else
-                        ChessPiece = new CampGr(_block, new Rectangle(_rect.Location, _rect.Size));
-                }
+                if (_block.Unit is Ranger)
+                    ChessPiece = new RangerGr(_block, new Rectangle(_rect.Location, _rect.Size));
+                else if (_block.Unit is Tanker)
+                    ChessPiece = new TankerGr(_block, new Rectangle(_rect.Location, _rect.Size));
+                else if (_block.Unit is Ambusher)
+                    ChessPiece = new AmbusherGr(_block, new Rectangle(_rect.Location, _rect.Size));
+                else
+                    ChessPiece = new CampGr(_block, new Rectangle(_rect.Location, _rect.Size));
+
+                ChessPiece.ChessPieceImage = chessPieceImage;
+                ChessPiece.SelectedColor = selectedColor;
             }
         }
 
@@ -47,6 +53,9 @@ namespace StrategyChessGraphics
             Block = block;
             _rect = rect;
             this.Selected = selected;
+            this.MovableColor = Global.MovableBlueColor;
+            this.SelectedColor = Global.SelectedBlueColor;
+            this.AttackableColor = Global.AttackableColor;
         }
 
         public void Draw(Graphics g)
@@ -58,17 +67,24 @@ namespace StrategyChessGraphics
             Brush br;
             if (Selected)
             {
-                br = Brushes.Blue;
+                if (ChessPiece != null)
+                    br = new SolidBrush(ChessPiece.SelectedColor);
+                else
+                    br = new SolidBrush(SelectedColor);
+
+                g.FillRectangle(br, _rect);
             }
             else
             {
                 if (Movable)
                 {
-                    br = Brushes.LightGreen;
+                    br = new SolidBrush(this.MovableColor);
+                    g.FillRectangle(br, _rect);
                 }
                 else if (Attackable)
                 {
-                    br = Brushes.Red;
+                    br = new SolidBrush(this.AttackableColor);
+                    g.FillRectangle(br, _rect);
                 }
             }
             
@@ -88,6 +104,11 @@ namespace StrategyChessGraphics
         public bool Contains(int x, int y)
         {
             return Contains(new Point(x, y));
+        }
+
+        public void RemoveChessPiece()
+        {
+            this.ChessPiece = null;
         }
     }
 }

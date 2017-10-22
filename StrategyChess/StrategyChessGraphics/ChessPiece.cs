@@ -11,6 +11,8 @@ namespace StrategyChessGraphics
     public abstract class ChessPiece
     {
         public bool Selected { get; set; }
+        public Image ChessPieceImage { get; set; }
+        public Color SelectedColor { get; set; }
 
         protected Block _block;
         protected Rectangle _rect;
@@ -37,17 +39,17 @@ namespace StrategyChessGraphics
 
         private void DrawBorder(Graphics g)
         {
-            throw new NotImplementedException();
+            
         }
 
         private void DrawCoolDown(Graphics g)
         {
-            throw new NotImplementedException();
+            
         }
 
         private void DrawHPBar(Graphics g)
         {
-            throw new NotImplementedException();
+            
         }
 
         public bool Contains(Point p)

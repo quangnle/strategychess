@@ -36,13 +36,14 @@ namespace StrategyChessCore.Definitions
             }
             else
             {
-                fromRow = 0;
-                toRow = _board.Size * 3 / 4;
+                fromRow = _board.Size * 3 / 4;
+                toRow = _board.Size;
                 fromCol = 0;
                 toCol = _board.Size;
             }
 
-            var result = _board.Blocks.Where(b => b.Column >= fromCol && b.Column < toCol && b.Row >= fromRow && b.Row < toRow && b.Unit == null);
+            var result = _board.Blocks.Where(b => b.Column >= fromCol && b.Column < toCol && 
+            b.Row >= fromRow && b.Row < toRow && b.Unit == null);
             return result.ToList();
         }
 
@@ -60,7 +61,7 @@ namespace StrategyChessCore.Definitions
             else if (LowerTeam.Units.Any(p => p.Id == unit.Id)) return LowerTeam;
             return null;
         }
-
+        
         public List<Block> GetEmptyGroundBlocksWithinDistance(Block orgBlock, int distance)
         {   
             var queue = new Queue<Block>();

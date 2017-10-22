@@ -33,7 +33,7 @@ namespace StrategyChessCore
             _logics = new List<BaseLogic>();
             _logics.AddRange(new BaseLogic[]{ new TankerLogic(), new RangerLogic(), new AmbusherLogic()});
 
-            _currentTeam = _gameHandler.UpperTeam;
+            _currentTeam = _gameHandler.LowerTeam;
 
             _maxUnits = maxUnits;
             _maxCamps = maxCamps;
@@ -54,7 +54,7 @@ namespace StrategyChessCore
             if (_gameHandler.LowerTeam.Ready && _gameHandler.UpperTeam.Ready)
             {
                 _isGameStart = true;
-                _currentTeam = _gameHandler.UpperTeam;
+                _currentTeam = _gameHandler.LowerTeam;
                 return true;
             }
 
@@ -75,7 +75,8 @@ namespace StrategyChessCore
                 _gameHandler.LowerTeam = new Team { Name = teamName };
                 return true;
             }
-            else return false;
+            else
+                return false;
         }
 
         public List<Block> GetInitArea(Team team)
@@ -93,12 +94,18 @@ namespace StrategyChessCore
             return false;
         }
 
+        public Team GetTeamByName(string teamName)
+        {
+            return _gameHandler.GetTeamByName(teamName);
+        }
+
         public bool PlaceUnit(string teamName, IUnit unit, int row, int col)
         {
             var team = _gameHandler.GetTeamByName(teamName);
-            var availBlocks = _gameHandler.GetInitArea(team);
             if (team != null)
             {
+                var availBlocks = _gameHandler.GetInitArea(team);
+
                 if (team.Units != null && team.Units.Count < _maxUnits + _maxCamps)
                 {   
                     team.Units.Add(unit);
@@ -245,6 +252,7 @@ namespace StrategyChessCore
             if (_currentTeam.Name == _gameHandler.UpperTeam.Name) _currentTeam = _gameHandler.LowerTeam;
             else _currentTeam = _gameHandler.UpperTeam;
         }
+
 
     }
 }

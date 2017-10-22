@@ -18,7 +18,8 @@ namespace StrategyChessGraphics
         {
             base.Draw(g);
 
-            // draw my owwn part here
+            if (this.ChessPieceImage != null)
+                g.DrawImage(this.ChessPieceImage, _rect.Location);
         }
     }
 }

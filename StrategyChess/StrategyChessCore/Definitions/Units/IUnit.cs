@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace StrategyChessCore.Definitions.Units
 {
     public interface IUnit
     {
-        int Id { get; set; }
+        Guid Id { get; set; }
         int HP { get; set; }
         int Speed { get; set; }
         int Range { get; set; }

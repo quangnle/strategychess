@@ -7,6 +7,7 @@ using StrategyChessCore;
 using StrategyChessCore.Definitions;
 using System.Drawing;
 using System.Windows.Forms;
+using StrategyChessCore.Definitions.Units;
 
 namespace StrategyChessGraphics
 {
@@ -16,13 +17,15 @@ namespace StrategyChessGraphics
         private int _size;
         private GameController _gameController;
         private List<Cell> _cells;
-
-
+        private List<Block> _initAreaBlocks;
+        public string CompetitorName { get; set; }
+        public string MyName { get; set; }
+        public Color MyTeamColor { get; set; }
+        public Color CompetitorTeamColor { get; set; }
         
-        public Team CurrentTeam
-        {
-            get { return _gameController.CurrentTeam; }
-        }
+        public GameMode GameMode { get; set; }
+
+        public ChessPieceType ChessPieceType { get; set; }
 
         public Cell this[int row, int col]
         {
@@ -60,11 +63,6 @@ namespace StrategyChessGraphics
         public void Draw(Graphics g)
         {
             var pen = new Pen(Color.Red, 3);
-            //Draw base line
-            g.DrawLine(pen, 0, _cellSize * 5, _cellSize * _size, _cellSize * 5);
-
-            pen.Color = Color.Blue;
-            g.DrawLine(pen, 0, _cellSize * 15, _cellSize * _size, _cellSize * 15);
 
             foreach (var cell in _cells)
             {
@@ -80,6 +78,134 @@ namespace StrategyChessGraphics
         public Cell GetCell(int x, int y)
         {
             return GetCell(new Point(x, y));
+        }
+
+        public void ShowInitArea()
+        {
+            var team = _gameController.GetTeamByName(this.MyName);
+            if (team != null)
+                _initAreaBlocks = _gameController.GetInitArea(team);
+
+            if (_initAreaBlocks == null)
+                _initAreaBlocks = new List<Block>();
+
+            if (this.GameMode == GameMode.Single)
+            {
+                team = _gameController.GetTeamByName(this.CompetitorName);
+                if (team != null)
+                {
+                    var blocks = _gameController.GetInitArea(team);
+                    if (blocks != null)
+                        _initAreaBlocks.AddRange(blocks);
+                }
+            }
+
+            foreach (var block in _initAreaBlocks)
+            {
+                var cell = _cells.FirstOrDefault(x => x.Block.Row == block.Row && x.Block.Column == block.Column);
+                if (cell != null)
+                {
+                    cell.Movable = true;
+                    if (cell.Block.Row < 5)
+                    {
+                        cell.MovableColor = this.ChessPieceType == ChessPieceType.Blue ? Global.MovableGreenColor :
+                            Global.MovableBlueColor;
+                    }
+                    else
+                    {
+                        cell.MovableColor = this.ChessPieceType == ChessPieceType.Blue ? Global.MovableBlueColor :
+                            Global.MovableGreenColor;
+                    }
+                }
+            }
+        }
+
+        public void ClearShowInitArea()
+        {
+            if (_initAreaBlocks != null && _initAreaBlocks.Count > 0)
+            {
+                foreach (var block in _initAreaBlocks)
+                {
+                    var cell = _cells.FirstOrDefault(x => x.Block.Row == block.Row && x.Block.Column == block.Column);
+                    if (cell != null)
+                        cell.Movable = false;
+                }
+            }
+        }
+
+        public Team GetTeamByName(string teamName)
+        {
+            return _gameController.GetTeamByName(teamName);
+        }
+
+        public Team GetTeamInitArea(int row, int col)
+        {
+            if (_initAreaBlocks != null)
+            {
+                var block = _initAreaBlocks.FirstOrDefault(x => x.Row == row && x.Column == col);
+                if (block != null)
+                {
+                    if (row < 5)
+                        return _gameController.GetTeamByName(this.CompetitorName);
+                    else
+                        return _gameController.GetTeamByName(this.MyName);
+                }
+            }
+
+            return null;
+        }
+
+        public void Register(string teamName)
+        {
+            _gameController.Register(teamName);
+        }
+
+        public bool GetReady(Team team)
+        {
+            return _gameController.GetReady(team);
+        }
+
+        public bool PlaceUnit(Team team, IUnit unit, int row, int col)
+        {
+            return _gameController.PlaceUnit(team.Name, unit, row, col);
+        }
+
+        public bool RemoveUnitAt(int row, int col)
+        {
+            return _gameController.RemoveUnitAt(row, col);
+        }
+
+        public bool MakeAMove(IUnit unit, int row, int col)
+        {
+            return _gameController.MakeAMove(unit, row, col);
+        }
+
+        public bool StartGame()
+        {
+            return _gameController.StartGame();
+        }
+
+        public void ClearAllSelectOfTeam(Team team)
+        {
+            if (team.Units == null || team.Units.Count <= 0)
+                return;
+
+            var cells = _cells.Where(x => x.Block.Unit != null &&
+                team.Units.Contains(x.Block.Unit) && x.Selected).ToList();
+
+            foreach (var cell in cells)
+            {
+                cell.Selected = false;
+            }
+        }
+
+        public void ClearAllSelects()
+        {
+            var cells = _cells.Where(x => x.Block.Unit != null && x.Selected).ToList();
+            foreach (var cell in cells)
+            {
+                cell.Selected = false;
+            }
         }
     }
 }

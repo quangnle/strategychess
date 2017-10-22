@@ -16,8 +16,10 @@ namespace StrategyChessGraphics
 
         public override void Draw(Graphics g)
         {
-            var img = Image.FromFile("tanker.png");
-            g.DrawImage(img, _rect);
+            base.Draw(g);
+
+            if (this.ChessPieceImage != null)
+                g.DrawImage(this.ChessPieceImage, _rect.Location);
         }
     }
 }
