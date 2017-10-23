@@ -18,6 +18,8 @@ namespace StrategyChessGraphics
         private GameController _gameController;
         private List<Cell> _cells;
         private List<Block> _initAreaBlocks;
+        private List<Cell> _emptyGroundCells;
+
         public string CompetitorName { get; set; }
         public string MyName { get; set; }
         public Color MyTeamColor { get; set; }
@@ -80,6 +82,47 @@ namespace StrategyChessGraphics
             return GetCell(new Point(x, y));
         }
 
+        public Cell GetCellHasUnitByTeam(int x, int y)
+        {
+            var cell = GetCell(x, y);
+            if (cell == null || cell.Block.Unit == null ||
+                cell.Block.Unit.Speed == 0) return null;
+
+            if (this.CurrentTeam == null || this.CurrentTeam.Units == null || 
+                this.CurrentTeam.Units.Count <= 0) return null;
+
+            if (this.CurrentTeam.Units.Any(u => u.Id == cell.Block.Unit.Id))
+            {
+                if (_emptyGroundCells != null)
+                {
+                    foreach (var emptyCell in _emptyGroundCells)
+                    {
+                        emptyCell.Movable = false;
+                    }
+
+                    _emptyGroundCells.Clear();
+                    _emptyGroundCells = null;
+                }
+
+                var emptyGroundBlocks = _gameController.GetEmptyGroundBlocksWithinDistance(cell.Block, cell.Block.Unit.Speed);
+                if (emptyGroundBlocks != null && emptyGroundBlocks.Count > 0)
+                {
+                    _emptyGroundCells = _cells.Where(u => emptyGroundBlocks.Any(e => e.Row == u.Block.Row &&
+                        e.Column == u.Block.Column)).ToList();
+
+                    foreach  (var c in _emptyGroundCells)
+                    {
+                        c.Movable = true;
+                        c.MovableColor = cell.ChessPiece.MovableColor;
+                    }
+                }
+
+                return cell;
+            }
+
+            return null;
+        }
+        
         public Team CurrentTeam
         {
             get { return _gameController.CurrentTeam; }

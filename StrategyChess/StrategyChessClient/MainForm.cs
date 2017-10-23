@@ -180,7 +180,7 @@ namespace StrategyChessClient
 
         private void pBoard_DoubleClick(object sender, EventArgs e)
         {
-            if (_currentCell == null) return;
+            if (_currentCell == null || _isStartGame) return;
 
             var team = _board.GetTeamInitArea(_currentCell.Block.Row, _currentCell.Block.Column);
             if (team == null) return;
@@ -232,26 +232,39 @@ namespace StrategyChessClient
                         _upperTeamCtrl.SelectedChessPieceImage;
 
                     var selectedColor = Global.SelectedBlueColor;
+                    var movableColor = Global.MovableBlueColor;
                     if (team.Name == _lowerTeamCtrl.TeamName)
                     {
                         if (_board.ChessPieceType == ChessPieceType.Blue)
+                        {
                             selectedColor = Global.SelectedBlueColor;
+                            movableColor = Global.MovableBlueColor;
+                        }
                         else
+                        {
                             selectedColor = Global.SelectedGreenColor;
+                            movableColor = Global.MovableGreenColor;
+                        }
                     }
                     else
                     {
                         if (_board.ChessPieceType == ChessPieceType.Blue)
+                        {
                             selectedColor = Global.SelectedGreenColor;
+                            movableColor = Global.MovableGreenColor;
+                        }
                         else
+                        {
                             selectedColor = Global.SelectedBlueColor;
+                            movableColor = Global.MovableBlueColor;
+                        }
                     }
 
                     if (unit == null) return;
 
                     if (_board.PlaceUnit(team, unit, cell.Block.Row, cell.Block.Column))
                     {
-                        cell.InitChecssPiece(image, selectedColor);
+                        cell.InitChecssPiece(image, selectedColor, movableColor);
 
                         if (team.Name == _lowerTeamCtrl.TeamName)
                             _lowerTeamCtrl.PlaceUnit(unit);
@@ -260,8 +273,16 @@ namespace StrategyChessClient
                     }
                 }
                 else //Select
-                {
                     _currentCell = cell;
+            }
+
+            if (_isStartGame)
+            {
+                _currentCell = _board.GetCellHasUnitByTeam(e.X, e.Y);
+                if (_currentCell != null)
+                {
+                    _board.ClearAllSelectOfTeam(_board.CurrentTeam);
+                    _currentCell.Selected = true;
                 }
             }
 

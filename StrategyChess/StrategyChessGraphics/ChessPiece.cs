@@ -13,7 +13,7 @@ namespace StrategyChessGraphics
         public bool Selected { get; set; }
         public Image ChessPieceImage { get; set; }
         public Color SelectedColor { get; set; }
-
+        public Color MovableColor { get; set; }
         protected Block _block;
         protected Rectangle _rect;
         public Block Block

@@ -30,7 +30,7 @@ namespace StrategyChessGraphics
             set { _block = value; }
         }
 
-        public void InitChecssPiece(Image chessPieceImage, Color selectedColor)
+        public void InitChecssPiece(Image chessPieceImage, Color selectedColor, Color movableColor)
         {
             if (_block.Unit != null)
             {
@@ -45,6 +45,7 @@ namespace StrategyChessGraphics
 
                 ChessPiece.ChessPieceImage = chessPieceImage;
                 ChessPiece.SelectedColor = selectedColor;
+                ChessPiece.MovableColor = movableColor;
             }
         }
 
@@ -76,15 +77,15 @@ namespace StrategyChessGraphics
             }
             else
             {
-                if (Movable)
-                {
-                    br = new SolidBrush(this.MovableColor);
-                    g.FillRectangle(br, _rect);
-                }
-                else if (Attackable)
+                if (Attackable)
                 {
                     br = new SolidBrush(this.AttackableColor);
-                    g.FillRectangle(br, _rect);
+                    g.FillRectangle(br, _rect.Location.X + 1, _rect.Location.Y + 1, _rect.Width - 2, _rect.Height - 2);
+                }
+                else if (Movable)
+                {
+                    br = new SolidBrush(this.MovableColor);
+                    g.FillRectangle(br, _rect.Location.X + 1, _rect.Location.Y + 1, _rect.Width - 2, _rect.Height - 2);
                 }
             }
             

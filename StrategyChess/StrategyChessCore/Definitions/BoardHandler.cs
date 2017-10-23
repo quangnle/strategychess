@@ -79,11 +79,16 @@ namespace StrategyChessCore.Definitions
                 {
                     var aBlock = _board[b.Row + dx[i], b.Column + dy[i]];
                     if (aBlock != null && aBlock.Unit == null && !dict.ContainsKey(aBlock))
-                    {                        
-                        if (dict[b] + 1 <= distance)
+                    {
+
+                        var d = 0;
+                        if (dict.ContainsKey(b))
+                            d = dict[b];
+                                        
+                        if (d + 1 <= distance)
                         {
                             queue.Enqueue(aBlock);
-                            dict.Add(aBlock, dict[b] + 1);
+                            dict.Add(aBlock, d + 1);
                         }   
                     }   
                 }

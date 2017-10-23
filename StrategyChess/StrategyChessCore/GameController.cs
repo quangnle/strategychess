@@ -121,6 +121,16 @@ namespace StrategyChessCore
             return false;
         }
 
+        public List<Block> GetEmptyGroundBlocksWithinDistance(Block orgBlock, int distance)
+        {
+            return _gameHandler.GetEmptyGroundBlocksWithinDistance(orgBlock, distance);
+        }
+
+        public List<IUnit> GetEnemyAround(IUnit unit, int radius)
+        {
+            return _gameHandler.GetEnemyAround(unit, radius);
+        }
+
         public bool RemoveUnitAt(int row, int col)
         {
             if (_gameHandler.Board[row, col] != null)
@@ -252,7 +262,5 @@ namespace StrategyChessCore
             if (_currentTeam.Name == _gameHandler.UpperTeam.Name) _currentTeam = _gameHandler.LowerTeam;
             else _currentTeam = _gameHandler.UpperTeam;
         }
-
-
     }
 }
