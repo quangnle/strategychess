@@ -212,9 +212,24 @@ namespace StrategyChessClient.Controls
             get { return picCamp.Image as Bitmap; }
             set { picCamp.Image = value; }
         }
+
+        public bool VisibleTurn
+        {
+            set { picTurn.Visible = value; }
+        }
         #endregion
 
         #region UI Command
+        public void Attack()
+        {
+            picTurn.Image = Properties.Resources.attack;
+        }
+
+        public void Waiting()
+        {
+            picTurn.Image = Properties.Resources.waiting;
+        }
+
         public void PlaceUnit(IUnit unit)
         {
             if (unit is Ambusher)

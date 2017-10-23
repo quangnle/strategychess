@@ -37,10 +37,12 @@
             this.lbRanger = new System.Windows.Forms.Label();
             this.lbTanker = new System.Windows.Forms.Label();
             this.lbCamp = new System.Windows.Forms.Label();
+            this.picTurn = new System.Windows.Forms.PictureBox();
             this.picCamp = new StrategyChessClient.Controls.CustomPictureBox();
             this.picTanker = new StrategyChessClient.Controls.CustomPictureBox();
             this.picRanger = new StrategyChessClient.Controls.CustomPictureBox();
             this.picAmbusher = new StrategyChessClient.Controls.CustomPictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.picTurn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCamp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTanker)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRanger)).BeginInit();
@@ -126,6 +128,16 @@
             this.lbCamp.TabIndex = 22;
             this.lbCamp.Text = "x 0";
             // 
+            // picTurn
+            // 
+            this.picTurn.Image = global::StrategyChessClient.Properties.Resources.attack;
+            this.picTurn.Location = new System.Drawing.Point(132, 171);
+            this.picTurn.Name = "picTurn";
+            this.picTurn.Size = new System.Drawing.Size(48, 48);
+            this.picTurn.TabIndex = 23;
+            this.picTurn.TabStop = false;
+            this.picTurn.Visible = false;
+            // 
             // picCamp
             // 
             this.picCamp.AllowSelect = true;
@@ -135,6 +147,7 @@
             this.picCamp.IsSelected = false;
             this.picCamp.Location = new System.Drawing.Point(238, 87);
             this.picCamp.Name = "picCamp";
+            this.picCamp.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(75)))), ((int)(((byte)(157)))));
             this.picCamp.Size = new System.Drawing.Size(45, 45);
             this.picCamp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picCamp.TabIndex = 18;
@@ -149,6 +162,7 @@
             this.picTanker.IsSelected = false;
             this.picTanker.Location = new System.Drawing.Point(49, 87);
             this.picTanker.Name = "picTanker";
+            this.picTanker.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(75)))), ((int)(((byte)(157)))));
             this.picTanker.Size = new System.Drawing.Size(45, 45);
             this.picTanker.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picTanker.TabIndex = 17;
@@ -163,6 +177,7 @@
             this.picRanger.IsSelected = false;
             this.picRanger.Location = new System.Drawing.Point(112, 87);
             this.picRanger.Name = "picRanger";
+            this.picRanger.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(75)))), ((int)(((byte)(157)))));
             this.picRanger.Size = new System.Drawing.Size(45, 45);
             this.picRanger.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picRanger.TabIndex = 16;
@@ -177,6 +192,7 @@
             this.picAmbusher.IsSelected = false;
             this.picAmbusher.Location = new System.Drawing.Point(175, 87);
             this.picAmbusher.Name = "picAmbusher";
+            this.picAmbusher.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(75)))), ((int)(((byte)(157)))));
             this.picAmbusher.Size = new System.Drawing.Size(45, 45);
             this.picAmbusher.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.picAmbusher.TabIndex = 15;
@@ -187,6 +203,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.Controls.Add(this.picTurn);
             this.Controls.Add(this.lbCamp);
             this.Controls.Add(this.lbTanker);
             this.Controls.Add(this.lbRanger);
@@ -202,6 +219,7 @@
             this.Name = "TeamCtrl";
             this.Size = new System.Drawing.Size(313, 366);
             this.Load += new System.EventHandler(this.TeamCtrl_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.picTurn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCamp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picTanker)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picRanger)).EndInit();
@@ -225,5 +243,6 @@
         private System.Windows.Forms.Label lbRanger;
         private System.Windows.Forms.Label lbTanker;
         private System.Windows.Forms.Label lbCamp;
+        private System.Windows.Forms.PictureBox picTurn;
     }
 }

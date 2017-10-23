@@ -80,6 +80,11 @@ namespace StrategyChessGraphics
             return GetCell(new Point(x, y));
         }
 
+        public Team CurrentTeam
+        {
+            get { return _gameController.CurrentTeam; }
+        }
+
         public void ShowInitArea()
         {
             var team = _gameController.GetTeamByName(this.MyName);

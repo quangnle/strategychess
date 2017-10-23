@@ -148,6 +148,10 @@ namespace StrategyChessClient
 
                 _upperTeamCtrl.ClearAll();
                 _lowerTeamCtrl.ClearAll();
+
+                _upperTeamCtrl.VisibleTurn = false;
+                _lowerTeamCtrl.VisibleTurn = false;
+
                 _board = new BoardGr(20, 6, 2);
                 _upperTeamCtrl.BoardGr = _board;
                 _lowerTeamCtrl.BoardGr = _board;
@@ -320,7 +324,17 @@ namespace StrategyChessClient
                 _currentCell = null;
                 _isStartGame = _board.StartGame();
                 if (_isStartGame)
+                {
+                    _lowerTeamCtrl.VisibleReadyButton = false;
+                    _upperTeamCtrl.VisibleReadyButton = false;
+                    _lowerTeamCtrl.VisibleTurn = true;
+                    _upperTeamCtrl.VisibleTurn = true;
+
+                    _lowerTeamCtrl.Attack();
+                    _upperTeamCtrl.Waiting();
+
                     StartTimer();
+                }
 
                 pBoard.Invalidate();
             }   
