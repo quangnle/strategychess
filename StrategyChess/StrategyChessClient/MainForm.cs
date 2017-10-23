@@ -21,6 +21,7 @@ namespace StrategyChessClient
         private Point _currentPos = Point.Empty;
         private bool _isMouseLeft = false;
         private Cell _currentCell = null;
+        private bool _isStartGame = false;
         #endregion
 
         #region Constructor
@@ -49,19 +50,19 @@ namespace StrategyChessClient
             _lowerTeamCtrl.TeamColor = Global.TeamGreenColor;
             _lowerTeamCtrl.TeamTitle = "YOU";
             _lowerTeamCtrl.TeamName = "Player 1";
-            _lowerTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Blue;
-            _lowerTeamCtrl.RangerImage = ResourceUtility.Ranger_Blue;
-            _lowerTeamCtrl.TankerImage = ResourceUtility.Tanker_Blue;
-            _lowerTeamCtrl.CampImage = ResourceUtility.Camp_Blue;
+            _lowerTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Green;
+            _lowerTeamCtrl.RangerImage = ResourceUtility.Ranger_Green;
+            _lowerTeamCtrl.TankerImage = ResourceUtility.Tanker_Green;
+            _lowerTeamCtrl.CampImage = ResourceUtility.Camp_Green;
 
             _upperTeamCtrl.BoardGr = _board;
             _upperTeamCtrl.TeamColor = Global.TeamBlueColor;
             _upperTeamCtrl.TeamTitle = "COMPETITOR";
             _upperTeamCtrl.TeamName = "Player 2";
-            _upperTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Green;
-            _upperTeamCtrl.RangerImage = ResourceUtility.Ranger_Green;
-            _upperTeamCtrl.TankerImage = ResourceUtility.Tanker_Green;
-            _upperTeamCtrl.CampImage = ResourceUtility.Camp_Green;
+            _upperTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Blue;
+            _upperTeamCtrl.RangerImage = ResourceUtility.Ranger_Blue;
+            _upperTeamCtrl.TankerImage = ResourceUtility.Tanker_Blue;
+            _upperTeamCtrl.CampImage = ResourceUtility.Camp_Blue;
         }
 
         private void OnPlay()
@@ -297,6 +298,7 @@ namespace StrategyChessClient
                 _board.ClearShowInitArea();
                 _board.ClearAllSelects();
                 _currentCell = null;
+                _isStartGame = _board.StartGame();
                 pBoard.Invalidate();
             }   
         }
