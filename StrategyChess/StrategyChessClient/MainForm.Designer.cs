@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this._timer = new System.Windows.Forms.Timer(this.components);
             this.pPlayer = new StrategyChessClient.Controls.CustomPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.customPanel3 = new StrategyChessClient.Controls.CustomPanel();
@@ -58,6 +59,11 @@
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // _timer
+            // 
+            this._timer.Interval = 1000;
+            this._timer.Tick += new System.EventHandler(this._timer_Tick);
             // 
             // pPlayer
             // 
@@ -224,16 +230,16 @@
             this.lbTime.AutoSize = true;
             this.lbTime.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTime.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.lbTime.Location = new System.Drawing.Point(221, 67);
+            this.lbTime.Location = new System.Drawing.Point(218, 67);
             this.lbTime.Name = "lbTime";
-            this.lbTime.Size = new System.Drawing.Size(43, 15);
+            this.lbTime.Size = new System.Drawing.Size(63, 15);
             this.lbTime.TabIndex = 6;
-            this.lbTime.Text = "00:00";
+            this.lbTime.Text = "00:00:00";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(183, 56);
+            this.pictureBox1.Location = new System.Drawing.Point(174, 56);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(36, 36);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -348,6 +354,7 @@
         private System.Windows.Forms.Panel panel1;
         private Controls.TeamCtrl _lowerTeamCtrl;
         private Controls.TeamCtrl _upperTeamCtrl;
+        private System.Windows.Forms.Timer _timer;
     }
 }
 

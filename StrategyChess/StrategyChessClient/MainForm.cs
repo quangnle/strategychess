@@ -22,6 +22,7 @@ namespace StrategyChessClient
         private bool _isMouseLeft = false;
         private Cell _currentCell = null;
         private bool _isStartGame = false;
+        private DateTime _dtTime = DateTime.Now.Date;
         #endregion
 
         #region Constructor
@@ -63,6 +64,18 @@ namespace StrategyChessClient
             _upperTeamCtrl.RangerImage = ResourceUtility.Ranger_Blue;
             _upperTeamCtrl.TankerImage = ResourceUtility.Tanker_Blue;
             _upperTeamCtrl.CampImage = ResourceUtility.Camp_Blue;
+        }
+
+        private void StartTimer()
+        {
+            _timer.Enabled = true;
+            _timer.Start();
+        }
+
+        private void StopTimer()
+        {
+            _timer.Stop();
+            _timer.Enabled = false;
         }
 
         private void OnPlay()
@@ -138,13 +151,20 @@ namespace StrategyChessClient
                 _board = new BoardGr(20, 6, 2);
                 _upperTeamCtrl.BoardGr = _board;
                 _lowerTeamCtrl.BoardGr = _board;
-
+                StopTimer();
+                _dtTime = DateTime.Now.Date;
+                UpdateLabelTimer();
                 pBoard.Invalidate();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void UpdateLabelTimer()
+        {
+            lbTime.Text = _dtTime.ToString("HH:mm:ss");
         }
         #endregion
 
@@ -299,8 +319,17 @@ namespace StrategyChessClient
                 _board.ClearAllSelects();
                 _currentCell = null;
                 _isStartGame = _board.StartGame();
+                if (_isStartGame)
+                    StartTimer();
+
                 pBoard.Invalidate();
             }   
+        }
+
+        private void _timer_Tick(object sender, EventArgs e)
+        {
+            _dtTime = _dtTime.AddSeconds(1);
+            UpdateLabelTimer();
         }
         #endregion
     }
