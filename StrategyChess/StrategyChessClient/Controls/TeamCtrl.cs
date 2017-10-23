@@ -245,6 +245,7 @@ namespace StrategyChessClient.Controls
             this.RangerCount = 0;
             this.TankerCount = 0;
             this.CampCount = 0;
+            this.btnReady.Enabled = true;
         }
 
         private void RefreshCount(Label lb, int count)

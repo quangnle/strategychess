@@ -292,7 +292,7 @@ namespace StrategyChessClient
 
         private void teamCtrl_OnReadyEvent(TeamCtrl team)
         {
-            if (_lowerTeamCtrl.StartReady && _lowerTeamCtrl.StartReady)
+            if (_lowerTeamCtrl.StartReady && _upperTeamCtrl.StartReady)
             {
                 _board.ClearShowInitArea();
                 _board.ClearAllSelects();
