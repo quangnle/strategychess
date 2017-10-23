@@ -200,58 +200,43 @@ namespace StrategyChessClient
 
                 if (cell.Block.Unit == null)
                 {
-                    if (_currentCell == null || !_currentCell.Selected) //Place
-                    {
-                        var unit = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedUnit :
+                    var unit = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedUnit :
                         _upperTeamCtrl.SelectedUnit;
 
-                        var image = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedChessPieceImage :
-                            _upperTeamCtrl.SelectedChessPieceImage;
+                    var image = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedChessPieceImage :
+                        _upperTeamCtrl.SelectedChessPieceImage;
 
-                        var selectedColor = Global.SelectedBlueColor;
-                        if (team.Name == _lowerTeamCtrl.TeamName)
-                        {
-                            if (_board.ChessPieceType == ChessPieceType.Blue)
-                                selectedColor = Global.SelectedBlueColor;
-                            else
-                                selectedColor = Global.SelectedGreenColor;
-                        }
-                        else
-                        {
-                            if (_board.ChessPieceType == ChessPieceType.Blue)
-                                selectedColor = Global.SelectedGreenColor;
-                            else
-                                selectedColor = Global.SelectedBlueColor;
-                        }
-
-                        if (unit == null) return;
-
-                        if (_board.PlaceUnit(team, unit, cell.Block.Row, cell.Block.Column))
-                        {
-                            cell.InitChecssPiece(image, selectedColor);
-
-                            if (team.Name == _lowerTeamCtrl.TeamName)
-                                _lowerTeamCtrl.PlaceUnit(unit);
-                            else
-                                _upperTeamCtrl.PlaceUnit(unit);
-                        }
-                    }
-                    else if (_currentCell.Block.Unit != null) //Move
+                    var selectedColor = Global.SelectedBlueColor;
+                    if (team.Name == _lowerTeamCtrl.TeamName)
                     {
-                        //if (_board.MakeAMove(_currentCell.Block.Unit, cell.Block.Row, cell.Block.Column))
-                        //{
-                        //    cell.InitChecssPiece(_currentCell.ChessPiece.ChessPieceImage);
-                        //    _currentCell.RemoveChessPiece();
-                        //    _currentCell = null;
-                        //}
+                        if (_board.ChessPieceType == ChessPieceType.Blue)
+                            selectedColor = Global.SelectedBlueColor;
+                        else
+                            selectedColor = Global.SelectedGreenColor;
+                    }
+                    else
+                    {
+                        if (_board.ChessPieceType == ChessPieceType.Blue)
+                            selectedColor = Global.SelectedGreenColor;
+                        else
+                            selectedColor = Global.SelectedBlueColor;
+                    }
+
+                    if (unit == null) return;
+
+                    if (_board.PlaceUnit(team, unit, cell.Block.Row, cell.Block.Column))
+                    {
+                        cell.InitChecssPiece(image, selectedColor);
+
+                        if (team.Name == _lowerTeamCtrl.TeamName)
+                            _lowerTeamCtrl.PlaceUnit(unit);
+                        else
+                            _upperTeamCtrl.PlaceUnit(unit);
                     }
                 }
                 else //Select
                 {
                     _currentCell = cell;
-                    var selected = !_currentCell.Selected;
-                    _board.ClearAllSelectOfTeam(team);
-                    _currentCell.Selected = selected;
                 }
             }
 
@@ -311,7 +296,7 @@ namespace StrategyChessClient
             {
                 _board.ClearShowInitArea();
                 _board.ClearAllSelects();
-
+                _currentCell = null;
                 pBoard.Invalidate();
             }   
         }
