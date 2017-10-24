@@ -1,4 +1,5 @@
 ﻿using StrategyChessCore.Definitions;
+using StrategyChessCore.Definitions.Units;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,22 +11,22 @@ namespace StrategyChessGraphics
 {
     public abstract class ChessPiece
     {
-        public bool Selected { get; set; }
         public Image ChessPieceImage { get; set; }
         public Color SelectedColor { get; set; }
         public Color MovableColor { get; set; }
-        protected Block _block;
+        protected IUnit _unit;
         protected Rectangle _rect;
-        public Block Block
+
+        public IUnit Unit
         {
-            get { return _block; }
+            get { return _unit; }
+            set { _unit = value; }
         }
 
-        public ChessPiece(Block block, Rectangle rect, bool selected = false)
+        public ChessPiece(IUnit unit, Rectangle rect)
         {
-            _block = block;
+            _unit = unit;
             _rect = rect;
-            this.Selected = selected;
         }
 
         public abstract void Draw(Graphics g);
@@ -43,7 +44,7 @@ namespace StrategyChessGraphics
             var yMargin = 1;
             var size = 3;
             var yGap = 1;
-            for (int i = 0; i < _block.Unit.CurrentCoolDown; i++)
+            for (int i = 0; i < _unit.CurrentCoolDown; i++)
             {
                 var x = _rect.X + xMargin;
                 var y = (_rect.Y + _rect.Width - yMargin) - (i + 1) * (size * yGap);
@@ -58,7 +59,7 @@ namespace StrategyChessGraphics
             var yMargin = 1;
             var size = 3;
             var yGap = 1;
-            for (int i = 0; i < _block.Unit.HP; i++)
+            for (int i = 0; i < _unit.HP; i++)
             {
                 var x = _rect.X + _rect.Width - size - xMargin;
                 var y = (_rect.Y + _rect.Width - yMargin) - (i + 1) * (size + yGap);

@@ -31,6 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnStop = new System.Windows.Forms.Button();
+            this.btnPlay = new System.Windows.Forms.Button();
             this._timer = new System.Windows.Forms.Timer(this.components);
             this.pPlayer = new StrategyChessClient.Controls.CustomPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -45,20 +48,51 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.lbTime = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnStop = new System.Windows.Forms.Button();
-            this.btnPlay = new System.Windows.Forms.Button();
             this.raNetworkMode = new System.Windows.Forms.RadioButton();
             this.raSingleMode = new System.Windows.Forms.RadioButton();
-            this.pBoard = new StrategyChessClient.Controls.CustomPanel();
+            this._boardCtrl = new StrategyChessClient.Controls.BoardCtrl();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pPlayer.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.customPanel3.SuspendLayout();
             this.customPanel2.SuspendLayout();
             this.pGameSetting.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(174, 56);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(36, 36);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox1, "Time");
+            // 
+            // btnStop
+            // 
+            this.btnStop.Enabled = false;
+            this.btnStop.Image = ((System.Drawing.Image)(resources.GetObject("btnStop.Image")));
+            this.btnStop.Location = new System.Drawing.Point(72, 56);
+            this.btnStop.Name = "btnStop";
+            this.btnStop.Size = new System.Drawing.Size(36, 36);
+            this.btnStop.TabIndex = 4;
+            this.toolTip1.SetToolTip(this.btnStop, "Stop");
+            this.btnStop.UseVisualStyleBackColor = true;
+            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            // 
+            // btnPlay
+            // 
+            this.btnPlay.Image = ((System.Drawing.Image)(resources.GetObject("btnPlay.Image")));
+            this.btnPlay.Location = new System.Drawing.Point(31, 56);
+            this.btnPlay.Name = "btnPlay";
+            this.btnPlay.Size = new System.Drawing.Size(36, 36);
+            this.btnPlay.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.btnPlay, "Play");
+            this.btnPlay.UseVisualStyleBackColor = true;
+            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
             // 
             // _timer
             // 
@@ -70,9 +104,9 @@
             this.pPlayer.BackColor = System.Drawing.Color.White;
             this.pPlayer.Controls.Add(this.tableLayoutPanel1);
             this.pPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pPlayer.Location = new System.Drawing.Point(701, 0);
+            this.pPlayer.Location = new System.Drawing.Point(725, 0);
             this.pPlayer.Name = "pPlayer";
-            this.pPlayer.Size = new System.Drawing.Size(307, 701);
+            this.pPlayer.Size = new System.Drawing.Size(307, 725);
             this.pPlayer.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -89,7 +123,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(307, 701);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(307, 725);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // customPanel3
@@ -97,9 +131,9 @@
             this.customPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.customPanel3.Controls.Add(this._lowerTeamCtrl);
             this.customPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel3.Location = new System.Drawing.Point(3, 405);
+            this.customPanel3.Location = new System.Drawing.Point(3, 417);
             this.customPanel3.Name = "customPanel3";
-            this.customPanel3.Size = new System.Drawing.Size(301, 293);
+            this.customPanel3.Size = new System.Drawing.Size(301, 305);
             this.customPanel3.TabIndex = 2;
             // 
             // _lowerTeamCtrl
@@ -111,16 +145,18 @@
             this._lowerTeamCtrl.CampCount = 0;
             this._lowerTeamCtrl.CampImage = null;
             this._lowerTeamCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._lowerTeamCtrl.GameController = null;
             this._lowerTeamCtrl.Location = new System.Drawing.Point(0, 0);
             this._lowerTeamCtrl.MaxCamps = 0;
             this._lowerTeamCtrl.MaxUnits = 0;
             this._lowerTeamCtrl.Name = "_lowerTeamCtrl";
             this._lowerTeamCtrl.RangerCount = 0;
             this._lowerTeamCtrl.RangerImage = null;
-            this._lowerTeamCtrl.Size = new System.Drawing.Size(299, 291);
+            this._lowerTeamCtrl.Size = new System.Drawing.Size(299, 303);
             this._lowerTeamCtrl.TabIndex = 1;
             this._lowerTeamCtrl.TankerCount = 0;
             this._lowerTeamCtrl.TankerImage = null;
+            this._lowerTeamCtrl.Team = null;
             this._lowerTeamCtrl.TeamColor = System.Drawing.Color.Red;
             this._lowerTeamCtrl.TeamName = "";
             // 
@@ -131,7 +167,7 @@
             this.customPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.customPanel2.Location = new System.Drawing.Point(3, 3);
             this.customPanel2.Name = "customPanel2";
-            this.customPanel2.Size = new System.Drawing.Size(301, 292);
+            this.customPanel2.Size = new System.Drawing.Size(301, 304);
             this.customPanel2.TabIndex = 1;
             // 
             // _upperTeamCtrl
@@ -143,16 +179,18 @@
             this._upperTeamCtrl.CampCount = 0;
             this._upperTeamCtrl.CampImage = null;
             this._upperTeamCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._upperTeamCtrl.GameController = null;
             this._upperTeamCtrl.Location = new System.Drawing.Point(0, 0);
             this._upperTeamCtrl.MaxCamps = 0;
             this._upperTeamCtrl.MaxUnits = 0;
             this._upperTeamCtrl.Name = "_upperTeamCtrl";
             this._upperTeamCtrl.RangerCount = 0;
             this._upperTeamCtrl.RangerImage = null;
-            this._upperTeamCtrl.Size = new System.Drawing.Size(299, 290);
+            this._upperTeamCtrl.Size = new System.Drawing.Size(299, 302);
             this._upperTeamCtrl.TabIndex = 0;
             this._upperTeamCtrl.TankerCount = 0;
             this._upperTeamCtrl.TankerImage = null;
+            this._upperTeamCtrl.Team = null;
             this._upperTeamCtrl.TeamColor = System.Drawing.Color.Red;
             this._upperTeamCtrl.TeamName = "";
             // 
@@ -169,7 +207,7 @@
             this.pGameSetting.Controls.Add(this.raNetworkMode);
             this.pGameSetting.Controls.Add(this.raSingleMode);
             this.pGameSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pGameSetting.Location = new System.Drawing.Point(3, 301);
+            this.pGameSetting.Location = new System.Drawing.Point(3, 313);
             this.pGameSetting.Name = "pGameSetting";
             this.pGameSetting.Size = new System.Drawing.Size(301, 98);
             this.pGameSetting.TabIndex = 0;
@@ -236,40 +274,6 @@
             this.lbTime.TabIndex = 6;
             this.lbTime.Text = "00:00:00";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(174, 56);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(36, 36);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
-            this.toolTip1.SetToolTip(this.pictureBox1, "Time");
-            // 
-            // btnStop
-            // 
-            this.btnStop.Enabled = false;
-            this.btnStop.Image = ((System.Drawing.Image)(resources.GetObject("btnStop.Image")));
-            this.btnStop.Location = new System.Drawing.Point(72, 56);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(36, 36);
-            this.btnStop.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.btnStop, "Stop");
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
-            // 
-            // btnPlay
-            // 
-            this.btnPlay.Image = ((System.Drawing.Image)(resources.GetObject("btnPlay.Image")));
-            this.btnPlay.Location = new System.Drawing.Point(31, 56);
-            this.btnPlay.Name = "btnPlay";
-            this.btnPlay.Size = new System.Drawing.Size(36, 36);
-            this.btnPlay.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.btnPlay, "Play");
-            this.btnPlay.UseVisualStyleBackColor = true;
-            this.btnPlay.Click += new System.EventHandler(this.btnPlay_Click);
-            // 
             // raNetworkMode
             // 
             this.raNetworkMode.AutoSize = true;
@@ -294,31 +298,27 @@
             this.raSingleMode.Text = "Single";
             this.raSingleMode.UseVisualStyleBackColor = true;
             // 
-            // pBoard
+            // _boardCtrl
             // 
-            this.pBoard.BackColor = System.Drawing.Color.White;
-            this.pBoard.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pBoard.Location = new System.Drawing.Point(0, 0);
-            this.pBoard.Name = "pBoard";
-            this.pBoard.Size = new System.Drawing.Size(701, 701);
-            this.pBoard.TabIndex = 1;
-            this.pBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.pBoard_Paint);
-            this.pBoard.DoubleClick += new System.EventHandler(this.pBoard_DoubleClick);
-            this.pBoard.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pBoard_MouseDown);
-            this.pBoard.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pBoard_MouseUp);
+            this._boardCtrl.Dock = System.Windows.Forms.DockStyle.Left;
+            this._boardCtrl.Location = new System.Drawing.Point(0, 0);
+            this._boardCtrl.Name = "_boardCtrl";
+            this._boardCtrl.Size = new System.Drawing.Size(725, 725);
+            this._boardCtrl.TabIndex = 1;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1008, 701);
+            this.ClientSize = new System.Drawing.Size(1032, 725);
             this.Controls.Add(this.pPlayer);
-            this.Controls.Add(this.pBoard);
+            this.Controls.Add(this._boardCtrl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Strategy Chess";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pPlayer.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.customPanel3.ResumeLayout(false);
@@ -327,7 +327,6 @@
             this.pGameSetting.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -335,7 +334,6 @@
         #endregion
 
         private Controls.CustomPanel pPlayer;
-        private Controls.CustomPanel pBoard;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private Controls.CustomPanel customPanel3;
         private Controls.CustomPanel customPanel2;
@@ -355,6 +353,7 @@
         private Controls.TeamCtrl _lowerTeamCtrl;
         private Controls.TeamCtrl _upperTeamCtrl;
         private System.Windows.Forms.Timer _timer;
+        private Controls.BoardCtrl _boardCtrl;
     }
 }
 

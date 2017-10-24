@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\BoardCtrl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\CustomPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -113,6 +116,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\waiting.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ambusher_Blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ambusher_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Camp_Blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Camp_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ranger_Blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ranger_Green.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Tanker_Blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Tanker_Green.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

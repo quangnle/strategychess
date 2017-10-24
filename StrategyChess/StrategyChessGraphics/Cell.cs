@@ -14,46 +14,37 @@ namespace StrategyChessGraphics
     public class Cell
     {
         private Rectangle _rect;
-        private Block _block;
         public Color MovableColor { get; set; }
         public Color SelectedColor { get; set; }
         public bool Selected { get; set; }
         public bool Movable { get; set; }
         public bool Attackable { get; set; }
         public Color AttackableColor { get; set; }
-
+        public int Row { get; set; }
+        public int Column { get; set; }
         public ChessPiece ChessPiece { get; set; }
-        
-        public Block Block
+        public void InitChecssPiece(IUnit unit, Image chessPieceImage, Color selectedColor, Color movableColor)
         {
-            get { return _block; }
-            set { _block = value; }
+            if (unit == null) return;
+            if (unit is Ranger)
+                ChessPiece = new RangerGr(unit, new Rectangle(_rect.Location, _rect.Size));
+            else if (unit is Tanker)
+                ChessPiece = new TankerGr(unit, new Rectangle(_rect.Location, _rect.Size));
+            else if (unit is Ambusher)
+                ChessPiece = new AmbusherGr(unit, new Rectangle(_rect.Location, _rect.Size));
+            else
+                ChessPiece = new CampGr(unit, new Rectangle(_rect.Location, _rect.Size));
+
+            ChessPiece.ChessPieceImage = chessPieceImage;
+            ChessPiece.SelectedColor = selectedColor;
+            ChessPiece.MovableColor = movableColor;
         }
 
-        public void InitChecssPiece(Image chessPieceImage, Color selectedColor, Color movableColor)
+        public Cell(Rectangle rect, int row, int col)
         {
-            if (_block.Unit != null)
-            {
-                if (_block.Unit is Ranger)
-                    ChessPiece = new RangerGr(_block, new Rectangle(_rect.Location, _rect.Size));
-                else if (_block.Unit is Tanker)
-                    ChessPiece = new TankerGr(_block, new Rectangle(_rect.Location, _rect.Size));
-                else if (_block.Unit is Ambusher)
-                    ChessPiece = new AmbusherGr(_block, new Rectangle(_rect.Location, _rect.Size));
-                else
-                    ChessPiece = new CampGr(_block, new Rectangle(_rect.Location, _rect.Size));
-
-                ChessPiece.ChessPieceImage = chessPieceImage;
-                ChessPiece.SelectedColor = selectedColor;
-                ChessPiece.MovableColor = movableColor;
-            }
-        }
-
-        public Cell(Block block, Rectangle rect, bool selected = false)
-        {
-            Block = block;
             _rect = rect;
-            this.Selected = selected;
+            Row = row;
+            Column = col;
             this.MovableColor = Global.MovableBlueColor;
             this.SelectedColor = Global.SelectedBlueColor;
             this.AttackableColor = Global.AttackableColor;
@@ -61,8 +52,6 @@ namespace StrategyChessGraphics
 
         public void Draw(Graphics g)
         {
-            
-
             Brush br = Brushes.White;
             if (Selected)
             {

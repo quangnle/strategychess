@@ -47,25 +47,25 @@ namespace StrategyChessClient
 
             pGameSetting.BackColor = Global.GameSettingBackgroundColor;
 
-            _board = new BoardGr(20, 6, 2);
+            _board = new BoardGr(20);
 
             _lowerTeamCtrl.BoardGr = _board;
             _lowerTeamCtrl.TeamColor = Global.TeamGreenColor;
             _lowerTeamCtrl.TeamTitle = "YOU";
             _lowerTeamCtrl.TeamName = "Player 1";
-            _lowerTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Green;
-            _lowerTeamCtrl.RangerImage = ResourceUtility.Ranger_Green;
-            _lowerTeamCtrl.TankerImage = ResourceUtility.Tanker_Green;
-            _lowerTeamCtrl.CampImage = ResourceUtility.Camp_Green;
+            _lowerTeamCtrl.AmbusherImage = Properties.Resources.Ambusher_Green;
+            _lowerTeamCtrl.RangerImage = Properties.Resources.Ranger_Green;
+            _lowerTeamCtrl.TankerImage = Properties.Resources.Tanker_Green;
+            _lowerTeamCtrl.CampImage = Properties.Resources.Camp_Green;
 
             _upperTeamCtrl.BoardGr = _board;
             _upperTeamCtrl.TeamColor = Global.TeamBlueColor;
             _upperTeamCtrl.TeamTitle = "COMPETITOR";
             _upperTeamCtrl.TeamName = "Player 2";
-            _upperTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Blue;
-            _upperTeamCtrl.RangerImage = ResourceUtility.Ranger_Blue;
-            _upperTeamCtrl.TankerImage = ResourceUtility.Tanker_Blue;
-            _upperTeamCtrl.CampImage = ResourceUtility.Camp_Blue;
+            _upperTeamCtrl.AmbusherImage = Properties.Resources.Ambusher_Blue;
+            _upperTeamCtrl.RangerImage = Properties.Resources.Ranger_Blue;
+            _upperTeamCtrl.TankerImage = Properties.Resources.Tanker_Blue;
+            _upperTeamCtrl.CampImage = Properties.Resources.Camp_Blue;
 
             _gameController = new GameController(20, 6, 2);
         }
@@ -118,7 +118,7 @@ namespace StrategyChessClient
                 _board.CompetitorTeamColor = _upperTeamCtrl.TeamColor;
 
                 
-                pBoard.Invalidate();
+                //pBoard.Invalidate();
             }
             catch (Exception ex)
             {
@@ -157,13 +157,13 @@ namespace StrategyChessClient
                 _upperTeamCtrl.VisibleTurn = false;
                 _lowerTeamCtrl.VisibleTurn = false;
 
-                _board = new BoardGr(20, 6, 2);
+                _board = new BoardGr(20);
                 _upperTeamCtrl.BoardGr = _board;
                 _lowerTeamCtrl.BoardGr = _board;
                 StopTimer();
                 _dtTime = DateTime.Now.Date;
                 UpdateLabelTimer();
-                pBoard.Invalidate();
+                //pBoard.Invalidate();
             }
             catch (Exception ex)
             {
@@ -187,13 +187,13 @@ namespace StrategyChessClient
         {
             if (_currentCell == null || _isStartGame) return;
 
-            var team = _gameController.GetTeamByInitAreaLocation(_currentCell.Block.Row, _currentCell.Block.Column);
+            var team = _gameController.GetTeamByInitAreaLocation(_currentCell.Row, _currentCell.Column);
             if (team == null) return;
-            if (_currentCell.Block.Unit == null) return;
+            if (_currentCell.ChessPiece == null) return;
 
-            var unit = _currentCell.Block.Unit;
+            var unit = _currentCell.ChessPiece.Unit;
 
-            if (_gameController.RemoveUnitAt(_currentCell.Block.Row, _currentCell.Block.Column))
+            if (_gameController.RemoveUnitAt(_currentCell.Row, _currentCell.Column))
             {
                 _currentCell.Selected = false;
                 _currentCell.RemoveChessPiece();
@@ -204,7 +204,7 @@ namespace StrategyChessClient
                     _upperTeamCtrl.RemoveUnit(unit);
 
                 _currentCell = null;
-                pBoard.Invalidate();
+                //pBoard.Invalidate();
             }
         }
 
@@ -226,9 +226,9 @@ namespace StrategyChessClient
             if ((!_lowerTeamCtrl.StartReady || !_upperTeamCtrl.StartReady))
             {
 
-                var team = _gameController.GetTeamByInitAreaLocation(cell.Block.Row, cell.Block.Column);
+                var team = _gameController.GetTeamByInitAreaLocation(cell.Row, cell.Column);
 
-                if (cell.Block.Unit == null)
+                if (cell.ChessPiece == null)
                 {
                     var unit = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedUnit :
                         _upperTeamCtrl.SelectedUnit;
@@ -267,9 +267,9 @@ namespace StrategyChessClient
 
                     if (unit == null) return;
 
-                    if (_gameController.PlaceUnit(team.Name, unit, cell.Block.Row, cell.Block.Column))
+                    if (_gameController.PlaceUnit(team.Name, unit, cell.Row, cell.Column))
                     {
-                        cell.InitChecssPiece(image, selectedColor, movableColor);
+                        cell.InitChecssPiece(unit, image, selectedColor, movableColor);
 
                         if (team.Name == _lowerTeamCtrl.TeamName)
                             _lowerTeamCtrl.PlaceUnit(unit);
@@ -291,7 +291,7 @@ namespace StrategyChessClient
             //    }
             //}
 
-            pBoard.Invalidate();
+            //pBoard.Invalidate();
         }
 
         private void pBoard_MouseUp(object sender, MouseEventArgs e)
@@ -304,30 +304,30 @@ namespace StrategyChessClient
             if (raPiece1.Checked)
             {
                 _lowerTeamCtrl.TeamColor = Global.TeamBlueColor;
-                _lowerTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Blue;
-                _lowerTeamCtrl.RangerImage = ResourceUtility.Ranger_Blue;
-                _lowerTeamCtrl.TankerImage = ResourceUtility.Tanker_Blue;
-                _lowerTeamCtrl.CampImage = ResourceUtility.Camp_Blue;
+                _lowerTeamCtrl.AmbusherImage = Properties.Resources.Ambusher_Blue;
+                _lowerTeamCtrl.RangerImage = Properties.Resources.Ranger_Blue;
+                _lowerTeamCtrl.TankerImage = Properties.Resources.Tanker_Blue;
+                _lowerTeamCtrl.CampImage = Properties.Resources.Camp_Blue;
 
                 _upperTeamCtrl.TeamColor = Global.TeamGreenColor;
-                _upperTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Green;
-                _upperTeamCtrl.RangerImage = ResourceUtility.Ranger_Green;
-                _upperTeamCtrl.TankerImage = ResourceUtility.Tanker_Green;
-                _upperTeamCtrl.CampImage = ResourceUtility.Camp_Green;
+                _upperTeamCtrl.AmbusherImage = Properties.Resources.Ambusher_Green;
+                _upperTeamCtrl.RangerImage = Properties.Resources.Ranger_Green;
+                _upperTeamCtrl.TankerImage = Properties.Resources.Tanker_Green;
+                _upperTeamCtrl.CampImage = Properties.Resources.Camp_Green;
             }
             else
             {
                 _lowerTeamCtrl.TeamColor = Global.TeamGreenColor;
-                _lowerTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Green;
-                _lowerTeamCtrl.RangerImage = ResourceUtility.Ranger_Green;
-                _lowerTeamCtrl.TankerImage = ResourceUtility.Tanker_Green;
-                _lowerTeamCtrl.CampImage = ResourceUtility.Camp_Green;
+                _lowerTeamCtrl.AmbusherImage = Properties.Resources.Ambusher_Green;
+                _lowerTeamCtrl.RangerImage = Properties.Resources.Ranger_Green;
+                _lowerTeamCtrl.TankerImage = Properties.Resources.Tanker_Green;
+                _lowerTeamCtrl.CampImage = Properties.Resources.Camp_Green;
 
                 _upperTeamCtrl.TeamColor = Global.TeamBlueColor;
-                _upperTeamCtrl.AmbusherImage = ResourceUtility.Ambusher_Blue;
-                _upperTeamCtrl.RangerImage = ResourceUtility.Ranger_Blue;
-                _upperTeamCtrl.TankerImage = ResourceUtility.Tanker_Blue;
-                _upperTeamCtrl.CampImage = ResourceUtility.Camp_Blue;
+                _upperTeamCtrl.AmbusherImage = Properties.Resources.Ambusher_Blue;
+                _upperTeamCtrl.RangerImage = Properties.Resources.Ranger_Blue;
+                _upperTeamCtrl.TankerImage = Properties.Resources.Tanker_Blue;
+                _upperTeamCtrl.CampImage = Properties.Resources.Camp_Blue;
             }
         }
 
@@ -362,7 +362,7 @@ namespace StrategyChessClient
                     StartTimer();
                 }
 
-                pBoard.Invalidate();
+                //pBoard.Invalidate();
             }   
         }
 

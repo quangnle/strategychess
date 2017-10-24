@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StrategyChessCore.Definitions;
+using StrategyChessCore.Definitions.Units;
 
 namespace StrategyChessGraphics
 {
     public class RangerGr : ChessPiece
     {
-        public RangerGr(Block block, Rectangle rect, bool selected = false) : base(block, rect, selected)
+        public RangerGr(IUnit unit, Rectangle rect) : base(unit, rect)
         {
         }
 

@@ -15,10 +15,10 @@ namespace StrategyChessGraphics
     {
         private int _cellSize = 35;
         private int _size;
-        private GameController _gameController;
         private List<Cell> _cells;
         private List<Block> _initAreaBlocks;
         private List<Cell> _emptyGroundCells;
+        private Font _font = new Font("Arial", 9);
 
         public Team OwnTeam { get; set; }
         public Team Opponent { get; set; }
@@ -34,12 +34,11 @@ namespace StrategyChessGraphics
 
         public Cell this[int row, int col]
         {
-            get { return _cells.FirstOrDefault(x => x.Block.Row == row && x.Block.Column == col); }
+            get { return _cells.FirstOrDefault(x => x.Row == row && x.Column == col); }
         }
 
-        public BoardGr(int size, int maxUnits, int maxCamps)
+        public BoardGr(int size)
         {
-            _gameController = new GameController(size, maxUnits, maxCamps);
             _size = size;
             Init();
         }
@@ -54,9 +53,8 @@ namespace StrategyChessGraphics
                 var x = 0;
                 for (int c = 0; c < _size; c++)
                 {
-                    var block = _gameController.GetBlockAt(r, c);
                     var rect = new Rectangle(x, y, _cellSize, _cellSize);
-                    var cell = new Cell(block, rect);
+                    var cell = new Cell(rect, r, c);
                     _cells.Add(cell);
                     x += _cellSize;
                 }
@@ -67,9 +65,24 @@ namespace StrategyChessGraphics
 
         public void Draw(Graphics g)
         {
+            // draw cells
             foreach (var cell in _cells)
             {
                 cell.Draw(g);
+            }
+
+            // draw index
+            var x = 0;
+            var y = 0;
+            var right = (_size * _cellSize) + 5;
+            var bottom = (_size * _cellSize) + 5;
+            
+            for (int i = 0; i < _size; i++)
+            {
+                g.DrawString($"{i + 1}", _font, Brushes.Black, new Point(right, y + 8));
+                g.DrawString($"{i + 1}", _font, Brushes.Black, new Point(x + 8, bottom));
+                y += _cellSize;
+                x += _cellSize;
             }
 
             // draw units

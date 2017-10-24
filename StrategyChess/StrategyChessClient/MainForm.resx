@@ -120,24 +120,7 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="_timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>114, 17</value>
-  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="_lowerTeamCtrl.AmbusherImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAIAAABLixI0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAAD5JREFUSEutx7ENACAABKHff2ntKT0TGradf3zhC1/4whe+8IUvfOELX/jCF77w
-        hS984Qtf+MIXvvCFf7VzAWbDbq7b+XiJAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="_upperTeamCtrl.AmbusherImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAIAAABLixI0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAAD5JREFUSEutx7ENACAABKHff2ntKT0TGradf3zhC1/4whe+8IUvfOELX/jCF77w
-        hS984Qtf+MIXvvCFf7VzAWbDbq7b+XiJAAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABGdBTUEAALGPC/xhBQAABqBJREFUSEuV
@@ -205,6 +188,23 @@
         L4Uhsy3ZZTbPq+1IFFL9DAqooRJaUDKa82xuH/00gvqvn+LEWASqruUoKd6dHYlCpneikHZKtmJzeoM4
         /vkGTtKiyevxgG9xX5W2zu/t9Sk3OFEyuIbDw49QPRpGyRBtDcY5F292vf7enyhYgfLzIZQO0eIyz0U5
         /awldml/gmtyuFgRSdPkVU43vU9fE0lJ/wEsZPHFVEd/uAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <metadata name="_timer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>114, 17</value>
+  </metadata>
+  <data name="_lowerTeamCtrl.AmbusherImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAIAAABLixI0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAD5JREFUSEutx7ENACAABKHff2ntKT0TGradf3zhC1/4whe+8IUvfOELX/jCF77w
+        hS984Qtf+MIXvvCFf7VzAWbDbq7b+XiJAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="_upperTeamCtrl.AmbusherImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAIAAABLixI0AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAD5JREFUSEutx7ENACAABKHff2ntKT0TGradf3zhC1/4whe+8IUvfOELX/jCF77w
+        hS984Qtf+MIXvvCFf7VzAWbDbq7b+XiJAAAAAElFTkSuQmCC
 </value>
   </data>
 </root>

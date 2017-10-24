@@ -5,12 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using StrategyChessCore.Definitions;
+using StrategyChessCore.Definitions.Units;
 
 namespace StrategyChessGraphics
 {
     public class CampGr : ChessPiece
     {
-        public CampGr(Block block, Rectangle rect, bool selected = false) : base(block, rect, selected)
+        public CampGr(IUnit unit, Rectangle rect) : base(unit, rect)
         {
         }
 
