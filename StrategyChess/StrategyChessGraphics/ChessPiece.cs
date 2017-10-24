@@ -38,12 +38,12 @@ namespace StrategyChessGraphics
 
         private void DrawCoolDown(Graphics g)
         {
-            Brush br = Brushes.AliceBlue;
+            Brush br = Brushes.Black;
             var xMargin = 1;
             var yMargin = 1;
-            var size = 2;
+            var size = 3;
             var yGap = 1;
-            for (int i = 0; i < _block.Unit.CoolDown; i++)
+            for (int i = 0; i < _block.Unit.CurrentCoolDown; i++)
             {
                 var x = _rect.X + xMargin;
                 var y = (_rect.Y + _rect.Width - yMargin) - (i + 1) * (size * yGap);
@@ -56,12 +56,12 @@ namespace StrategyChessGraphics
             Brush br = Brushes.Red;
             var xMargin = 1;
             var yMargin = 1;
-            var size = 2;
-            var xGap = 1;
+            var size = 3;
+            var yGap = 1;
             for (int i = 0; i < _block.Unit.HP; i++)
             {
-                var x = _rect.X + xMargin + i * (size + xGap);
-                var y = (_rect.Y - size - yMargin);
+                var x = _rect.X + _rect.Width - size - xMargin;
+                var y = (_rect.Y + _rect.Width - yMargin) - (i + 1) * (size + yGap);
                 g.FillRectangle(br, new Rectangle(x, y, size, size));
             }
         }
