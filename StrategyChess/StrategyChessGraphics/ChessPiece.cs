@@ -32,15 +32,8 @@ namespace StrategyChessGraphics
 
         public void DrawExt(Graphics g)
         {
-            DrawBorder(g);
             DrawCoolDown(g);
             DrawHPBar(g);
-        }
-
-        private void DrawBorder(Graphics g)
-        {
-            Pen p = new Pen(Color.Red);
-            g.DrawRectangle(p, _rect);
         }
 
         private void DrawCoolDown(Graphics g)
@@ -65,7 +58,7 @@ namespace StrategyChessGraphics
             var yMargin = 1;
             var size = 2;
             var xGap = 1;
-            for (int i = 0; i < _block.Unit.CoolDown; i++)
+            for (int i = 0; i < _block.Unit.HP; i++)
             {
                 var x = _rect.X + xMargin + i * (size + xGap);
                 var y = (_rect.Y - size - yMargin);
