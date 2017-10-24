@@ -61,9 +61,7 @@ namespace StrategyChessGraphics
 
         public void Draw(Graphics g)
         {
-            var pen = new Pen(Color.Black);
-            g.DrawRectangle(pen, _rect);
-            pen.Dispose();
+            
 
             Brush br = Brushes.White;
             if (Selected)
@@ -80,9 +78,12 @@ namespace StrategyChessGraphics
                 else if (Movable)
                     br = new SolidBrush(this.MovableColor);
             }
+            
+            g.FillRectangle(br, _rect);
 
-            // draw a filled rectangle here with selected brush
-            //g.FillRectangle(br, _rect);
+            var pen = new Pen(Color.Black);
+            g.DrawRectangle(pen, _rect);
+            pen.Dispose();
         }
 
         public bool Contains(Point p)
