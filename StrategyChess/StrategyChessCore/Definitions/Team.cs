@@ -9,9 +9,14 @@ namespace StrategyChessCore.Definitions
         public List<IUnit> Units { get; set; }
         public bool Ready { get; set; }
 
+        public List<IUnit> ActionableUnits { get; set; }
+
+        public bool CanMoveUnit { get; set; }
+
         public Team()
         {
             this.Units = new List<IUnit>();
+            this.ActionableUnits = new List<IUnit>();
         }
     }
 }

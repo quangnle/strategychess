@@ -222,7 +222,7 @@ namespace StrategyChessGraphics
 
         public bool GetReady(Team team)
         {
-            return _gameController.GetReady(team);
+            return _gameController.Ready(team);
         }
 
         public bool PlaceUnit(Team team, IUnit unit, int row, int col)

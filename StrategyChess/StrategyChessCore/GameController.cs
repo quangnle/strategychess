@@ -84,11 +84,17 @@ namespace StrategyChessCore
             return _gameHandler.GetInitArea(team);
         }
 
-        public bool GetReady(Team team)
+        public bool Ready(Team team)
         {
             if ((team.Units.Count(u => u is Camp) == _maxCamps) && (team.Units.Count == _maxUnits + _maxCamps))
             {
                 team.Ready = true;
+                foreach (var unit in team.Units)
+                {
+                    if (!(unit is Camp))
+                        team.ActionableUnits.Add(unit);
+                }
+
                 return true;
             }   
             return false;
@@ -221,6 +227,10 @@ namespace StrategyChessCore
             if (_currentTeam.Name != team.Name)
                 return false;
 
+            // check if unit is available to move (in action list)
+            if (!team.ActionableUnits.Contains(unit))
+                return false;
+
             // select the right logic for the unit
             BaseLogic logic;
             if (unit is Tanker) { logic = _logics.FirstOrDefault(l => l is TankerLogic); }
@@ -232,15 +242,29 @@ namespace StrategyChessCore
                 // AOE attack
                 if (row == -1 && col == -1)
                 {
+                    _currentTeam.ActionableUnits.Clear();
                     return AOEAttack(unit, logic);
                 }
                 else
                 {
-                    return Move(unit, logic, row, col);
+                    if (_currentTeam.CanMoveUnit)
+                    {
+                        var cnt = _gameHandler.GetBlocksAround(_gameHandler.Board[row, col], unit.Range, true).Count;
+                        if (cnt == unit.Range * unit.Range - 1)
+                            _currentTeam.ActionableUnits.Clear();
+                        else
+                            _currentTeam.ActionableUnits = _currentTeam.ActionableUnits.Where(u => u.Id == unit.Id).ToList();
+
+                        _currentTeam.CanMoveUnit = false;
+                        return Move(unit, logic, row, col);
+                    }
+                    else return false;
                 }
+                
             }
             else
             {
+                _currentTeam.ActionableUnits.Clear();
                 var target = _gameHandler.Board[row, col].Unit;
                 return Attack(unit, logic, target);
             }
@@ -264,8 +288,19 @@ namespace StrategyChessCore
         public void NextTeam()
         {
             UpdateCooldown();
+            _currentTeam.Units.Clear();
+            _currentTeam.CanMoveUnit = false;
+
             if (_currentTeam.Name == _gameHandler.UpperTeam.Name) _currentTeam = _gameHandler.LowerTeam;
             else _currentTeam = _gameHandler.UpperTeam;
+
+            // refresh
+            _currentTeam.CanMoveUnit = true;
+            foreach (var unit in _currentTeam.Units)
+            {
+                if (!(unit is Camp))
+                    _currentTeam.ActionableUnits.Add(unit);
+            }
         }
     }
 }
