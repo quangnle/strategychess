@@ -12,7 +12,7 @@ namespace StrategyChessGraphics
         Network
     }
 
-    public enum ChessPieceType : int
+    public enum ChessPieceColor : int
     {
         Blue = 0,
         Green

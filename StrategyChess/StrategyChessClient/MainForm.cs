@@ -111,11 +111,11 @@ namespace StrategyChessClient
                 _gameController.Register(_lowerTeamCtrl.TeamName);
 
                 // _board.GameMode = raSingleMode.Checked ? GameMode.Single : GameMode.Network;
-                _board.ChessPieceType = raPiece1.Checked ? ChessPieceType.Blue : ChessPieceType.Green;
-                _board.CompetitorName = _upperTeamCtrl.TeamName;
-                _board.MyName = _lowerTeamCtrl.TeamName;
-                _board.MyTeamColor = _lowerTeamCtrl.TeamColor;
-                _board.CompetitorTeamColor = _upperTeamCtrl.TeamColor;
+                //_board.ChessPieceType = raPiece1.Checked ? ChessPieceType.Blue : ChessPieceType.Green;
+                //_board.CompetitorName = _upperTeamCtrl.TeamName;
+                //_board.MyName = _lowerTeamCtrl.TeamName;
+                //_board.MyTeamColor = _lowerTeamCtrl.TeamColor;
+                //_board.CompetitorTeamColor = _upperTeamCtrl.TeamColor;
 
                 
                 //pBoard.Invalidate();
@@ -240,29 +240,29 @@ namespace StrategyChessClient
                     var movableColor = Global.MovableBlueColor;
                     if (team.Name == _lowerTeamCtrl.TeamName)
                     {
-                        if (_board.ChessPieceType == ChessPieceType.Blue)
-                        {
-                            selectedColor = Global.SelectedBlueColor;
-                            movableColor = Global.MovableBlueColor;
-                        }
-                        else
-                        {
-                            selectedColor = Global.SelectedGreenColor;
-                            movableColor = Global.MovableGreenColor;
-                        }
+                        //if (_board.ChessPieceType == ChessPieceType.Blue)
+                        //{
+                        //    selectedColor = Global.SelectedBlueColor;
+                        //    movableColor = Global.MovableBlueColor;
+                        //}
+                        //else
+                        //{
+                        //    selectedColor = Global.SelectedGreenColor;
+                        //    movableColor = Global.MovableGreenColor;
+                        //}
                     }
                     else
                     {
-                        if (_board.ChessPieceType == ChessPieceType.Blue)
-                        {
-                            selectedColor = Global.SelectedGreenColor;
-                            movableColor = Global.MovableGreenColor;
-                        }
-                        else
-                        {
-                            selectedColor = Global.SelectedBlueColor;
-                            movableColor = Global.MovableBlueColor;
-                        }
+                        //if (_board.ChessPieceType == ChessPieceType.Blue)
+                        //{
+                        //    selectedColor = Global.SelectedGreenColor;
+                        //    movableColor = Global.MovableGreenColor;
+                        //}
+                        //else
+                        //{
+                        //    selectedColor = Global.SelectedBlueColor;
+                        //    movableColor = Global.MovableBlueColor;
+                        //}
                     }
 
                     if (unit == null) return;

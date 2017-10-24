@@ -55,6 +55,12 @@
     <Compile Include="Controls\CustomPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\GameSettingCtrl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\GameSettingCtrl.Designer.cs">
+      <DependentUpon>GameSettingCtrl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TeamCtrl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -69,6 +75,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\GameSettingCtrl.resx">
+      <DependentUpon>GameSettingCtrl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\TeamCtrl.resx">
       <DependentUpon>TeamCtrl.cs</DependentUpon>
     </EmbeddedResource>

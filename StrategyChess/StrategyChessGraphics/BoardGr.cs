@@ -16,22 +16,7 @@ namespace StrategyChessGraphics
         private int _cellSize = 35;
         private int _size;
         private List<Cell> _cells;
-        private List<Block> _initAreaBlocks;
-        private List<Cell> _emptyGroundCells;
         private Font _font = new Font("Arial", 9);
-
-        public Team OwnTeam { get; set; }
-        public Team Opponent { get; set; }
-
-        public string CompetitorName { get; set; }
-        public string MyName { get; set; }
-        public Color MyTeamColor { get; set; }
-        public Color CompetitorTeamColor { get; set; }
-        
-        public GameMode GameMode { get; set; }
-
-        public ChessPieceType ChessPieceType { get; set; }
-
         public Cell this[int row, int col]
         {
             get { return _cells.FirstOrDefault(x => x.Row == row && x.Column == col); }

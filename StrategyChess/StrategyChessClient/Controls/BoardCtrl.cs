@@ -1,4 +1,6 @@
-﻿using StrategyChessGraphics;
+﻿using StrategyChessCore;
+using StrategyChessCore.Definitions;
+using StrategyChessGraphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,8 @@ namespace StrategyChessClient.Controls
     {
         #region Members
         private BoardGr _boardGr;
+        public Team OwnTeam { get; set; }
+        public Team Opponent { get; set; }
         #endregion
 
         #region Constructor
@@ -25,7 +29,7 @@ namespace StrategyChessClient.Controls
         #endregion
 
         #region Properties
-
+        public GameController GameController { get; set; }
         #endregion
 
         #region UI Command
