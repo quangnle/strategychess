@@ -105,6 +105,11 @@ namespace StrategyChessCore
             return _gameHandler.GetTeamByName(teamName);
         }
 
+        public Team GetTeam(IUnit unit)
+        {
+            return _gameHandler.GetTeam(unit);
+        }
+
         public bool PlaceUnit(string teamName, IUnit unit, int row, int col)
         {
             var team = _gameHandler.GetTeamByName(teamName);
@@ -268,6 +273,13 @@ namespace StrategyChessCore
                 var target = _gameHandler.Board[row, col].Unit;
                 return Attack(unit, logic, target);
             }
+        }
+
+        public Team GetTeamByInitAreaLocation(int row, int column)
+        {
+            if (_gameHandler.GetInitArea(_gameHandler.UpperTeam).Exists(b => b.Row == row && b.Column == column)) return _gameHandler.UpperTeam;
+            else if (_gameHandler.GetInitArea(_gameHandler.LowerTeam).Exists(b => b.Row == row && b.Column == column)) return _gameHandler.LowerTeam;
+            else return null;
         }
 
         private void UpdateCooldown()

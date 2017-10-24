@@ -11,12 +11,14 @@ using StrategyChessGraphics;
 using StrategyChessCore.Definitions.Units;
 using StrategyChessClient.Controls;
 using StrategyChessCore.Definitions;
+using StrategyChessCore;
 
 namespace StrategyChessClient
 {
     public partial class MainForm : Form
     {
         #region Members
+        private GameController _gameController;
         private BoardGr _board;
         private Point _currentPos = Point.Empty;
         private bool _isMouseLeft = false;
@@ -64,6 +66,8 @@ namespace StrategyChessClient
             _upperTeamCtrl.RangerImage = ResourceUtility.Ranger_Blue;
             _upperTeamCtrl.TankerImage = ResourceUtility.Tanker_Blue;
             _upperTeamCtrl.CampImage = ResourceUtility.Camp_Blue;
+
+            _gameController = new GameController(20, 6, 2);
         }
 
         private void StartTimer()
@@ -103,16 +107,17 @@ namespace StrategyChessClient
                     _upperTeamCtrl.VisibleReadyButton = true;
                 }
 
-                _board.Register(_upperTeamCtrl.TeamName);
-                _board.Register(_lowerTeamCtrl.TeamName);
+                _gameController.Register(_upperTeamCtrl.TeamName);
+                _gameController.Register(_lowerTeamCtrl.TeamName);
 
-                _board.GameMode = raSingleMode.Checked ? GameMode.Single : GameMode.Network;
+                // _board.GameMode = raSingleMode.Checked ? GameMode.Single : GameMode.Network;
                 _board.ChessPieceType = raPiece1.Checked ? ChessPieceType.Blue : ChessPieceType.Green;
                 _board.CompetitorName = _upperTeamCtrl.TeamName;
                 _board.MyName = _lowerTeamCtrl.TeamName;
                 _board.MyTeamColor = _lowerTeamCtrl.TeamColor;
                 _board.CompetitorTeamColor = _upperTeamCtrl.TeamColor;
-                _board.ShowInitArea();
+
+                
                 pBoard.Invalidate();
             }
             catch (Exception ex)
@@ -182,13 +187,13 @@ namespace StrategyChessClient
         {
             if (_currentCell == null || _isStartGame) return;
 
-            var team = _board.GetTeamInitArea(_currentCell.Block.Row, _currentCell.Block.Column);
+            var team = _gameController.GetTeamByInitAreaLocation(_currentCell.Block.Row, _currentCell.Block.Column);
             if (team == null) return;
             if (_currentCell.Block.Unit == null) return;
 
             var unit = _currentCell.Block.Unit;
 
-            if (_board.RemoveUnitAt(_currentCell.Block.Row, _currentCell.Block.Column))
+            if (_gameController.RemoveUnitAt(_currentCell.Block.Row, _currentCell.Block.Column))
             {
                 _currentCell.Selected = false;
                 _currentCell.RemoveChessPiece();
@@ -220,8 +225,8 @@ namespace StrategyChessClient
             //Place Chess Pieces
             if ((!_lowerTeamCtrl.StartReady || !_upperTeamCtrl.StartReady))
             {
-                var team = _board.GetTeamInitArea(cell.Block.Row, cell.Block.Column);
-                if (team == null) return;
+
+                var team = _gameController.GetTeamByInitAreaLocation(cell.Block.Row, cell.Block.Column);
 
                 if (cell.Block.Unit == null)
                 {
@@ -262,7 +267,7 @@ namespace StrategyChessClient
 
                     if (unit == null) return;
 
-                    if (_board.PlaceUnit(team, unit, cell.Block.Row, cell.Block.Column))
+                    if (_gameController.PlaceUnit(team.Name, unit, cell.Block.Row, cell.Block.Column))
                     {
                         cell.InitChecssPiece(image, selectedColor, movableColor);
 
@@ -276,15 +281,15 @@ namespace StrategyChessClient
                     _currentCell = cell;
             }
 
-            if (_isStartGame)
-            {
-                _currentCell = _board.GetCellHasUnitByTeam(e.X, e.Y);
-                if (_currentCell != null)
-                {
-                    _board.ClearAllSelectOfTeam(_board.CurrentTeam);
-                    _currentCell.Selected = true;
-                }
-            }
+            //if (_isStartGame)
+            //{
+            //    _currentCell = _board.GetCellHasUnitByTeam(e.X, e.Y);
+            //    if (_currentCell != null)
+            //    {
+            //        _board.ClearAllSelectOfTeam(_board.CurrentTeam);
+            //        _currentCell.Selected = true;
+            //    }
+            //}
 
             pBoard.Invalidate();
         }
@@ -340,10 +345,10 @@ namespace StrategyChessClient
         {
             if (_lowerTeamCtrl.StartReady && _upperTeamCtrl.StartReady)
             {
-                _board.ClearShowInitArea();
-                _board.ClearAllSelects();
+                ClearShowInitArea();
+                ClearAllSelects();
                 _currentCell = null;
-                _isStartGame = _board.StartGame();
+                _isStartGame = _gameController.StartGame();
                 if (_isStartGame)
                 {
                     _lowerTeamCtrl.VisibleReadyButton = false;
@@ -359,6 +364,16 @@ namespace StrategyChessClient
 
                 pBoard.Invalidate();
             }   
+        }
+
+        private void ClearAllSelects()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ClearShowInitArea()
+        {
+            throw new NotImplementedException();
         }
 
         private void _timer_Tick(object sender, EventArgs e)

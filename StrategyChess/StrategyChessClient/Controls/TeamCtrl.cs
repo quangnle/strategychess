@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using StrategyChessCore.Definitions.Units;
 using StrategyChessGraphics;
+using StrategyChessCore;
+using StrategyChessCore.Definitions;
 
 namespace StrategyChessClient.Controls
 {
@@ -24,6 +26,10 @@ namespace StrategyChessClient.Controls
         private int _maxUnits = 6;
         private int _maxCamps = 2;
         public BoardGr BoardGr { get; set; }
+        public Team Team { get; set; }
+
+        public GameController GameController { get; set; }
+
         #endregion
 
         #region Constructor
@@ -294,11 +300,10 @@ namespace StrategyChessClient.Controls
             }
 
             if (this.BoardGr != null)
-            {
-                var team = this.BoardGr.GetTeamByName(this.TeamName);
-                if (team != null)
+            {   
+                if (Team != null)
                 {
-                    var ready = this.BoardGr.GetReady(team);
+                    var ready = GameController.Ready(Team);
                     btnReady.Text = ready ? "Ready" : "Waiting";
 
                     picTanker.AllowSelect = !ready;
