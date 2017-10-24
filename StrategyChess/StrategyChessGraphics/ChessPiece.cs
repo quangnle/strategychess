@@ -28,28 +28,49 @@ namespace StrategyChessGraphics
             this.Selected = selected;
         }
 
-        public virtual void Draw(Graphics g)
-        {   
-            DrawHPBar(g);
-            DrawCoolDown(g);
+        public abstract void Draw(Graphics g);
 
-            if (Selected)
-                DrawBorder(g);
+        public void DrawExt(Graphics g)
+        {
+            DrawBorder(g);
+            DrawCoolDown(g);
+            DrawHPBar(g);
         }
 
         private void DrawBorder(Graphics g)
         {
-            
+            Pen p = new Pen(Color.Red);
+            g.DrawRectangle(p, _rect);
         }
 
         private void DrawCoolDown(Graphics g)
         {
-            
+            Brush br = Brushes.AliceBlue;
+            var xMargin = 1;
+            var yMargin = 1;
+            var size = 2;
+            var yGap = 1;
+            for (int i = 0; i < _block.Unit.CoolDown; i++)
+            {
+                var x = _rect.X + xMargin;
+                var y = (_rect.Y + _rect.Width - yMargin) - (i + 1) * (size * yGap);
+                g.FillRectangle(br, new Rectangle(x, y, size, size));
+            }
         }
 
         private void DrawHPBar(Graphics g)
         {
-            
+            Brush br = Brushes.Red;
+            var xMargin = 1;
+            var yMargin = 1;
+            var size = 2;
+            var xGap = 1;
+            for (int i = 0; i < _block.Unit.CoolDown; i++)
+            {
+                var x = _rect.X + xMargin + i * (size + xGap);
+                var y = (_rect.Y - size - yMargin);
+                g.FillRectangle(br, new Rectangle(x, y, size, size));
+            }
         }
 
         public bool Contains(Point p)

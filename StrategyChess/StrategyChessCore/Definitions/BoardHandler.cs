@@ -66,8 +66,8 @@ namespace StrategyChessCore.Definitions
         {   
             var queue = new Queue<Block>();
 
-            var dx = new int[] { -1, 0, 1, -1, 1, -1, 0, 1 };
-            var dy = new int[] { -1, -1, -1, 0, 0, 1, 1, 1 };
+            var dx = new int[] { 0, -1, 1, 0 };
+            var dy = new int[] { -1, 0, 0, 1 };
             var dict = new Dictionary<Block, int>();
 
             queue.Enqueue(orgBlock);
@@ -75,7 +75,7 @@ namespace StrategyChessCore.Definitions
             while (queue.Count > 0)
             {
                 var b = queue.Dequeue();
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     var aBlock = _board[b.Row + dx[i], b.Column + dy[i]];
                     if (aBlock != null && aBlock.Unit == null && !dict.ContainsKey(aBlock))

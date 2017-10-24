@@ -17,8 +17,6 @@ namespace StrategyChessGraphics
 
         public override void Draw(Graphics g)
         {
-            base.Draw(g);
-
             if (this.ChessPieceImage != null)
                 g.DrawImage(this.ChessPieceImage, _rect.Location);
         }

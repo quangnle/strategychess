@@ -64,11 +64,23 @@ namespace StrategyChessGraphics
 
         public void Draw(Graphics g)
         {
-            var pen = new Pen(Color.Red, 3);
-
             foreach (var cell in _cells)
             {
                 cell.Draw(g);
+            }
+
+            // draw units
+            foreach (var cell in _cells)
+            {
+                if (cell.ChessPiece != null)
+                    cell.ChessPiece.Draw(g);
+            }
+
+            // draw hp & cooldown
+            foreach (var cell in _cells)
+            {
+                if (cell.ChessPiece != null)
+                    cell.ChessPiece.DrawExt(g);
             }
         }
 
@@ -104,7 +116,7 @@ namespace StrategyChessGraphics
                     _emptyGroundCells = null;
                 }
 
-                var emptyGroundBlocks = _gameController.GetEmptyGroundBlocksWithinDistance(cell.Block, cell.Block.Unit.Speed);
+                var emptyGroundBlocks = _gameController.GetMovableBlocks(cell.Block.Unit);
                 if (emptyGroundBlocks != null && emptyGroundBlocks.Count > 0)
                 {
                     _emptyGroundCells = _cells.Where(u => emptyGroundBlocks.Any(e => e.Row == u.Block.Row &&

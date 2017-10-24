@@ -22,7 +22,7 @@ namespace StrategyChessGraphics
         public bool Attackable { get; set; }
         public Color AttackableColor { get; set; }
 
-        public ChessPiece ChessPiece { get; internal set; }
+        public ChessPiece ChessPiece { get; set; }
         
         public Block Block
         {
@@ -65,36 +65,24 @@ namespace StrategyChessGraphics
             g.DrawRectangle(pen, _rect);
             pen.Dispose();
 
-            Brush br;
+            Brush br = Brushes.White;
             if (Selected)
             {
                 if (ChessPiece != null)
                     br = new SolidBrush(ChessPiece.SelectedColor);
                 else
                     br = new SolidBrush(SelectedColor);
-
-                g.FillRectangle(br, _rect);
             }
             else
             {
                 if (Attackable)
-                {
                     br = new SolidBrush(this.AttackableColor);
-                    g.FillRectangle(br, _rect.Location.X + 1, _rect.Location.Y + 1, _rect.Width - 2, _rect.Height - 2);
-                }
                 else if (Movable)
-                {
                     br = new SolidBrush(this.MovableColor);
-                    g.FillRectangle(br, _rect.Location.X + 1, _rect.Location.Y + 1, _rect.Width - 2, _rect.Height - 2);
-                }
             }
-            
-            // draw a filled rectangle here with selected brush
 
-            if (ChessPiece != null)
-            {
-                ChessPiece.Draw(g);
-            }
+            // draw a filled rectangle here with selected brush
+            g.FillRectangle(br, _rect);
         }
 
         public bool Contains(Point p)

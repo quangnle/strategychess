@@ -126,6 +126,11 @@ namespace StrategyChessCore
             return _gameHandler.GetEmptyGroundBlocksWithinDistance(orgBlock, distance);
         }
 
+        public List<Block> GetMovableBlocks(IUnit unit)
+        {            
+            return _gameHandler.GetEmptyGroundBlocksWithinDistance(_gameHandler.Board[unit.Id], unit.Speed);
+        }
+
         public List<IUnit> GetEnemyAround(IUnit unit, int radius)
         {
             return _gameHandler.GetEnemyAround(unit, radius);
