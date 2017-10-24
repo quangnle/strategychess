@@ -82,7 +82,7 @@ namespace StrategyChessGraphics
             }
 
             // draw a filled rectangle here with selected brush
-            g.FillRectangle(br, _rect);
+            //g.FillRectangle(br, _rect);
         }
 
         public bool Contains(Point p)
