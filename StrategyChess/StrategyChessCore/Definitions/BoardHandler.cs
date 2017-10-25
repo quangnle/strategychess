@@ -10,16 +10,14 @@ namespace StrategyChessCore.Definitions
     public class BoardHandler
     {
         private Board _board;
-        private Team _upperTeam;
-        private Team _lowerTeam;
+
+        public Team UpperTeam { get; set; }
+        public Team LowerTeam { get; set; }
 
         public Board Board
         {
             get { return _board; }
         }
-
-        public Team UpperTeam { get; set; }
-        public Team LowerTeam { get; set; }
 
         public BoardHandler(Board board)
         {
@@ -28,9 +26,9 @@ namespace StrategyChessCore.Definitions
 
         public IUnit GetUnitAt(int row, int col)
         {
-            var unit = TeamHandler.GetUnitAt(_upperTeam, row, col);
+            var unit = TeamHandler.GetUnitAt(UpperTeam, row, col);
             if (unit == null)
-                unit = TeamHandler.GetUnitAt(_lowerTeam, row, col);
+                unit = TeamHandler.GetUnitAt(LowerTeam, row, col);
 
             return unit;
         }
@@ -115,9 +113,9 @@ namespace StrategyChessCore.Definitions
 
         private Team GetOpponent(Team team)
         {
-            if (team.Name == _upperTeam.Name)
-                return _lowerTeam;
-            return _upperTeam;
+            if (team.Name == UpperTeam.Name)
+                return LowerTeam;
+            return UpperTeam;
         }
 
         public List<IUnit> GetEnemyAround(IUnit unit, int radius)
