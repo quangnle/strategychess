@@ -26,7 +26,6 @@ namespace StrategyChessCore
         public GameController(int size, int maxUnits, int maxCamps)
         {            
             _boardHandler = new BoardHandler(new Board(size));
-            _currentTeam = _boardHandler.LowerTeam;
 
             _maxUnits = maxUnits;
             _maxCamps = maxCamps;
