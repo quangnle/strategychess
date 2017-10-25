@@ -29,9 +29,37 @@ namespace StrategyChessClient.Controls
         private int _campCount = 0;
         private int _maxUnits = 6;
         private int _maxCamps = 2;
-        public BoardGr BoardGr { get; set; }
-        public TeamViewModel Model { get; set; }
+        private TeamViewModel _model;
 
+        public TeamViewModel Model
+        {
+            get { return _model; }
+            set
+            {
+                if (value != null)
+                {
+                    _model = value;
+
+                    switch (_model.SelectedUnitType)
+                    {
+                        case UnitType.Camp:
+                            this.picCamp.IsSelected = true;
+                            break;
+                        case UnitType.Ambusher:
+                            this.picAmbusher.IsSelected = true;
+                            break;
+                        case UnitType.Ranger:
+                            this.picRanger.IsSelected = true;
+                            break;
+                        case UnitType.Tanker:
+                            this.picTanker.IsSelected = true;
+                            break;
+                    }
+
+                    SetTeamColor(_model.Color);
+                }
+            }
+        }
         public GameController GameController { get; set; }
 
         #endregion
@@ -44,10 +72,6 @@ namespace StrategyChessClient.Controls
             if (this.DesignMode) return;
             if (Application.ExecutablePath.EndsWith("devenv.exe")) return;
 
-            this.picTanker.IsSelected = true;
-            this.TeamColor = Global.TeamBlueColor;
-            this.btnReady.BackColor = Global.TeamBlueColor;
-
             this.picAmbusher.OnSelectChanged += PictureBox_OnSelectChanged;
             this.picRanger.OnSelectChanged += PictureBox_OnSelectChanged;
             this.picTanker.OnSelectChanged += PictureBox_OnSelectChanged;
@@ -56,11 +80,6 @@ namespace StrategyChessClient.Controls
         #endregion
 
         #region Properties
-        public bool IsReady
-        {
-            get { return btnReady.Text == "Ready"; }
-        }
-
         public bool StartReady
         {
             get { return btnReady.Text == "Ready" && !btnReady.Enabled; }
@@ -68,41 +87,7 @@ namespace StrategyChessClient.Controls
 
         public int MaxUnits { get; set; }
         public int MaxCamps { get; set; }
-
-        public IUnit SelectedUnit
-        {
-            get
-            {
-                if (picAmbusher.IsSelected)
-                    return new Ambusher(Guid.NewGuid());
-                else if (picRanger.IsSelected)
-                    return new Ranger(Guid.NewGuid());
-                else if (picTanker.IsSelected)
-                    return new Tanker(Guid.NewGuid());
-                else if (picCamp.IsSelected)
-                    return new Camp(Guid.NewGuid());
-
-                return null;
-            }
-        }
-
-        public Image SelectedChessPieceImage
-        {
-            get
-            {
-                if (picAmbusher.IsSelected)
-                    return AmbusherImage;
-                else if (picRanger.IsSelected)
-                    return RangerImage;
-                else if (picTanker.IsSelected)
-                    return TankerImage;
-                else if (picCamp.IsSelected)
-                    return CampImage;
-
-                return null;
-            }
-        }
-
+        
         public bool VisibleReadyButton
         {
             set
@@ -135,20 +120,6 @@ namespace StrategyChessClient.Controls
         public string TeamTitle
         {
             set { lbTeam.Text = value; }
-        }
-
-        public Color TeamColor
-        {
-            get { return lbTeam.BackColor; }
-            set
-            {
-                lbTeam.BackColor = value;
-                picTanker.SelectedColor = value;
-                picRanger.SelectedColor = value;
-                picAmbusher.SelectedColor = value;
-                picCamp.SelectedColor = value;
-                btnReady.BackColor = value;
-            }
         }
 
         public int AmbusherCount
@@ -230,6 +201,45 @@ namespace StrategyChessClient.Controls
         #endregion
 
         #region UI Command
+        public void SetTeamColor(ChessPieceColor color)
+        {
+            var cl = Global.TeamBlueColor;
+            var tankerImage = Properties.Resources.Tanker_Blue;
+            var rangerImage = Properties.Resources.Ranger_Blue;
+            var ambusherImage = Properties.Resources.Ambusher_Blue;
+            var campImage = Properties.Resources.Camp_Blue;
+
+            if (color == ChessPieceColor.Green)
+            {
+                cl = Global.TeamGreenColor;
+
+                tankerImage = Properties.Resources.Tanker_Green;
+                rangerImage = Properties.Resources.Ranger_Green;
+                ambusherImage = Properties.Resources.Ambusher_Green;
+                campImage = Properties.Resources.Camp_Green;
+            }
+
+            this.AmbusherImage = ambusherImage;
+            this.RangerImage = rangerImage;
+            this.TankerImage = tankerImage;
+            this.CampImage = campImage;
+
+            lbTeam.BackColor = cl;
+            picTanker.SelectedColor = cl;
+            picRanger.SelectedColor = cl;
+            picAmbusher.SelectedColor = cl;
+            picCamp.SelectedColor = cl;
+            btnReady.BackColor = cl;
+        }
+
+        public void AllowSelectUnit(bool allow)
+        {
+            picAmbusher.AllowSelect = allow;
+            picRanger.AllowSelect = allow;
+            picTanker.AllowSelect = allow;
+            picCamp.AllowSelect = allow;
+        }
+
         public void Attack()
         {
             picTurn.Image = Properties.Resources.attack;
@@ -303,23 +313,20 @@ namespace StrategyChessClient.Controls
                 }
             }
 
-            if (this.BoardGr != null)
-            {   
-                if (Model != null)
+            if (Model != null)
+            {
+                var ready = GameController.Ready(Model.Team);
+                btnReady.Text = ready ? "Ready" : "Waiting";
+
+                picTanker.AllowSelect = !ready;
+                picRanger.AllowSelect = !ready;
+                picAmbusher.AllowSelect = !ready;
+                picCamp.AllowSelect = !ready;
+
+                if (!ready && !picAmbusher.IsSelected && !picRanger.IsSelected &&
+                    !picTanker.IsSelected && !picCamp.IsSelected)
                 {
-                    var ready = GameController.Ready(Model.Team);
-                    btnReady.Text = ready ? "Ready" : "Waiting";
-
-                    picTanker.AllowSelect = !ready;
-                    picRanger.AllowSelect = !ready;
-                    picAmbusher.AllowSelect = !ready;
-                    picCamp.AllowSelect = !ready;
-
-                    if (!ready && !picAmbusher.IsSelected && !picRanger.IsSelected &&
-                        !picTanker.IsSelected && !picCamp.IsSelected)
-                    {
-                        picTanker.IsSelected = true;
-                    }
+                    picTanker.IsSelected = true;
                 }
             }
         }
@@ -343,24 +350,32 @@ namespace StrategyChessClient.Controls
                 picRanger.IsSelected = false;
                 picTanker.IsSelected = false;
                 picCamp.IsSelected = false;
+                Model.SelectedChessPieceImage = this.AmbusherImage;
+                Model.SelectedUnitType = UnitType.Ambusher;
             }
             else if (sender == picRanger)
             {
                 picAmbusher.IsSelected = false;
                 picTanker.IsSelected = false;
                 picCamp.IsSelected = false;
+                Model.SelectedChessPieceImage = this.RangerImage;
+                Model.SelectedUnitType = UnitType.Ranger;
             }
             else if (sender == picTanker)
             {
                 picAmbusher.IsSelected = false;
                 picRanger.IsSelected = false;
                 picCamp.IsSelected = false;
+                Model.SelectedChessPieceImage = this.TankerImage;
+                Model.SelectedUnitType = UnitType.Tanker;
             }
             else
             {
                 picAmbusher.IsSelected = false;
                 picRanger.IsSelected = false;
                 picTanker.IsSelected = false;
+                Model.SelectedChessPieceImage = this.CampImage;
+                Model.SelectedUnitType = UnitType.Camp;
             }
         }
         #endregion

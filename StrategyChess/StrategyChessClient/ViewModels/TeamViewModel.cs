@@ -22,6 +22,8 @@ namespace StrategyChessClient.ViewModels
 
         public UnitType SelectedUnitType { get; set; }
 
+        public Image SelectedChessPieceImage { get; set; }
+
         public TeamViewModel()
         {
 

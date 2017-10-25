@@ -29,7 +29,7 @@ namespace StrategyChessClient.Controls
         public GameSettingCtrl()
         {
             InitializeComponent();
-            this.BackColor = Color.White;
+            this.BackColor = Global.GameSettingBackgroundColor;
         }
         #endregion
 
@@ -73,6 +73,33 @@ namespace StrategyChessClient.Controls
             _timer.Stop();
             _timer.Enabled = false;
         }
+
+        public void RefreshUI(bool start)
+        {
+            if (start)
+            {
+                btnPlay.Enabled = false;
+                btnStop.Enabled = true;
+                raSingleMode.Enabled = false;
+                raNetworkMode.Enabled = false;
+                raPiece1.Enabled = false;
+                raPiece2.Enabled = false;
+            }
+            else
+            {
+                StopTimer();
+                _dtTime = DateTime.Now.Date;
+                UpdateLabelTimer();
+
+                btnPlay.Enabled = true;
+                btnStop.Enabled = false;
+
+                raSingleMode.Enabled = true;
+                raNetworkMode.Enabled = true;
+                raPiece1.Enabled = true;
+                raPiece2.Enabled = true;
+            }
+        }
         #endregion
 
         #region Window Event Handlers
@@ -95,8 +122,14 @@ namespace StrategyChessClient.Controls
 
         private void btnStop_Click(object sender, EventArgs e)
         {
+            if (MessageBox.Show("Do you want to stop the game ?", "Question",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                return;
+
             if (OnStopClick != null)
                 OnStopClick(sender);
+
+            RefreshUI(false);
         }
 
         private void _timer_Tick(object sender, EventArgs e)

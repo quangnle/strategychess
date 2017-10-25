@@ -5,6 +5,7 @@ using StrategyChessCore.Definitions.Units;
 using StrategyChessGraphics;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace StrategyChessClient.Controls
         #endregion
 
         #region UI Command
-        //public void InitChessPiece(IUnit unit, Image chessPieceImage, Color selectedColor, Color movableColor)
+        //private void GenerateChessPiece(IUnit unit, Image chessPieceImage, Color selectedColor, Color movableColor)
         //{
         //    if (unit == null) return;
         //    if (unit is Ranger)
@@ -88,7 +89,7 @@ namespace StrategyChessClient.Controls
 
         private void BoardCtrl_DoubleClick(object sender, EventArgs e)
         {
-            if (GameController.State == GameState.Init)
+            if (GameController.State == GameState.Init && _selectedCell != null)
             {
                 GameController.RemoveUnitAt(_selectedCell.Row, _selectedCell.Column);
                 Invalidate();
