@@ -156,7 +156,7 @@
             this._lowerTeamCtrl.TabIndex = 1;
             this._lowerTeamCtrl.TankerCount = 0;
             this._lowerTeamCtrl.TankerImage = null;
-            this._lowerTeamCtrl.Team = null;
+            this._lowerTeamCtrl.Model = null;
             this._lowerTeamCtrl.TeamColor = System.Drawing.Color.Red;
             this._lowerTeamCtrl.TeamName = "";
             // 
@@ -190,7 +190,7 @@
             this._upperTeamCtrl.TabIndex = 0;
             this._upperTeamCtrl.TankerCount = 0;
             this._upperTeamCtrl.TankerImage = null;
-            this._upperTeamCtrl.Team = null;
+            this._upperTeamCtrl.Model = null;
             this._upperTeamCtrl.TeamColor = System.Drawing.Color.Red;
             this._upperTeamCtrl.TeamName = "";
             // 

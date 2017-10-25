@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StrategyChessGraphics
+namespace StrategyChessClient.ViewModels
 {
     public enum GameMode : int
     {
@@ -16,5 +16,13 @@ namespace StrategyChessGraphics
     {
         Blue = 0,
         Green
+    }
+
+    public enum UnitType
+    {
+        Camp = 0,
+        Ambusher = 1,
+        Ranger = 2,
+        Tanker = 3
     }
 }

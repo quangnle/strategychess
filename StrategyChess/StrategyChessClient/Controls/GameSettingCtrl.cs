@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using StrategyChessCore.Definitions;
 using StrategyChessGraphics;
+using StrategyChessClient.ViewModels;
 
 namespace StrategyChessClient.Controls
 {

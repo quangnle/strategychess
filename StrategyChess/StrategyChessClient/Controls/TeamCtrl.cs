@@ -11,14 +11,18 @@ using StrategyChessCore.Definitions.Units;
 using StrategyChessGraphics;
 using StrategyChessCore;
 using StrategyChessCore.Definitions;
+using StrategyChessClient.ViewModels;
 
 namespace StrategyChessClient.Controls
 {
     public delegate void ReadyHandler(TeamCtrl sender);
+    public delegate void SelectedUnitTypeHandler(UnitType unitType);
+
     public partial class TeamCtrl : UserControl
     {
         #region Members
         public event ReadyHandler OnReadyEvent;
+        public event SelectedUnitTypeHandler OnSelectedUnitTypeEvent;
         private int _ambusherCount = 0;
         private int _rangerCount = 0;
         private int _tankerCount = 0;
@@ -26,7 +30,7 @@ namespace StrategyChessClient.Controls
         private int _maxUnits = 6;
         private int _maxCamps = 2;
         public BoardGr BoardGr { get; set; }
-        public Team Team { get; set; }
+        public TeamViewModel Model { get; set; }
 
         public GameController GameController { get; set; }
 
@@ -301,9 +305,9 @@ namespace StrategyChessClient.Controls
 
             if (this.BoardGr != null)
             {   
-                if (Team != null)
+                if (Model != null)
                 {
-                    var ready = GameController.Ready(Team);
+                    var ready = GameController.Ready(Model.Team);
                     btnReady.Text = ready ? "Ready" : "Waiting";
 
                     picTanker.AllowSelect = !ready;

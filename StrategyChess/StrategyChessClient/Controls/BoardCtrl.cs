@@ -1,4 +1,5 @@
-﻿using StrategyChessCore;
+﻿using StrategyChessClient.ViewModels;
+using StrategyChessCore;
 using StrategyChessCore.Definitions;
 using StrategyChessCore.Definitions.Units;
 using StrategyChessGraphics;
@@ -14,8 +15,8 @@ namespace StrategyChessClient.Controls
     {
         #region Members
         private BoardGr _boardGr;
-        public Team UpperTeam { get; set; }
-        public Team LowerTeam { get; set; }
+        public TeamViewModel UpperTeamVM { get; set; }
+        public TeamViewModel LowerTeamVM { get; set; }
         private List<ChessPiece> _chessPieces = new List<ChessPiece>();
 
         private Cell _selectedCell;
@@ -36,7 +37,9 @@ namespace StrategyChessClient.Controls
         #region Properties
         public GameController GameController { get; set; }
 
-        public UnitType SelectedType { get; set; }
+        public UnitType UpperSelectedType { get; set; }
+
+        public UnitType LowerSelectedType { get; set; }
         #endregion
 
         #region UI Command
@@ -56,6 +59,13 @@ namespace StrategyChessClient.Controls
         //    ChessPiece.SelectedColor = selectedColor;
         //    ChessPiece.MovableColor = movableColor;
         //}
+        private TeamViewModel GetTeamViewModel(Team team)
+        {
+            if (UpperTeamVM.Team.Name == team.Name)
+                return UpperTeamVM;
+
+            return LowerTeamVM;
+        }
         #endregion
 
         #region Window Event Handlers
@@ -99,9 +109,6 @@ namespace StrategyChessClient.Controls
             foreach (var bl in availMoves)
             {
                 _boardGr[bl.Row, bl.Column].Movable = true;
-
-                // ??? set the color here
-                _boardGr[bl.Row, bl.Column].MovableColor = System.Drawing.Color.AliceBlue;
             }
         }
 
@@ -112,12 +119,9 @@ namespace StrategyChessClient.Controls
             foreach (var target in targets)
             {
                 _boardGr[target.Row, target.Column].Attackable = true;
-
-                // ??? set the color here
-                _boardGr[target.Row, target.Column].AttackableColor = System.Drawing.Color.AliceBlue;
             }
         }
-
+        
         private void BoardCtrl_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
             _selectedCell = _boardGr.GetCell(new System.Drawing.Point(e.X, e.Y));
@@ -128,7 +132,7 @@ namespace StrategyChessClient.Controls
                     var team = GameController.GetTeamByInitAreaLocation(_selectedCell.Row, _selectedCell.Column);
                     if (team != null)
                     {
-                        var unit = GenerateUnit(SelectedType, Guid.NewGuid());
+                        var unit = GenerateUnit(GetTeamViewModel(team).SelectedUnitType, Guid.NewGuid());
                         GameController.PlaceUnit(team.Name, unit, _selectedCell.Row, _selectedCell.Column);
                     }
                 }

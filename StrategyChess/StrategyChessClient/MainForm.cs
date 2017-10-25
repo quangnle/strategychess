@@ -12,6 +12,7 @@ using StrategyChessCore.Definitions.Units;
 using StrategyChessClient.Controls;
 using StrategyChessCore.Definitions;
 using StrategyChessCore;
+using StrategyChessClient.ViewModels;
 
 namespace StrategyChessClient
 {
@@ -43,7 +44,9 @@ namespace StrategyChessClient
         private void InitGame()
         {
             _lowerTeamCtrl.OnReadyEvent += teamCtrl_OnReadyEvent;
+            _lowerTeamCtrl.OnSelectedUnitTypeEvent += _lowerTeamCtrl_OnSelectedUnitTypeEvent;
             _upperTeamCtrl.OnReadyEvent += teamCtrl_OnReadyEvent;
+            _upperTeamCtrl.OnSelectedUnitTypeEvent += _upperTeamCtrl_OnSelectedUnitTypeEvent;
 
             pGameSetting.BackColor = Global.GameSettingBackgroundColor;
 
@@ -68,6 +71,16 @@ namespace StrategyChessClient
             _upperTeamCtrl.CampImage = Properties.Resources.Camp_Blue;
 
             _gameController = new GameController(20, 6, 2);
+        }
+
+        private void _upperTeamCtrl_OnSelectedUnitTypeEvent(UnitType unitType)
+        {
+            _boardCtrl.UpperTeamVM.SelectedUnitType = unitType;
+        }
+
+        private void _lowerTeamCtrl_OnSelectedUnitTypeEvent(UnitType unitType)
+        {
+            _boardCtrl.LowerTeamVM.SelectedUnitType = unitType;
         }
 
         private void StartTimer()
