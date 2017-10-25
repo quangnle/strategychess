@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace StrategyChessCore
 {
-    public enum GameState
+    public enum GameState : int
     {
         Init = 0,
         Playing = 1,
