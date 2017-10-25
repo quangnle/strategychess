@@ -23,7 +23,8 @@ namespace StrategyChessGraphics
         public int Row { get; set; }
         public int Column { get; set; }
         public ChessPiece ChessPiece { get; set; }
-        public void InitChecssPiece(IUnit unit, Image chessPieceImage, Color selectedColor, Color movableColor)
+
+        public void InitChessPiece(IUnit unit, Image chessPieceImage, Color selectedColor, Color movableColor)
         {
             if (unit == null) return;
             if (unit is Ranger)

@@ -10,7 +10,7 @@ namespace StrategyChessCore
 {
     public class GameController
     {
-        private BoardHandler _gameHandler;
+        private BoardHandler _boardHandler;
         private Team _currentTeam;
 
         private int _maxUnits;
@@ -25,8 +25,8 @@ namespace StrategyChessCore
 
         public GameController(int size, int maxUnits, int maxCamps)
         {            
-            _gameHandler = new BoardHandler(new Board(size));
-            _currentTeam = _gameHandler.LowerTeam;
+            _boardHandler = new BoardHandler(new Board(size));
+            _currentTeam = _boardHandler.LowerTeam;
 
             _maxUnits = maxUnits;
             _maxCamps = maxCamps;
@@ -35,10 +35,10 @@ namespace StrategyChessCore
 
         public bool StartGame()
         {
-            if (_gameHandler.LowerTeam.Ready && _gameHandler.UpperTeam.Ready)
+            if (_boardHandler.LowerTeam.Ready && _boardHandler.UpperTeam.Ready)
             {
                 _isGameStart = true;
-                _currentTeam = _gameHandler.LowerTeam;
+                _currentTeam = _boardHandler.LowerTeam;
                 return true;
             }
 
@@ -47,14 +47,14 @@ namespace StrategyChessCore
 
         public bool Register(string teamName)
         {
-            if (_gameHandler.UpperTeam == null)
+            if (_boardHandler.UpperTeam == null)
             {
-                _gameHandler.UpperTeam = new Team { Name = teamName };
+                _boardHandler.UpperTeam = new Team { Name = teamName };
                 return true;
             }
-            else if (_gameHandler.LowerTeam == null && teamName != _gameHandler.UpperTeam.Name)
+            else if (_boardHandler.LowerTeam == null && teamName != _boardHandler.UpperTeam.Name)
             {   
-                _gameHandler.LowerTeam = new Team { Name = teamName };
+                _boardHandler.LowerTeam = new Team { Name = teamName };
                 return true;
             }
             else
@@ -63,20 +63,15 @@ namespace StrategyChessCore
 
         public List<Block> GetInitArea(Team team)
         {
-            return _gameHandler.GetInitArea(team);
+            return _boardHandler.GetInitArea(team);
         }
 
         public bool Ready(Team team)
         {
-            if ((team.Units.Count(u => u is Camp) == _maxCamps) && (team.Units.Count == _maxUnits + _maxCamps))
+            if ((TeamHandler.GetCamps(team).Count == _maxCamps) && (TeamHandler.GetUnits(team).Count == _maxUnits))
             {
                 team.Ready = true;
-                foreach (var unit in team.Units)
-                {
-                    if (!(unit is Camp))
-                        team.ActionableUnits.Add(unit);
-                }
-
+                team.ActionableUnits.AddRange(TeamHandler.GetUnits(team));
                 return true;
             }   
             return false;
@@ -84,11 +79,12 @@ namespace StrategyChessCore
 
         public bool PlaceUnit(string teamName, IUnit unit, int row, int col)
         {
-            var team = _gameHandler.GetTeamByName(teamName);
+            var team = _boardHandler.GetTeamByName(teamName);
             if (team != null)
             {
-                var availBlocks = _gameHandler.GetInitArea(team);
-                if (availBlocks.Exists(b => b.Column == col && b.Row == row) && team.Units.Count < _maxUnits + _maxCamps)
+                var availBlocks = _boardHandler.GetInitArea(team);
+                if (availBlocks.Exists(b => b.Column == col && b.Row == row) && 
+                    (team.Units.Count < _maxUnits + _maxCamps))
                 {
                     unit.Row = row;
                     unit.Column = col;
@@ -102,24 +98,24 @@ namespace StrategyChessCore
 
         public List<Block> GetEmptyGroundBlocksWithinDistance(Block orgBlock, int distance)
         {
-            return _gameHandler.GetEmptyGroundBlocksWithinDistance(orgBlock, distance);
+            return _boardHandler.GetEmptyGroundBlocksWithinDistance(orgBlock, distance);
         }
 
         public List<Block> GetMovableBlocks(IUnit unit)
         {            
-            return _gameHandler.GetEmptyGroundBlocksWithinDistance(_gameHandler.Board[unit.Row, unit.Column] , unit.Speed);
+            return _boardHandler.GetEmptyGroundBlocksWithinDistance(_boardHandler.Board[unit.Row, unit.Column] , unit.Speed);
         }
 
         public List<IUnit> GetEnemyAround(IUnit unit, int radius)
         {
-            return _gameHandler.GetEnemyAround(unit, radius);
+            return _boardHandler.GetEnemyAround(unit, radius);
         }
 
         public bool RemoveUnitAt(int row, int col)
         {
-            if (_gameHandler.Board[row, col] != null)
+            if (_boardHandler.Board[row, col] != null)
             {
-                var unit = _gameHandler.GetUnitAt(row, col);
+                var unit = _boardHandler.GetUnitAt(row, col);
                 if (unit != null)
                 {
                     var team = unit.Team;
@@ -132,31 +128,37 @@ namespace StrategyChessCore
 
         public Block GetBlockAt(int row, int col)
         {
-            return _gameHandler.Board[row, col];
+            return _boardHandler.Board[row, col];
+        }
+
+        private BaseLogic CreateLogic(IUnit unit)
+        {
+            BaseLogic logic;
+            if (unit is Tanker) { logic = new TankerLogic(unit as Tanker, _boardHandler); }
+            else if (unit is Ranger) { logic = new RangerLogic(unit as Ranger, _boardHandler); }
+            else logic = new AmbusherLogic(unit as Ambusher, _boardHandler);
+
+            return logic;
         }
         
         public bool MakeAMove(IUnit unit, int row, int col)
         {
             // check if the game is still on going
-            if (_gameHandler.GetWinner() != null || !_isGameStart)
+            if (_boardHandler.GetWinner() != null || !_isGameStart)
                 return false;
 
             // check if the current turn is unit's team
-            var team = unit.Team;
-            if (_currentTeam.Name != team.Name)
+            if (_currentTeam.Name != unit.Team.Name)
                 return false;
 
             // check if unit is available to move (in action list)
-            if (!team.ActionableUnits.Contains(unit))
+            if (!unit.Team.ActionableUnits.Contains(unit))
                 return false;
 
             // select the right logic for the unit
-            BaseLogic logic;
-            if (unit is Tanker) { logic = new TankerLogic(unit as Tanker, _gameHandler); }
-            else if (unit is Ranger) { logic = new RangerLogic(unit as Ranger, _gameHandler); }
-            else logic = new AmbusherLogic(unit as Ambusher, _gameHandler);
+            var logic = CreateLogic(unit);
             
-            if (_gameHandler.GetUnitAt(row, col) == null)
+            if (_boardHandler.GetUnitAt(row, col) == null)
             {
                 // AOE attack
                 if (row == -1 && col == -1 && unit is Tanker)
@@ -169,8 +171,8 @@ namespace StrategyChessCore
                 {
                     if (_currentTeam.CanMoveUnit) // move
                     {
-                        var cnt = _gameHandler.GetEmptyBlocksAround(GetBlockAt(row, col), unit.Range, true).Count;
-                        if (cnt == unit.Range * unit.Range - 1)
+                        var cnt = _boardHandler.GetEnemyAround(unit, unit.Range).Count;
+                        if (cnt == 0)
                             _currentTeam.ActionableUnits.Clear();
                         else
                             _currentTeam.ActionableUnits = _currentTeam.ActionableUnits.Where(u => u.Id == unit.Id).ToList();
@@ -180,7 +182,6 @@ namespace StrategyChessCore
                     }
                     else return false;
                 }
-                
             }
             else // attack single target
             {
@@ -191,23 +192,23 @@ namespace StrategyChessCore
 
         public Team GetTeamByInitAreaLocation(int row, int column)
         {
-            if (_gameHandler.GetInitArea(_gameHandler.UpperTeam).Exists(b => b.Row == row && b.Column == column)) return _gameHandler.UpperTeam;
-            else if (_gameHandler.GetInitArea(_gameHandler.LowerTeam).Exists(b => b.Row == row && b.Column == column)) return _gameHandler.LowerTeam;
+            if (_boardHandler.GetInitArea(_boardHandler.UpperTeam).Exists(b => b.Row == row && b.Column == column)) return _boardHandler.UpperTeam;
+            else if (_boardHandler.GetInitArea(_boardHandler.LowerTeam).Exists(b => b.Row == row && b.Column == column)) return _boardHandler.LowerTeam;
             else return null;
         }
 
         private void UpdateCooldown()
         {
-            for (int i = 0; i < _gameHandler.UpperTeam.Units.Count; i++)
+            for (int i = 0; i < _boardHandler.UpperTeam.Units.Count; i++)
             {
-                if (_gameHandler.UpperTeam.Units[i].CoolDown > 0)
-                    _gameHandler.UpperTeam.Units[i].CoolDown--;
+                if (_boardHandler.UpperTeam.Units[i].CoolDown > 0)
+                    _boardHandler.UpperTeam.Units[i].CoolDown--;
             }
 
-            for (int i = 0; i < _gameHandler.LowerTeam.Units.Count; i++)
+            for (int i = 0; i < _boardHandler.LowerTeam.Units.Count; i++)
             {
-                if (_gameHandler.LowerTeam.Units[i].CoolDown > 0)
-                    _gameHandler.LowerTeam.Units[i].CoolDown--;
+                if (_boardHandler.LowerTeam.Units[i].CoolDown > 0)
+                    _boardHandler.LowerTeam.Units[i].CoolDown--;
             }
         }
 
@@ -217,16 +218,13 @@ namespace StrategyChessCore
             _currentTeam.Units.Clear();
             _currentTeam.CanMoveUnit = false;
 
-            if (_currentTeam.Name == _gameHandler.UpperTeam.Name) _currentTeam = _gameHandler.LowerTeam;
-            else _currentTeam = _gameHandler.UpperTeam;
+            if (_currentTeam.Name == _boardHandler.UpperTeam.Name) _currentTeam = _boardHandler.LowerTeam;
+            else _currentTeam = _boardHandler.UpperTeam;
 
             // refresh
             _currentTeam.CanMoveUnit = true;
-            foreach (var unit in _currentTeam.Units)
-            {
-                if (!(unit is Camp))
-                    _currentTeam.ActionableUnits.Add(unit);
-            }
+            _currentTeam.ActionableUnits.Clear();
+            _currentTeam.ActionableUnits.AddRange(_currentTeam.Units.Where(u => !(u is Camp)));
         }
     }
 }

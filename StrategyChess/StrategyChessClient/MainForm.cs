@@ -269,7 +269,7 @@ namespace StrategyChessClient
 
                     if (_gameController.PlaceUnit(team.Name, unit, cell.Row, cell.Column))
                     {
-                        cell.InitChecssPiece(unit, image, selectedColor, movableColor);
+                        cell.InitChessPiece(unit, image, selectedColor, movableColor);
 
                         if (team.Name == _lowerTeamCtrl.TeamName)
                             _lowerTeamCtrl.PlaceUnit(unit);

@@ -23,5 +23,15 @@ namespace StrategyChessCore.Definitions
         {
             return team.Units.Where(u => (u.Row - row < radius) && (u.Column - col < radius)).ToList();
         }
+
+        public static List<IUnit> GetCamps(Team team)
+        {
+            return team.Units.Where(u => u is Camp).ToList();
+        }
+
+        public static List<IUnit> GetUnits(Team team)
+        {
+            return team.Units.Where(u => !(u is Camp)).ToList();
+        }
     }
 }

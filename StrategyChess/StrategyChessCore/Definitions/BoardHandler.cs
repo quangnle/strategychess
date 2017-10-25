@@ -107,12 +107,10 @@ namespace StrategyChessCore.Definitions
             return dict.Select(db => db.Key).ToList();
         }
 
-        public List<Block> GetEmptyBlocksAround(Block block, int radius, bool emptyBlocksOnly)
+        public List<Block> GetEmptyBlocksAround(Block block, int radius)
         {   
-            var inRangeBlocks = _board.Blocks.Where(b => (block.Column - radius <= 0) && (block.Row - radius <= 0));
-            if (emptyBlocksOnly)
-                inRangeBlocks = inRangeBlocks.Where(b => GetUnitAt(b) == null);
-            return inRangeBlocks.ToList();
+            var inRangeBlocks = _board.Blocks.Where(b => (block.Column - radius <= 0) && (block.Row - radius <= 0) && GetUnitAt(b) == null).ToList();
+            return inRangeBlocks;
         }
 
         private Team GetOpponent(Team team)
