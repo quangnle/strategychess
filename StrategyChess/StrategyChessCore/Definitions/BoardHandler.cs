@@ -29,7 +29,7 @@ namespace StrategyChessCore.Definitions
         public IUnit GetUnitAt(int row, int col)
         {
             var unit = TeamHandler.GetUnitAt(_upperTeam, row, col);
-            if (unit != null)
+            if (unit == null)
                 unit = TeamHandler.GetUnitAt(_lowerTeam, row, col);
 
             return unit;
