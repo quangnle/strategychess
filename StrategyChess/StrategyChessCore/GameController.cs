@@ -92,6 +92,7 @@ namespace StrategyChessCore
                 {
                     unit.Row = row;
                     unit.Column = col;
+                    unit.Team = team;
                     team.Units.Add(unit);
                     return true;
                 }   

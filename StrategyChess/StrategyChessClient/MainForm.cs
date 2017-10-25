@@ -39,6 +39,8 @@ namespace StrategyChessClient
         {
             _gameController = new GameController(20, 6, 2);
             _boardCtrl.GameController = _gameController;
+            _boardCtrl.OnPlaceUnitEvent += _boardCtrl_OnPlaceUnitEvent;
+            _boardCtrl.OnRemoveUnitEvent += _boardCtrl_OnRemoveUnitEvent;
 
             _gameSettingCtrl.OnStartClick += _gameSettingCtrl_OnStartClick;
             _gameSettingCtrl.OnStopClick += _gameSettingCtrl_OnStopClick;
@@ -111,6 +113,8 @@ namespace StrategyChessClient
 
                 _lowerTeamCtrl.Model.Team = _gameController.GetTeamByName(_lowerTeamCtrl.TeamName);
                 _upperTeamCtrl.Model.Team = _gameController.GetTeamByName(_upperTeamCtrl.TeamName);
+
+                _boardCtrl.DisplayInitAreaLocation();
             }
             catch (Exception ex)
             {
@@ -138,11 +142,25 @@ namespace StrategyChessClient
 
                 _upperTeamCtrl.VisibleTurn = false;
                 _lowerTeamCtrl.VisibleTurn = false;
+                _gameController = new GameController(20, 6, 2);
+                _boardCtrl.GameController = _gameController;
+                _boardCtrl.ClearAllChessPieces();
+                _boardCtrl.RemoveInitAreaLocation();
+                _upperTeamCtrl.GameController = _gameController;
+                _lowerTeamCtrl.GameController = _gameController;
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private TeamCtrl GetTeamCtrlByName(string teamName)
+        {
+            if (_upperTeamCtrl.TeamName == teamName)
+                return _upperTeamCtrl;
+
+            return _lowerTeamCtrl;
         }
         #endregion
 
@@ -174,6 +192,8 @@ namespace StrategyChessClient
                 var isStartGame = _gameController.StartGame();
                 if (isStartGame)
                 {
+                    _boardCtrl.RemoveInitAreaLocation();
+
                     _lowerTeamCtrl.VisibleReadyButton = false;
                     _upperTeamCtrl.VisibleReadyButton = false;
                     _lowerTeamCtrl.VisibleTurn = true;
@@ -185,6 +205,46 @@ namespace StrategyChessClient
                     _gameSettingCtrl.StartTimer();
                 }
             }   
+        }
+
+        private void _boardCtrl_OnPlaceUnitEvent(UnitType type, string teamName)
+        {
+            var teamCtrl = GetTeamCtrlByName(teamName);
+            switch (type)
+            {
+                case UnitType.Camp:
+                    teamCtrl.CampCount++;
+                    break;
+                case UnitType.Ambusher:
+                    teamCtrl.AmbusherCount++;
+                    break;
+                case UnitType.Ranger:
+                    teamCtrl.RangerCount++;
+                    break;
+                case UnitType.Tanker:
+                    teamCtrl.TankerCount++;
+                    break;
+            }
+        }
+
+        private void _boardCtrl_OnRemoveUnitEvent(UnitType type, string teamName)
+        {
+            var teamCtrl = GetTeamCtrlByName(teamName);
+            switch (type)
+            {
+                case UnitType.Camp:
+                    teamCtrl.CampCount--;
+                    break;
+                case UnitType.Ambusher:
+                    teamCtrl.AmbusherCount--;
+                    break;
+                case UnitType.Ranger:
+                    teamCtrl.RangerCount--;
+                    break;
+                case UnitType.Tanker:
+                    teamCtrl.TankerCount--;
+                    break;
+            }
         }
         #endregion
     }

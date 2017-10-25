@@ -12,9 +12,13 @@ using System.Threading.Tasks;
 
 namespace StrategyChessClient.Controls
 {
+    public delegate void PlaceUnitHandler(UnitType type, string teamName);
+    public delegate void RemoveUnitHandler(UnitType type, string teamName);
     public class BoardCtrl : CustomPanel
     {
         #region Members
+        public event PlaceUnitHandler OnPlaceUnitEvent;
+        public event RemoveUnitHandler OnRemoveUnitEvent;
         private BoardGr _boardGr;
         public TeamViewModel UpperTeamVM { get; set; }
         public TeamViewModel LowerTeamVM { get; set; }
@@ -40,22 +44,41 @@ namespace StrategyChessClient.Controls
         #endregion
 
         #region UI Command
-        //private void GenerateChessPiece(IUnit unit, Image chessPieceImage, Color selectedColor, Color movableColor)
-        //{
-        //    if (unit == null) return;
-        //    if (unit is Ranger)
-        //        ChessPiece = new RangerGr(unit, new Rectangle(_rect.Location, _rect.Size));
-        //    else if (unit is Tanker)
-        //        ChessPiece = new TankerGr(unit, new Rectangle(_rect.Location, _rect.Size));
-        //    else if (unit is Ambusher)
-        //        ChessPiece = new AmbusherGr(unit, new Rectangle(_rect.Location, _rect.Size));
-        //    else
-        //        ChessPiece = new CampGr(unit, new Rectangle(_rect.Location, _rect.Size));
+        public void ClearAllChessPieces()
+        {
+            _chessPieces.Clear();
+            Invalidate();
+        }
 
-        //    ChessPiece.ChessPieceImage = chessPieceImage;
-        //    ChessPiece.SelectedColor = selectedColor;
-        //    ChessPiece.MovableColor = movableColor;
-        //}
+        private void GenerateChessPiece(IUnit unit, Cell cell, TeamViewModel model)
+        {
+            ChessPiece chessPiece;
+            if (unit == null) return;
+            if (unit is Ranger)
+                chessPiece = new RangerGr(unit, cell.Rect);
+            else if (unit is Tanker)
+                chessPiece = new TankerGr(unit, cell.Rect);
+            else if (unit is Ambusher)
+                chessPiece = new AmbusherGr(unit, cell.Rect);
+            else
+                chessPiece = new CampGr(unit, cell.Rect);
+
+            chessPiece.ChessPieceImage = model.SelectedChessPieceImage;
+            chessPiece.SelectedColor = model.SelectedColor;
+            chessPiece.MovableColor = model.MovableColor;
+
+            _chessPieces.Add(chessPiece);
+        }
+
+        private void RemoveChessPiece(int row, int col)
+        {
+            var chessPiece = _chessPieces.FirstOrDefault(x => x.Unit.Row == row && x.Unit.Column == col);
+            if (chessPiece != null)
+            {
+                _chessPieces.Remove(chessPiece);
+            }
+        }
+
         private TeamViewModel GetTeamViewModel(Team team)
         {
             if (UpperTeamVM.Team.Name == team.Name)
@@ -66,11 +89,48 @@ namespace StrategyChessClient.Controls
 
         public void DisplayInitAreaLocation()
         {
+            //Upper team
             var blocks = GameController.GetInitArea(UpperTeamVM.Team);
-            foreach (var block in blocks)
+            if (blocks != null)
             {
-
+                foreach (var block in blocks)
+                {
+                    var cell = _boardGr[block.Row, block.Column];
+                    if (cell != null)
+                    {
+                        cell.Movable = true;
+                        cell.MovableColor = UpperTeamVM.MovableColor;
+                    }
+                }
             }
+
+            //Lower team
+            blocks = GameController.GetInitArea(LowerTeamVM.Team);
+            if (blocks != null)
+            {
+                foreach (var block in blocks)
+                {
+                    var cell = _boardGr[block.Row, block.Column];
+                    if (cell != null)
+                    {
+                        cell.Movable = true;
+                        cell.MovableColor = LowerTeamVM.MovableColor;
+                    }
+                }
+            }
+
+            Invalidate();
+        }
+
+        public void RemoveInitAreaLocation()
+        {
+            var cells = _boardGr.Cells.Where(x => x.Movable).ToList();
+            foreach (var cell in cells)
+            {
+                cell.Movable = false;
+            }
+
+            Invalidate();
         }
         #endregion
 
@@ -96,8 +156,31 @@ namespace StrategyChessClient.Controls
         {
             if (GameController.State == GameState.Init && _selectedCell != null)
             {
-                GameController.RemoveUnitAt(_selectedCell.Row, _selectedCell.Column);
-                Invalidate();
+                if (GameController.RemoveUnitAt(_selectedCell.Row, _selectedCell.Column))
+                {
+                    var removeChessPiece = _chessPieces.FirstOrDefault(x => x.Unit.Row == _selectedCell.Row &&
+                        x.Unit.Column == _selectedCell.Column);
+
+                    if (removeChessPiece != null)
+                    {
+                        _chessPieces.Remove(removeChessPiece);
+
+                        if (OnRemoveUnitEvent != null)
+                        {
+                            var type = UnitType.Tanker;
+                            if (removeChessPiece.Unit is Ambusher)
+                                type = UnitType.Ambusher;
+                            else if (removeChessPiece.Unit is Ranger)
+                                type = UnitType.Ranger;
+                            else if (removeChessPiece.Unit is Camp)
+                                type = UnitType.Camp;
+
+                            OnRemoveUnitEvent(type, removeChessPiece.Unit.Team.Name);
+                        }
+
+                        Invalidate();
+                    }
+                }
             }
         }
 
@@ -138,8 +221,14 @@ namespace StrategyChessClient.Controls
                     var team = GameController.GetTeamByInitAreaLocation(_selectedCell.Row, _selectedCell.Column);
                     if (team != null)
                     {
-                        var unit = GenerateUnit(GetTeamViewModel(team).SelectedUnitType, Guid.NewGuid());
-                        GameController.PlaceUnit(team.Name, unit, _selectedCell.Row, _selectedCell.Column);
+                        var model = GetTeamViewModel(team);
+                        var unit = GenerateUnit(model.SelectedUnitType, Guid.NewGuid());
+                        if (GameController.PlaceUnit(team.Name, unit, _selectedCell.Row, _selectedCell.Column))
+                        {
+                            GenerateChessPiece(unit, _selectedCell, model);
+                            if (OnPlaceUnitEvent != null)
+                                OnPlaceUnitEvent(model.SelectedUnitType, model.Team.Name);
+                        }
                     }
                 }
             }

@@ -17,6 +17,12 @@ namespace StrategyChessGraphics
         private int _size;
         private List<Cell> _cells;
         private Font _font = new Font("Arial", 9);
+
+        public List<Cell> Cells
+        {
+            get { return _cells; }
+        }
+
         public Cell this[int row, int col]
         {
             get { return _cells.FirstOrDefault(x => x.Row == row && x.Column == col); }

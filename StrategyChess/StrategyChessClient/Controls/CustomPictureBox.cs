@@ -41,6 +41,12 @@ namespace StrategyChessClient.Controls
             set
             {
                 _isSelected = value;
+                if (_isSelected)
+                {
+                    if (OnSelectChanged != null)
+                        OnSelectChanged(this, this.IsSelected);
+                }
+
                 this.Invalidate();
             }
         }

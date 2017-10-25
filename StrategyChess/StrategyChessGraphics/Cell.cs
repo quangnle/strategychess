@@ -22,6 +22,11 @@ namespace StrategyChessGraphics
         public Color AttackableColor { get; set; }
         public int Row { get; set; }
         public int Column { get; set; }
+
+        public Rectangle Rect
+        {
+            get { return _rect; }
+        }
         
         public Cell(Rectangle rect, int row, int col)
         {

@@ -11,12 +11,12 @@ namespace StrategyChessCore.Definitions
     {
         public static IUnit GetUnitAt(Team team, int row, int col)
         {
-            return team.Units.First(u => u.Row == row && u.Column == col);
+            return team.Units.FirstOrDefault(u => u.Row == row && u.Column == col);
         }
 
         public static IUnit GetUnitAt(Team team, Block block)
         {
-            return team.Units.First(u => u.Row == block.Row && u.Column == block.Column);
+            return team.Units.FirstOrDefault(u => u.Row == block.Row && u.Column == block.Column);
         }
 
         public static List<IUnit> GetUnitsAround(Team team, int row, int col, int radius)
