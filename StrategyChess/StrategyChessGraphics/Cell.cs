@@ -22,25 +22,7 @@ namespace StrategyChessGraphics
         public Color AttackableColor { get; set; }
         public int Row { get; set; }
         public int Column { get; set; }
-        public ChessPiece ChessPiece { get; set; }
-
-        public void InitChessPiece(IUnit unit, Image chessPieceImage, Color selectedColor, Color movableColor)
-        {
-            if (unit == null) return;
-            if (unit is Ranger)
-                ChessPiece = new RangerGr(unit, new Rectangle(_rect.Location, _rect.Size));
-            else if (unit is Tanker)
-                ChessPiece = new TankerGr(unit, new Rectangle(_rect.Location, _rect.Size));
-            else if (unit is Ambusher)
-                ChessPiece = new AmbusherGr(unit, new Rectangle(_rect.Location, _rect.Size));
-            else
-                ChessPiece = new CampGr(unit, new Rectangle(_rect.Location, _rect.Size));
-
-            ChessPiece.ChessPieceImage = chessPieceImage;
-            ChessPiece.SelectedColor = selectedColor;
-            ChessPiece.MovableColor = movableColor;
-        }
-
+        
         public Cell(Rectangle rect, int row, int col)
         {
             _rect = rect;
@@ -55,12 +37,7 @@ namespace StrategyChessGraphics
         {
             Brush br = Brushes.White;
             if (Selected)
-            {
-                if (ChessPiece != null)
-                    br = new SolidBrush(ChessPiece.SelectedColor);
-                else
-                    br = new SolidBrush(SelectedColor);
-            }
+                br = new SolidBrush(SelectedColor);
             else
             {
                 if (Attackable)
@@ -84,11 +61,6 @@ namespace StrategyChessGraphics
         public bool Contains(int x, int y)
         {
             return Contains(new Point(x, y));
-        }
-
-        public void RemoveChessPiece()
-        {
-            this.ChessPiece = null;
         }
     }
 }

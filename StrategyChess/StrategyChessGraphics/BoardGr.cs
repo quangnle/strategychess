@@ -71,18 +71,18 @@ namespace StrategyChessGraphics
             }
 
             // draw units
-            foreach (var cell in _cells)
-            {
-                if (cell.ChessPiece != null)
-                    cell.ChessPiece.Draw(g);
-            }
+            //foreach (var cell in _cells)
+            //{
+            //    if (cell.ChessPiece != null)
+            //        cell.ChessPiece.Draw(g);
+            //}
 
             // draw hp & cooldown
-            foreach (var cell in _cells)
-            {
-                if (cell.ChessPiece != null)
-                    cell.ChessPiece.DrawExt(g);
-            }
+            //foreach (var cell in _cells)
+            //{
+            //    if (cell.ChessPiece != null)
+            //        cell.ChessPiece.DrawExt(g);
+            //}
         }
 
         public Cell GetCell(Point p)

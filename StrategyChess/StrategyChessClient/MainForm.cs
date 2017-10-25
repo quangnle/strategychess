@@ -185,101 +185,101 @@ namespace StrategyChessClient
 
         private void pBoard_DoubleClick(object sender, EventArgs e)
         {
-            if (_currentCell == null || _isStartGame) return;
+            //if (_currentCell == null || _isStartGame) return;
 
-            var team = _gameController.GetTeamByInitAreaLocation(_currentCell.Row, _currentCell.Column);
-            if (team == null) return;
-            if (_currentCell.ChessPiece == null) return;
+            //var team = _gameController.GetTeamByInitAreaLocation(_currentCell.Row, _currentCell.Column);
+            //if (team == null) return;
+            //if (_currentCell.ChessPiece == null) return;
 
-            var unit = _currentCell.ChessPiece.Unit;
+            //var unit = _currentCell.ChessPiece.Unit;
 
-            if (_gameController.RemoveUnitAt(_currentCell.Row, _currentCell.Column))
-            {
-                _currentCell.Selected = false;
-                _currentCell.RemoveChessPiece();
+            //if (_gameController.RemoveUnitAt(_currentCell.Row, _currentCell.Column))
+            //{
+            //    _currentCell.Selected = false;
+            //    _currentCell.RemoveChessPiece();
                 
-                if (team.Name == _lowerTeamCtrl.TeamName)
-                    _lowerTeamCtrl.RemoveUnit(unit);
-                else
-                    _upperTeamCtrl.RemoveUnit(unit);
+            //    if (team.Name == _lowerTeamCtrl.TeamName)
+            //        _lowerTeamCtrl.RemoveUnit(unit);
+            //    else
+            //        _upperTeamCtrl.RemoveUnit(unit);
 
-                _currentCell = null;
-                //pBoard.Invalidate();
-            }
+            //    _currentCell = null;
+            //    //pBoard.Invalidate();
+            //}
         }
 
         private void pBoard_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left)
-            {
-                _isMouseLeft = false;
-                _currentCell = null;
-                return;
-            }
+            //if (e.Button != MouseButtons.Left)
+            //{
+            //    _isMouseLeft = false;
+            //    _currentCell = null;
+            //    return;
+            //}
 
-            _isMouseLeft = true;
+            //_isMouseLeft = true;
 
-            var cell = _board.GetCell(e.X, e.Y);
-            if (cell == null) return;
+            //var cell = _board.GetCell(e.X, e.Y);
+            //if (cell == null) return;
 
-            //Place Chess Pieces
-            if ((!_lowerTeamCtrl.StartReady || !_upperTeamCtrl.StartReady))
-            {
+            ////Place Chess Pieces
+            //if ((!_lowerTeamCtrl.StartReady || !_upperTeamCtrl.StartReady))
+            //{
 
-                var team = _gameController.GetTeamByInitAreaLocation(cell.Row, cell.Column);
+            //    var team = _gameController.GetTeamByInitAreaLocation(cell.Row, cell.Column);
 
-                if (cell.ChessPiece == null)
-                {
-                    var unit = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedUnit :
-                        _upperTeamCtrl.SelectedUnit;
+            //    if (cell.ChessPiece == null)
+            //    {
+            //        var unit = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedUnit :
+            //            _upperTeamCtrl.SelectedUnit;
 
-                    var image = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedChessPieceImage :
-                        _upperTeamCtrl.SelectedChessPieceImage;
+            //        var image = (team.Name == _lowerTeamCtrl.TeamName) ? _lowerTeamCtrl.SelectedChessPieceImage :
+            //            _upperTeamCtrl.SelectedChessPieceImage;
 
-                    var selectedColor = Global.SelectedBlueColor;
-                    var movableColor = Global.MovableBlueColor;
-                    if (team.Name == _lowerTeamCtrl.TeamName)
-                    {
-                        //if (_board.ChessPieceType == ChessPieceType.Blue)
-                        //{
-                        //    selectedColor = Global.SelectedBlueColor;
-                        //    movableColor = Global.MovableBlueColor;
-                        //}
-                        //else
-                        //{
-                        //    selectedColor = Global.SelectedGreenColor;
-                        //    movableColor = Global.MovableGreenColor;
-                        //}
-                    }
-                    else
-                    {
-                        //if (_board.ChessPieceType == ChessPieceType.Blue)
-                        //{
-                        //    selectedColor = Global.SelectedGreenColor;
-                        //    movableColor = Global.MovableGreenColor;
-                        //}
-                        //else
-                        //{
-                        //    selectedColor = Global.SelectedBlueColor;
-                        //    movableColor = Global.MovableBlueColor;
-                        //}
-                    }
+            //        var selectedColor = Global.SelectedBlueColor;
+            //        var movableColor = Global.MovableBlueColor;
+            //        if (team.Name == _lowerTeamCtrl.TeamName)
+            //        {
+            //            //if (_board.ChessPieceType == ChessPieceType.Blue)
+            //            //{
+            //            //    selectedColor = Global.SelectedBlueColor;
+            //            //    movableColor = Global.MovableBlueColor;
+            //            //}
+            //            //else
+            //            //{
+            //            //    selectedColor = Global.SelectedGreenColor;
+            //            //    movableColor = Global.MovableGreenColor;
+            //            //}
+            //        }
+            //        else
+            //        {
+            //            //if (_board.ChessPieceType == ChessPieceType.Blue)
+            //            //{
+            //            //    selectedColor = Global.SelectedGreenColor;
+            //            //    movableColor = Global.MovableGreenColor;
+            //            //}
+            //            //else
+            //            //{
+            //            //    selectedColor = Global.SelectedBlueColor;
+            //            //    movableColor = Global.MovableBlueColor;
+            //            //}
+            //        }
 
-                    if (unit == null) return;
+            //        if (unit == null) return;
 
-                    if (_gameController.PlaceUnit(team.Name, unit, cell.Row, cell.Column))
-                    {
-                        cell.InitChessPiece(unit, image, selectedColor, movableColor);
+            //        if (_gameController.PlaceUnit(team.Name, unit, cell.Row, cell.Column))
+            //        {
+            //            cell.InitChessPiece(unit, image, selectedColor, movableColor);
 
-                        if (team.Name == _lowerTeamCtrl.TeamName)
-                            _lowerTeamCtrl.PlaceUnit(unit);
-                        else
-                            _upperTeamCtrl.PlaceUnit(unit);
-                    }
-                }
-                else //Select
-                    _currentCell = cell;
-            }
+            //            if (team.Name == _lowerTeamCtrl.TeamName)
+            //                _lowerTeamCtrl.PlaceUnit(unit);
+            //            else
+            //                _upperTeamCtrl.PlaceUnit(unit);
+            //        }
+            //    }
+            //    else //Select
+            //        _currentCell = cell;
+            //}
 
             //if (_isStartGame)
             //{
