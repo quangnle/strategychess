@@ -61,6 +61,11 @@ namespace StrategyChessCore
                 return false;
         }
 
+        public Team GetTeamByName(string name)
+        {
+            return _boardHandler.GetTeamByName(name);
+        }
+
         public List<Block> GetInitArea(Team team)
         {
             return _boardHandler.GetInitArea(team);
