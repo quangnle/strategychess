@@ -167,6 +167,7 @@ namespace StrategyChessCore
 
             // select the right logic for the unit
             var logic = CreateLogic(unit);
+            logic.OnCampDestroyed = CampDestroyed;
             
             if (_boardHandler.GetUnitAt(row, col) == null)
             {
@@ -198,6 +199,11 @@ namespace StrategyChessCore
                 _currentTeam.ActionableUnits.Clear();
                 return logic.Attack(row, col);
             }
+        }
+
+        private void CampDestroyed(Team team)
+        {
+            State = GameState.CampDestroyed;
         }
 
         public Team GetTeamByInitAreaLocation(int row, int column)

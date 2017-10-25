@@ -179,6 +179,14 @@ namespace StrategyChessClient.Controls
                     }
                 }
             }
+            else if (GameController.State == GameState.CampDestroyed)
+            {
+                if (_selectedCell != null)
+                {
+                    var unit = GenerateUnit(GetTeamViewModel(GameController.CurrentTeam).SelectedUnitType, Guid.NewGuid());
+                    GameController.PlaceUnit(GameController.CurrentTeam.Name, unit, _selectedCell.Row, _selectedCell.Column);
+                }
+            }
 
             Invalidate();
         }

@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace StrategyChessCore.Definitions.Units
 {
+    public delegate void CampDestroyedHandler(Team team);
+
     public abstract class BaseLogic
     {
         protected IUnit Unit { get; set; }
         protected BoardHandler BoardHandler { get; set; }
+
+        public CampDestroyedHandler OnCampDestroyed;
 
         public BaseLogic(IUnit unit, BoardHandler boardHandler)
         {
@@ -36,6 +40,11 @@ namespace StrategyChessCore.Definitions.Units
                 target.HP--;
                 if (target.HP == 0)
                 {
+                    if (target is Camp && OnCampDestroyed != null)
+                    {
+                        OnCampDestroyed(Unit.Team);
+                    }
+
                     var team = target.Team;
                     team.Units.Remove(target);
                 }

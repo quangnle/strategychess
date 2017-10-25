@@ -10,6 +10,7 @@ namespace StrategyChessCore
     {
         Init = 0,
         Playing = 1,
-        End = 2
+        CampDestroyed = 2,
+        End = 3
     }
 }
