@@ -161,12 +161,10 @@
             this._boardCtrl.Dock = System.Windows.Forms.DockStyle.Left;
             this._boardCtrl.GameController = null;
             this._boardCtrl.Location = new System.Drawing.Point(0, 0);
-            this._boardCtrl.LowerSelectedType = StrategyChessClient.ViewModels.UnitType.Camp;
             this._boardCtrl.LowerTeamVM = null;
             this._boardCtrl.Name = "_boardCtrl";
             this._boardCtrl.Size = new System.Drawing.Size(725, 725);
             this._boardCtrl.TabIndex = 1;
-            this._boardCtrl.UpperSelectedType = StrategyChessClient.ViewModels.UnitType.Camp;
             this._boardCtrl.UpperTeamVM = null;
             // 
             // MainForm

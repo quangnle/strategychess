@@ -45,9 +45,7 @@ namespace StrategyChessClient
             _gameSettingCtrl.OnChessPieceColorChanged += _gameSettingCtrl_OnChessPieceColorChanged;
 
             _lowerTeamCtrl.OnReadyEvent += teamCtrl_OnReadyEvent;
-            _lowerTeamCtrl.OnSelectedUnitTypeEvent += _lowerTeamCtrl_OnSelectedUnitTypeEvent;
             _upperTeamCtrl.OnReadyEvent += teamCtrl_OnReadyEvent;
-            _upperTeamCtrl.OnSelectedUnitTypeEvent += _upperTeamCtrl_OnSelectedUnitTypeEvent;
 
             var lowerModel = new TeamViewModel()
             {
@@ -80,16 +78,9 @@ namespace StrategyChessClient
             _upperTeamCtrl.AllowSelectUnit(false);
             _upperTeamCtrl.TeamTitle = "COMPETITOR";
             _upperTeamCtrl.TeamName = "Player 2";
-        }
-        
-        private void _upperTeamCtrl_OnSelectedUnitTypeEvent(UnitType unitType)
-        {
-            _boardCtrl.UpperTeamVM.SelectedUnitType = unitType;
-        }
 
-        private void _lowerTeamCtrl_OnSelectedUnitTypeEvent(UnitType unitType)
-        {
-            _boardCtrl.LowerTeamVM.SelectedUnitType = unitType;
+            _boardCtrl.UpperTeamVM = upperModel;
+            _boardCtrl.LowerTeamVM = lowerModel;
         }
         
         private void OnPlay()
@@ -117,6 +108,9 @@ namespace StrategyChessClient
 
                 _gameController.Register(_upperTeamCtrl.TeamName);
                 _gameController.Register(_lowerTeamCtrl.TeamName);
+
+                _lowerTeamCtrl.Model.Team = _gameController.GetTeamByName(_lowerTeamCtrl.TeamName);
+                _upperTeamCtrl.Model.Team = _gameController.GetTeamByName(_upperTeamCtrl.TeamName);
             }
             catch (Exception ex)
             {
@@ -128,17 +122,19 @@ namespace StrategyChessClient
         {
             try
             {
+                _upperTeamCtrl.ClearAll();
+                _lowerTeamCtrl.ClearAll();
+
                 _lowerTeamCtrl.EnableName = true;
                 _lowerTeamCtrl.VisibleReadyButton = false;
+                _lowerTeamCtrl.AllowSelectUnit(false);
 
                 if (_gameSettingCtrl.GameMode == GameMode.Single)
                 {
                     _upperTeamCtrl.EnableName = true;
                     _upperTeamCtrl.VisibleReadyButton = false;
+                    _upperTeamCtrl.AllowSelectUnit(false);
                 }
-
-                _upperTeamCtrl.ClearAll();
-                _lowerTeamCtrl.ClearAll();
 
                 _upperTeamCtrl.VisibleTurn = false;
                 _lowerTeamCtrl.VisibleTurn = false;

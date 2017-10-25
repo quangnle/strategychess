@@ -37,10 +37,6 @@ namespace StrategyChessClient.Controls
 
         #region Properties
         public GameController GameController { get; set; }
-
-        public UnitType UpperSelectedType { get; set; }
-
-        public UnitType LowerSelectedType { get; set; }
         #endregion
 
         #region UI Command
@@ -66,6 +62,15 @@ namespace StrategyChessClient.Controls
                 return UpperTeamVM;
 
             return LowerTeamVM;
+        }
+
+        public void DisplayInitAreaLocation()
+        {
+            var blocks = GameController.GetInitArea(UpperTeamVM.Team);
+            foreach (var block in blocks)
+            {
+
+            }
         }
         #endregion
 

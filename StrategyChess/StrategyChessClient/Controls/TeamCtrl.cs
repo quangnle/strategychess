@@ -16,13 +16,11 @@ using StrategyChessClient.ViewModels;
 namespace StrategyChessClient.Controls
 {
     public delegate void ReadyHandler(TeamCtrl sender);
-    public delegate void SelectedUnitTypeHandler(UnitType unitType);
 
     public partial class TeamCtrl : UserControl
     {
         #region Members
         public event ReadyHandler OnReadyEvent;
-        public event SelectedUnitTypeHandler OnSelectedUnitTypeEvent;
         private int _ambusherCount = 0;
         private int _rangerCount = 0;
         private int _tankerCount = 0;
@@ -238,6 +236,14 @@ namespace StrategyChessClient.Controls
             picRanger.AllowSelect = allow;
             picTanker.AllowSelect = allow;
             picCamp.AllowSelect = allow;
+
+            if (!allow)
+            {
+                picAmbusher.IsSelected = false;
+                picRanger.IsSelected = false;
+                picCamp.IsSelected = false;
+                picTanker.IsSelected = true;
+            }
         }
 
         public void Attack()
