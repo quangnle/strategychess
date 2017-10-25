@@ -10,6 +10,9 @@ namespace StrategyChessCore.Definitions
     public class BoardHandler
     {
         private Board _board;
+        private Team _upperTeam;
+        private Team _lowerTeam;
+
         public Board Board
         {
             get { return _board; }
@@ -21,6 +24,20 @@ namespace StrategyChessCore.Definitions
         public BoardHandler(Board board)
         {
             _board = board;
+        }
+
+        public IUnit GetUnitAt(int row, int col)
+        {
+            var unit = TeamHandler.GetUnitAt(_upperTeam, row, col);
+            if (unit != null)
+                unit = TeamHandler.GetUnitAt(_lowerTeam, row, col);
+
+            return unit;
+        }
+
+        public IUnit GetUnitAt(Block block)
+        {
+            return GetUnitAt(block.Row, block.Column);
         }
 
         public List<Block> GetInitArea(Team team)
@@ -42,9 +59,10 @@ namespace StrategyChessCore.Definitions
                 toCol = _board.Size;
             }
 
-            var result = _board.Blocks.Where(b => b.Column >= fromCol && b.Column < toCol && 
-            b.Row >= fromRow && b.Row < toRow && b.Unit == null);
-            return result.ToList();
+            var result = _board.Blocks.Where(b => (b.Column >= fromCol && b.Column < toCol) && 
+                                                    (b.Row >= fromRow && b.Row < toRow) && 
+                                                    GetUnitAt(b) == null).ToList();
+            return result;
         }
 
 
@@ -52,13 +70,6 @@ namespace StrategyChessCore.Definitions
         {
             if (UpperTeam.Name == teamName) return UpperTeam;
             else if (LowerTeam.Name == teamName) return LowerTeam;
-            return null;
-        }
-
-        public Team GetTeam(IUnit unit)
-        {
-            if (UpperTeam.Units.Any(p => p.Id == unit.Id)) return UpperTeam;
-            else if (LowerTeam.Units.Any(p => p.Id == unit.Id)) return LowerTeam;
             return null;
         }
         
@@ -78,9 +89,8 @@ namespace StrategyChessCore.Definitions
                 for (int i = 0; i < 4; i++)
                 {
                     var aBlock = _board[b.Row + dx[i], b.Column + dy[i]];
-                    if (aBlock != null && aBlock.Unit == null && !dict.ContainsKey(aBlock))
+                    if (aBlock != null && GetUnitAt(aBlock) == null && !dict.ContainsKey(aBlock))
                     {
-
                         var d = 0;
                         if (dict.ContainsKey(b))
                             d = dict[b];
@@ -97,26 +107,32 @@ namespace StrategyChessCore.Definitions
             return dict.Select(db => db.Key).ToList();
         }
 
-        public List<Block> GetBlocksAround(Block block, int radius, bool emptyBlocksOnly)
+        public List<Block> GetEmptyBlocksAround(Block block, int radius, bool emptyBlocksOnly)
         {   
             var inRangeBlocks = _board.Blocks.Where(b => (block.Column - radius <= 0) && (block.Row - radius <= 0));
             if (emptyBlocksOnly)
-                inRangeBlocks = inRangeBlocks.Where(b => b.Unit == null);
+                inRangeBlocks = inRangeBlocks.Where(b => GetUnitAt(b) == null);
             return inRangeBlocks.ToList();
+        }
+
+        private Team GetOpponent(Team team)
+        {
+            if (team.Name == _upperTeam.Name)
+                return _lowerTeam;
+            return _upperTeam;
         }
 
         public List<IUnit> GetEnemyAround(IUnit unit, int radius)
         {
-            var team = GetTeam(unit);
-            var aroundUnits = GetBlocksAround(_board[unit.Id], radius, false).Where(b => b.Unit != null).Select(b => b.Unit);
-            var enemies = aroundUnits.Where(u => !team.Units.Exists(un => un.Id == u.Id)).ToList();
+            var team = GetOpponent(unit.Team);
+            var enemies = TeamHandler.GetUnitsAround(team, unit.Row, unit.Column, radius);
             return enemies;
         }
 
         public Team GetWinner()
         {
-            if (UpperTeam.Units.Where(p => p is Camp) == null) return LowerTeam;
-            if (LowerTeam.Units.Where(p => p is Camp) == null) return UpperTeam;
+            if (UpperTeam.Units.Count(p => p is Camp) == 0) return LowerTeam;
+            if (LowerTeam.Units.Count(p => p is Camp) == 0) return UpperTeam;
             return null;
         }
     }

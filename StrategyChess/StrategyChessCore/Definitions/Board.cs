@@ -13,15 +13,6 @@ namespace StrategyChessCore.Definitions
             get { return Blocks.FirstOrDefault(b => b.Row == row && b.Column == column); }
         }
 
-        public Block this[Guid idPiece]
-        {
-            get
-            {
-                var block = Blocks.FirstOrDefault(b => b.Unit != null && b.Unit.Id == idPiece);
-                return block;
-            }
-        }
-
         public int Size { get; internal set; }
         
         public List<Block> Blocks { get; set; }

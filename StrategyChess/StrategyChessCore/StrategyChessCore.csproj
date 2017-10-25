@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Definitions\TeamHandler.cs" />
     <Compile Include="Definitions\Units\Ambusher.cs" />
     <Compile Include="Definitions\Units\AmbusherLogic.cs" />
     <Compile Include="Definitions\Units\Camp.cs" />

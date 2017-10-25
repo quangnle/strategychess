@@ -10,12 +10,8 @@ namespace StrategyChessCore
 {
     public class GameController
     {
-        private NetworkProcessor _connector;
         private BoardHandler _gameHandler;
         private Team _currentTeam;
-
-        // Game logics
-        private List<BaseLogic> _logics;
 
         private int _maxUnits;
         private int _maxCamps;
@@ -30,23 +26,11 @@ namespace StrategyChessCore
         public GameController(int size, int maxUnits, int maxCamps)
         {            
             _gameHandler = new BoardHandler(new Board(size));
-            _logics = new List<BaseLogic>();
-            _logics.AddRange(new BaseLogic[]{ new TankerLogic(), new RangerLogic(), new AmbusherLogic()});
-
             _currentTeam = _gameHandler.LowerTeam;
 
             _maxUnits = maxUnits;
             _maxCamps = maxCamps;
             _isGameStart = false;
-        }
-
-        public void Run()
-        {
-            // _connector.OnClientRegister += Connector_OnClientRegister;
-            // _connector.OnClientReady += Connector_OnClientReady;
-            // _connector.OnClientMove += Connector_OnClientMove;
-
-            _connector.Start();
         }
 
         public bool StartGame()
@@ -68,10 +52,8 @@ namespace StrategyChessCore
                 _gameHandler.UpperTeam = new Team { Name = teamName };
                 return true;
             }
-            else if (_gameHandler.LowerTeam == null)
-            {
-                if (teamName == _gameHandler.UpperTeam.Name)
-                    return false;
+            else if (_gameHandler.LowerTeam == null && teamName != _gameHandler.UpperTeam.Name)
+            {   
                 _gameHandler.LowerTeam = new Team { Name = teamName };
                 return true;
             }
@@ -100,33 +82,19 @@ namespace StrategyChessCore
             return false;
         }
 
-        public Team GetTeamByName(string teamName)
-        {
-            return _gameHandler.GetTeamByName(teamName);
-        }
-
-        public Team GetTeam(IUnit unit)
-        {
-            return _gameHandler.GetTeam(unit);
-        }
-
         public bool PlaceUnit(string teamName, IUnit unit, int row, int col)
         {
             var team = _gameHandler.GetTeamByName(teamName);
             if (team != null)
             {
                 var availBlocks = _gameHandler.GetInitArea(team);
-
-                if (team.Units != null && team.Units.Count < _maxUnits + _maxCamps)
-                {   
+                if (availBlocks.Exists(b => b.Column == col && b.Row == row) && team.Units.Count < _maxUnits + _maxCamps)
+                {
+                    unit.Row = row;
+                    unit.Column = col;
                     team.Units.Add(unit);
-                    if (availBlocks.Exists(b => b.Column == col && b.Row == row))
-                    {
-                        _gameHandler.Board[row, col].Unit = unit;
-                        return true;
-                    }   
-                    else return false;
-                }
+                    return true;
+                }   
             }
 
             return false;
@@ -139,7 +107,7 @@ namespace StrategyChessCore
 
         public List<Block> GetMovableBlocks(IUnit unit)
         {            
-            return _gameHandler.GetEmptyGroundBlocksWithinDistance(_gameHandler.Board[unit.Id], unit.Speed);
+            return _gameHandler.GetEmptyGroundBlocksWithinDistance(_gameHandler.Board[unit.Row, unit.Column] , unit.Speed);
         }
 
         public List<IUnit> GetEnemyAround(IUnit unit, int radius)
@@ -151,10 +119,13 @@ namespace StrategyChessCore
         {
             if (_gameHandler.Board[row, col] != null)
             {
-                var team = _gameHandler.GetTeam(_gameHandler.Board[row, col].Unit);
-                team.Units.Remove(_gameHandler.Board[row, col].Unit);
-                _gameHandler.Board[row, col].Unit = null;
-                return true;
+                var unit = _gameHandler.GetUnitAt(row, col);
+                if (unit != null)
+                {
+                    var team = unit.Team;
+                    team.Units.Remove(unit);
+                    return true;
+                }
             }   
             return false;
         }
@@ -163,64 +134,7 @@ namespace StrategyChessCore
         {
             return _gameHandler.Board[row, col];
         }
-
-        private bool AOEAttack(IUnit unit, BaseLogic logic)
-        {
-            if (unit.CoolDown > 0) return false;
-
-            var targets = _gameHandler.GetEnemyAround(unit, unit.Range);
-            if (targets != null)
-            {
-                for (int i = 0; i < targets.Count; i++)
-                {
-                    targets[i].HP -= 1;
-                    if (targets[i].HP <= 0)
-                    {
-                        _gameHandler.Board[targets[i].Id].Unit = null;
-                        _gameHandler.GetTeam(targets[i]).Units.Remove(targets[i]);
-                    }
-                }
-
-                unit.CurrentCoolDown = unit.CoolDown;
-                return true;
-            }
-            return false;
-        }
-
-        private bool Attack(IUnit unit, BaseLogic logic, IUnit target)
-        {
-            if (target != null)
-            {
-                var targets = logic.GetAllTargets(unit);
-                if (targets.Exists(t => t.Id == target.Id))
-                {
-                    target.HP -= 1;
-                    if (target.HP <= 0)
-                    {
-                        _gameHandler.Board[target.Id].Unit = null;
-                        _gameHandler.GetTeam(target).Units.Remove(target);
-                    }
-                    unit.CurrentCoolDown = unit.CoolDown;
-
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool Move(IUnit unit, BaseLogic logic, int row, int col)
-        {
-            var moves = logic.GetAllMoveableBlocks(unit);
-            if (moves.Exists(b => b.Row == row && b.Column == col))
-            {
-                _gameHandler.Board[row, col].Unit = unit;
-                _gameHandler.Board[unit.Id].Unit = null;
-                return true;
-            }
-            return false;
-        }
-
+        
         public bool MakeAMove(IUnit unit, int row, int col)
         {
             // check if the game is still on going
@@ -228,7 +142,7 @@ namespace StrategyChessCore
                 return false;
 
             // check if the current turn is unit's team
-            var team = _gameHandler.GetTeam(unit);
+            var team = unit.Team;
             if (_currentTeam.Name != team.Name)
                 return false;
 
@@ -238,40 +152,40 @@ namespace StrategyChessCore
 
             // select the right logic for the unit
             BaseLogic logic;
-            if (unit is Tanker) { logic = _logics.FirstOrDefault(l => l is TankerLogic); }
-            else if (unit is Ranger) { logic = _logics.FirstOrDefault(l => l is RangerLogic); }
-            else logic = _logics.FirstOrDefault(l => l is AmbusherLogic);
+            if (unit is Tanker) { logic = new TankerLogic(unit as Tanker, _gameHandler); }
+            else if (unit is Ranger) { logic = new RangerLogic(unit as Ranger, _gameHandler); }
+            else logic = new AmbusherLogic(unit as Ambusher, _gameHandler);
             
-            if (_gameHandler.Board[row, col].Unit == null)
+            if (_gameHandler.GetUnitAt(row, col) == null)
             {
                 // AOE attack
-                if (row == -1 && col == -1)
+                if (row == -1 && col == -1 && unit is Tanker)
                 {
                     _currentTeam.ActionableUnits.Clear();
-                    return AOEAttack(unit, logic);
+                    logic.Attack(row, col);
+                    return true;
                 }
                 else
                 {
-                    if (_currentTeam.CanMoveUnit)
+                    if (_currentTeam.CanMoveUnit) // move
                     {
-                        var cnt = _gameHandler.GetBlocksAround(_gameHandler.Board[row, col], unit.Range, true).Count;
+                        var cnt = _gameHandler.GetEmptyBlocksAround(GetBlockAt(row, col), unit.Range, true).Count;
                         if (cnt == unit.Range * unit.Range - 1)
                             _currentTeam.ActionableUnits.Clear();
                         else
                             _currentTeam.ActionableUnits = _currentTeam.ActionableUnits.Where(u => u.Id == unit.Id).ToList();
 
                         _currentTeam.CanMoveUnit = false;
-                        return Move(unit, logic, row, col);
+                        return logic.Move(row, col);
                     }
                     else return false;
                 }
                 
             }
-            else
+            else // attack single target
             {
                 _currentTeam.ActionableUnits.Clear();
-                var target = _gameHandler.Board[row, col].Unit;
-                return Attack(unit, logic, target);
+                return logic.Attack(row, col);
             }
         }
 

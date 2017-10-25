@@ -12,6 +12,11 @@ namespace StrategyChessCore.Definitions.Units
         public int CoolDown { get; set; }
         public int CurrentCoolDown { get; set; }
 
+        public int Row { get; set; }
+        public int Column { get; set; }
+
+        public Team Team { get; set; }
+
         public Ambusher(Guid id)
         {
             Id = id;

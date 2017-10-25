@@ -8,14 +8,30 @@ namespace StrategyChessCore.Definitions.Units
 {
     public class TankerLogic : BaseLogic
     {
-        public override List<Block> GetAllMoveableBlocks(IUnit unit)
-        {
-            return BoardHandler.GetEmptyGroundBlocksWithinDistance(BoardHandler.Board[unit.Id], unit.Speed);
-        }
+        public TankerLogic(Tanker unit, BoardHandler boardHandler) : base(unit, boardHandler) { }
 
-        public override List<IUnit> GetAllTargets(IUnit unit)
+        public override bool Attack(int row, int col)
         {
-            return BoardHandler.GetEnemyAround(unit, unit.Range);
+            if (row == - 1 && col == -1)
+            {
+                var targets = GetAllTargets();
+                if (targets != null)
+                {
+                    foreach (var target in targets)
+                    {
+                        target.HP--;
+                        if (target.HP == 0)
+                        {
+                            var team = target.Team;
+                            team.Units.Remove(target);
+                        }
+                    }
+
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

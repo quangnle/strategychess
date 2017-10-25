@@ -11,5 +11,10 @@ namespace StrategyChessCore.Definitions.Units
         int Range { get; set; }
         int CoolDown { get; set; }
         int CurrentCoolDown { get; set; }
+
+        int Row { get; set; }
+        int Column { get; set; }
+
+        Team Team { get; set; }
     }
 }

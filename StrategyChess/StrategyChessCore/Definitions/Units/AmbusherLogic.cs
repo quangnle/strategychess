@@ -8,14 +8,6 @@ namespace StrategyChessCore.Definitions.Units
 {
     public class AmbusherLogic : BaseLogic
     {
-        public override List<Block> GetAllMoveableBlocks(IUnit unit)
-        {
-            return BoardHandler.GetEmptyGroundBlocksWithinDistance(BoardHandler.Board[unit.Id], unit.Speed);
-        }
-
-        public override List<IUnit> GetAllTargets(IUnit unit)
-        {
-            return BoardHandler.GetEnemyAround(unit, unit.Range);
-        }
+        public AmbusherLogic(Ambusher unit, BoardHandler boardHandler) : base(unit, boardHandler) { }
     }
 }
