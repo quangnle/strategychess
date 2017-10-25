@@ -67,6 +67,7 @@
     <Compile Include="Controls\TeamCtrl.Designer.cs">
       <DependentUpon>TeamCtrl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\UnitType.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

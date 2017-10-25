@@ -16,7 +16,7 @@ namespace StrategyChessCore
         private int _maxUnits;
         private int _maxCamps;
 
-        private bool _isGameStart;
+        public GameState State { get; set; }
 
         public Team CurrentTeam
         {
@@ -30,14 +30,14 @@ namespace StrategyChessCore
 
             _maxUnits = maxUnits;
             _maxCamps = maxCamps;
-            _isGameStart = false;
+            State = GameState.Init;
         }
 
         public bool StartGame()
         {
             if (_boardHandler.LowerTeam.Ready && _boardHandler.UpperTeam.Ready)
             {
-                _isGameStart = true;
+                State = GameState.Playing;
                 _currentTeam = _boardHandler.LowerTeam;
                 return true;
             }
@@ -96,6 +96,11 @@ namespace StrategyChessCore
             return false;
         }
 
+        public IUnit GetUnitAt(int row, int col)
+        {
+            return _boardHandler.GetUnitAt(row, col);
+        }
+
         public List<Block> GetEmptyGroundBlocksWithinDistance(Block orgBlock, int distance)
         {
             return _boardHandler.GetEmptyGroundBlocksWithinDistance(orgBlock, distance);
@@ -144,7 +149,7 @@ namespace StrategyChessCore
         public bool MakeAMove(IUnit unit, int row, int col)
         {
             // check if the game is still on going
-            if (_boardHandler.GetWinner() != null || !_isGameStart)
+            if (State == GameState.Playing)
                 return false;
 
             // check if the current turn is unit's team
