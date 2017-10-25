@@ -22,6 +22,11 @@ namespace StrategyChessCore.Definitions.Units
                         target.HP--;
                         if (target.HP == 0)
                         {
+                            if (target is Camp && OnCampDestroyed != null)
+                            {
+                                OnCampDestroyed(Unit.Team);
+                            }
+
                             var team = target.Team;
                             team.Units.Remove(target);
                         }
