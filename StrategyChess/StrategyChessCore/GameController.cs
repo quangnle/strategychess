@@ -176,9 +176,13 @@ namespace StrategyChessCore
                 // AOE attack
                 if (row == -1 && col == -1 && unit is Tanker)
                 {
-                    _currentTeam.ActionableUnits.Clear();
-                    logic.Attack(row, col);
-                    return true;
+                    if (unit.CurrentCoolDown == 0)
+                    {
+                        _currentTeam.ActionableUnits.Clear();
+                        logic.Attack(row, col);
+                        return true;
+                    }
+                    else return false;
                 }
                 else
                 {
@@ -203,8 +207,12 @@ namespace StrategyChessCore
             }
             else // attack single target
             {
-                _currentTeam.ActionableUnits.Clear();
-                return logic.Attack(row, col);
+                if (unit.CurrentCoolDown == 0)
+                {
+                    _currentTeam.ActionableUnits.Clear();
+                    return logic.Attack(row, col);
+                }
+                else return false;
             }
         }
 
