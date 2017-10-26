@@ -228,7 +228,7 @@ namespace StrategyChessClient.Controls
         private void UpdateTargetCells(IUnit unit)
         {
             // draw attackable targets
-            var targets = GameController.GetEnemyAround(unit, unit.Range);
+            var targets = GameController.GetEnemyAround(unit);
             foreach (var target in targets)
             {
                 var model = GetTeamViewModel(unit.Team);
