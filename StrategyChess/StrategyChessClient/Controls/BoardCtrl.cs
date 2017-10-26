@@ -14,18 +14,22 @@ namespace StrategyChessClient.Controls
 {
     public delegate void PlaceUnitHandler(UnitType type, string teamName);
     public delegate void RemoveUnitHandler(UnitType type, string teamName);
+    public delegate void NextTeamHandler(string teamName);
     public class BoardCtrl : CustomPanel
     {
         #region Members
         public event PlaceUnitHandler OnPlaceUnitEvent;
         public event RemoveUnitHandler OnRemoveUnitEvent;
+        public event NextTeamHandler OnNextTeamEvent;
         private BoardGr _boardGr;
         public TeamViewModel UpperTeamVM { get; set; }
         public TeamViewModel LowerTeamVM { get; set; }
         private List<ChessPiece> _chessPieces = new List<ChessPiece>();
 
         private Cell _selectedCell;
-        private IUnit _selectedUnit;
+
+        private Cell _beginCell;
+        private IUnit _beginUnit;
         #endregion
 
         #region Constructor
@@ -144,7 +148,11 @@ namespace StrategyChessClient.Controls
 
         public void RefreshState()
         {
+            _selectedCell = null;
+            _beginCell = null;
+            _beginUnit = null;
             _boardGr.RefreshState();
+            Invalidate();
         }
         #endregion
 
@@ -228,6 +236,13 @@ namespace StrategyChessClient.Controls
                 _boardGr[target.Row, target.Column].AttackableColor = model.AttackableColor;
             }
         }
+
+        private void NextTeam(Team team)
+        {
+            GameController.NextTeam();
+            if (OnNextTeamEvent != null)
+                OnNextTeamEvent(team.Name);
+        }
         
         private void BoardCtrl_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
@@ -253,58 +268,52 @@ namespace StrategyChessClient.Controls
             else if (GameController.State == GameState.Playing)
             {   
                 if (_selectedCell != null)
-                {   
-                    if (_selectedUnit == null) 
+                {
+                    if (_beginCell == null) //Select unit
                     {
                         var unit = GameController.GetUnitAt(_selectedCell.Row, _selectedCell.Column);
-                        if (unit != null) // select the unit
-                        {
-                            _selectedUnit = unit;
-                            // draw movable area
-                            _selectedCell.Selected = true;
+                        if (unit == null || unit.GetType() == typeof(Camp) || 
+                            unit.Team.Name != GameController.CurrentTeam.Name)
+                            return;
 
-                            UpdateMovableCells(_selectedUnit);
-                            UpdateTargetCells(_selectedUnit);
-                        }
+                        _beginCell = _selectedCell;
+                        _beginCell.Selected = true;
+                        _beginUnit = unit;
+                        UpdateMovableCells(_beginUnit);
+                        UpdateTargetCells(_beginUnit);
                     }
                     else
-                    {   
+                    {
                         var unit = GameController.GetUnitAt(_selectedCell.Row, _selectedCell.Column);
                         if (unit == null) // move
                         {
-                            var result = GameController.MakeAMove(_selectedUnit, _selectedCell.Row, _selectedCell.Column);
+                            var result = GameController.MakeAMove(_beginUnit, _selectedCell.Row, _selectedCell.Column);
                             if (result)
                             {
                                 //chessPiece
-                                UpdateChessPiece(_selectedUnit, _selectedCell);
-                                UpdateTargetCells(_selectedUnit);
-                                GameController.NextTeam();
-                                _selectedCell = null;
-                                _selectedUnit = null;
+                                UpdateChessPiece(_beginUnit, _selectedCell);
+                                UpdateTargetCells(_beginUnit);
+                                NextTeam(_beginUnit.Team);
                             }
-                            else
-                                _selectedUnit = null;
-                        } 
-                        else
+                        }
+                        else //Change select unit or Attack
                         {
-                            if (unit.Id != _selectedUnit.Id)
+                            if (unit.Team.Name == GameController.CurrentTeam.Name &&
+                                unit != _beginUnit && unit.GetType() != typeof(Camp)) //change select unit
                             {
-                                if (unit.Team.Name != _selectedUnit.Team.Name)
-                                {
-                                    if (_selectedUnit is Tanker)
-                                        GameController.MakeAMove(_selectedUnit, -1, -1); // AOE
-                                    else
-                                        GameController.MakeAMove(_selectedUnit, _selectedCell.Row, _selectedCell.Column); // single attack
-                                }   
+                                _boardGr.RefreshState();
+                                _beginCell = _selectedCell;
+                                _beginCell.Selected = true;
+                                _beginUnit = unit;
+                                UpdateMovableCells(_beginUnit);
+                                UpdateTargetCells(_beginUnit);
+                            }
+                            else //attack
+                            {
+                                if (_beginUnit is Tanker)
+                                    GameController.MakeAMove(_beginUnit, -1, -1); // AOE
                                 else
-                                {
-                                    _selectedUnit = unit;
-                                    // draw movable area
-                                    _selectedCell.Selected = true;
-
-                                    UpdateMovableCells(_selectedUnit);
-                                    UpdateTargetCells(_selectedUnit);
-                                }
+                                    GameController.MakeAMove(_beginUnit, _beginCell.Row, _beginCell.Column); // single attack
                             }
                         }
                     }

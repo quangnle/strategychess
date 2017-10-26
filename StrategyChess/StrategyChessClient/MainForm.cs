@@ -41,13 +41,16 @@ namespace StrategyChessClient
             _boardCtrl.GameController = _gameController;
             _boardCtrl.OnPlaceUnitEvent += _boardCtrl_OnPlaceUnitEvent;
             _boardCtrl.OnRemoveUnitEvent += _boardCtrl_OnRemoveUnitEvent;
+            _boardCtrl.OnNextTeamEvent += teamCtrl_OnSkipEvent;
 
             _gameSettingCtrl.OnStartClick += _gameSettingCtrl_OnStartClick;
             _gameSettingCtrl.OnStopClick += _gameSettingCtrl_OnStopClick;
             _gameSettingCtrl.OnChessPieceColorChanged += _gameSettingCtrl_OnChessPieceColorChanged;
 
             _lowerTeamCtrl.OnReadyEvent += teamCtrl_OnReadyEvent;
+            _lowerTeamCtrl.OnSkipEvent += teamCtrl_OnSkipEvent;
             _upperTeamCtrl.OnReadyEvent += teamCtrl_OnReadyEvent;
+            _upperTeamCtrl.OnSkipEvent += teamCtrl_OnSkipEvent;
 
             var lowerModel = new TeamViewModel()
             {
@@ -194,8 +197,12 @@ namespace StrategyChessClient
                 {
                     _boardCtrl.RemoveInitAreaLocation();
 
-                    _lowerTeamCtrl.VisibleReadyButton = false;
-                    _upperTeamCtrl.VisibleReadyButton = false;
+                    _lowerTeamCtrl.EnableReadyButton = true;
+                    _upperTeamCtrl.EnableReadyButton = true;
+
+                    _lowerTeamCtrl.ReadyButton.Text = "Skip";
+                    _upperTeamCtrl.ReadyButton.Text = "Waiting";
+
                     _lowerTeamCtrl.VisibleTurn = true;
                     _upperTeamCtrl.VisibleTurn = true;
 
@@ -245,6 +252,26 @@ namespace StrategyChessClient
                     teamCtrl.TankerCount--;
                     break;
             }
+        }
+
+        private void teamCtrl_OnSkipEvent(string teamName)
+        {
+            if (_lowerTeamCtrl.TeamName == teamName)
+            {
+                _lowerTeamCtrl.Waiting();
+                _upperTeamCtrl.Attack();
+                _lowerTeamCtrl.ReadyButton.Text = "Waiting";
+                _upperTeamCtrl.ReadyButton.Text = "Skip";
+            }
+            else
+            {
+                _upperTeamCtrl.Waiting();
+                _lowerTeamCtrl.Attack();
+                _lowerTeamCtrl.ReadyButton.Text = "Skip";
+                _upperTeamCtrl.ReadyButton.Text = "Waiting";
+            }
+            
+            _boardCtrl.RefreshState();
         }
         #endregion
     }

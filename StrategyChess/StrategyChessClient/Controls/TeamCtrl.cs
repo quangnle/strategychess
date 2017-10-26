@@ -16,11 +16,13 @@ using StrategyChessClient.ViewModels;
 namespace StrategyChessClient.Controls
 {
     public delegate void ReadyHandler(TeamCtrl sender);
+    public delegate void SkipHandler(string teamName);
 
     public partial class TeamCtrl : UserControl
     {
         #region Members
         public event ReadyHandler OnReadyEvent;
+        public event SkipHandler OnSkipEvent;
         private int _ambusherCount = 0;
         private int _rangerCount = 0;
         private int _tankerCount = 0;
@@ -196,9 +198,15 @@ namespace StrategyChessClient.Controls
         {
             set { picTurn.Visible = value; }
         }
+
+        public Button ReadyButton
+        {
+            get { return btnReady; }
+        }
         #endregion
 
         #region UI Command
+
         public void SetTeamColor(ChessPieceColor color)
         {
             var cl = Global.TeamBlueColor;
@@ -397,6 +405,15 @@ namespace StrategyChessClient.Controls
         {
             if (btnReady.Text == "Waiting")
                 return;
+
+            if (btnReady.Text == "Skip")
+            {
+                GameController.NextTeam();
+                if (OnSkipEvent != null)
+                    OnSkipEvent(this.TeamName);
+
+                return;
+            }
 
             btnReady.Enabled = false;
             picAmbusher.AllowSelect = false;
