@@ -20,7 +20,7 @@ namespace StrategyChessCore.Definitions.Units
             var adjacents = BoardHandler.GetEnemyAround(Unit, 1);
 
             // if there's enemy adjacent to the unit
-            if (adjacents != null)
+            if (adjacents != null && adjacents.Count > 0)
                 return null;
 
             return BoardHandler.GetEnemyAround(Unit, Unit.Range);
