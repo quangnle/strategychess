@@ -30,6 +30,7 @@ namespace StrategyChessClient.Controls
 
         private Cell _beginCell;
         private IUnit _beginUnit;
+        private bool _onlyAttack = false;
         #endregion
 
         #region Constructor
@@ -85,10 +86,25 @@ namespace StrategyChessClient.Controls
         
         private void RemoveChessPiece(int row, int col)
         {
-            var chessPiece = _chessPieces.FirstOrDefault(x => x.Unit.Row == row && x.Unit.Column == col);
-            if (chessPiece != null)
+            var removeChessPiece = _chessPieces.FirstOrDefault(x => x.Unit.Row == row &&
+                        x.Unit.Column == col);
+
+            if (removeChessPiece != null)
             {
-                _chessPieces.Remove(chessPiece);
+                _chessPieces.Remove(removeChessPiece);
+
+                if (OnRemoveUnitEvent != null)
+                {
+                    var type = UnitType.Tanker;
+                    if (removeChessPiece.Unit is Ambusher)
+                        type = UnitType.Ambusher;
+                    else if (removeChessPiece.Unit is Ranger)
+                        type = UnitType.Ranger;
+                    else if (removeChessPiece.Unit is Camp)
+                        type = UnitType.Camp;
+
+                    OnRemoveUnitEvent(type, removeChessPiece.Unit.Team.Name);
+                }
             }
         }
 
@@ -180,28 +196,8 @@ namespace StrategyChessClient.Controls
             {
                 if (GameController.RemoveUnitAt(_selectedCell.Row, _selectedCell.Column))
                 {
-                    var removeChessPiece = _chessPieces.FirstOrDefault(x => x.Unit.Row == _selectedCell.Row &&
-                        x.Unit.Column == _selectedCell.Column);
-
-                    if (removeChessPiece != null)
-                    {
-                        _chessPieces.Remove(removeChessPiece);
-
-                        if (OnRemoveUnitEvent != null)
-                        {
-                            var type = UnitType.Tanker;
-                            if (removeChessPiece.Unit is Ambusher)
-                                type = UnitType.Ambusher;
-                            else if (removeChessPiece.Unit is Ranger)
-                                type = UnitType.Ranger;
-                            else if (removeChessPiece.Unit is Camp)
-                                type = UnitType.Camp;
-
-                            OnRemoveUnitEvent(type, removeChessPiece.Unit.Team.Name);
-                        }
-
-                        Invalidate();
-                    }
+                    RemoveChessPiece(_selectedCell.Row, _selectedCell.Column);
+                    Invalidate();
                 }
             }
         }
@@ -276,6 +272,7 @@ namespace StrategyChessClient.Controls
                             unit.Team.Name != GameController.CurrentTeam.Name)
                             return;
 
+                        _onlyAttack = false;
                         _beginCell = _selectedCell;
                         _beginCell.Selected = true;
                         _beginUnit = unit;
@@ -285,21 +282,25 @@ namespace StrategyChessClient.Controls
                     else
                     {
                         var unit = GameController.GetUnitAt(_selectedCell.Row, _selectedCell.Column);
-                        if (unit == null) // move
+                        if (unit == null)
                         {
-                            var result = GameController.MakeAMove(_beginUnit, _selectedCell.Row, _selectedCell.Column);
-                            if (result)
+                            if (!_onlyAttack)
                             {
-                                //chessPiece
-                                UpdateChessPiece(_beginUnit, _selectedCell);
-                                UpdateTargetCells(_beginUnit);
-
-                                var enemyUnits = GameController.GetEnemyAround(_beginUnit, _beginUnit.Range);
-                                if (enemyUnits == null || enemyUnits.Count <= 0)
-                                    NextTeam(_beginUnit.Team);
-                                else //Can attack enemy or next
+                                var result = GameController.MakeAMove(_beginUnit, _selectedCell.Row, _selectedCell.Column);
+                                if (result) //can move
                                 {
+                                    //chessPiece
+                                    UpdateChessPiece(_beginUnit, _selectedCell);
+                                    UpdateTargetCells(_beginUnit);
 
+                                    var enemyUnits = GameController.GetEnemyAround(_beginUnit);
+                                    if (enemyUnits == null || enemyUnits.Count <= 0)
+                                        NextTeam(_beginUnit.Team);
+                                    else //Only attack enemy or next turn
+                                    {
+                                        _onlyAttack = true;
+                                        _selectedCell.Selected = true;
+                                    }
                                 }
                             }
                         }
@@ -307,7 +308,7 @@ namespace StrategyChessClient.Controls
                         {
                             if (unit.Team.Name == GameController.CurrentTeam.Name)
                             {
-                                if (!(unit is Camp))
+                                if (!(unit is Camp) && !_onlyAttack)
                                 {
                                     if (unit == _beginUnit) //Unselect unit
                                         RefreshState();
@@ -327,7 +328,11 @@ namespace StrategyChessClient.Controls
                                 if (_beginUnit is Tanker)
                                     GameController.MakeAMove(_beginUnit, -1, -1); // AOE
                                 else
-                                    GameController.MakeAMove(_beginUnit, _beginCell.Row, _beginCell.Column); // single attack
+                                    GameController.MakeAMove(_beginUnit, _selectedCell.Row, _selectedCell.Column); // single attack
+
+                                RemoveChessPiece(_selectedCell.Row, _selectedCell.Column);
+                                UpdateMovableCells(_beginUnit);
+                                NextTeam(_beginUnit.Team);
                             }
                         }
                     }
