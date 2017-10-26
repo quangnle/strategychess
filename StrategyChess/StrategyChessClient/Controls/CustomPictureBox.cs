@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace StrategyChessClient.Controls
 {
-    public delegate void SelectChangedHandler(PictureBox sender, bool selected);
+    public delegate void SelectChangedHandler(CustomPictureBox sender, bool selected);
     public class CustomPictureBox : PictureBox
     {
         public event SelectChangedHandler OnSelectChanged;

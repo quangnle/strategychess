@@ -214,6 +214,10 @@ namespace StrategyChessCore
 
         public Team GetTeamByInitAreaLocation(int row, int column)
         {
+            if (_boardHandler.UpperTeam == null &&
+                _boardHandler.LowerTeam == null)
+                return null;
+
             if (_boardHandler.GetInitArea(_boardHandler.UpperTeam).Exists(b => b.Row == row && b.Column == column)) return _boardHandler.UpperTeam;
             else if (_boardHandler.GetInitArea(_boardHandler.LowerTeam).Exists(b => b.Row == row && b.Column == column)) return _boardHandler.LowerTeam;
             else return null;

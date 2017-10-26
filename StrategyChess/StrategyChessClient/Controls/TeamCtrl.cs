@@ -332,13 +332,17 @@ namespace StrategyChessClient.Controls
                 var ready = GameController.Ready(Model.Team);
                 btnReady.Text = ready ? "Ready" : "Waiting";
 
-                picTanker.AllowSelect = !ready;
-                picRanger.AllowSelect = !ready;
-                picAmbusher.AllowSelect = !ready;
-                picCamp.AllowSelect = !ready;
+                var fullUnit = (_ambusherCount + _rangerCount + _tankerCount) < _maxUnits;
+
+                picTanker.AllowSelect = !ready && fullUnit;
+                picRanger.AllowSelect = !ready && fullUnit;
+                picAmbusher.AllowSelect = !ready && fullUnit;
+
+                var fullCamp = _campCount < _maxUnits;
+                picCamp.AllowSelect = !ready && fullCamp;
 
                 if (!ready && !picAmbusher.IsSelected && !picRanger.IsSelected &&
-                    !picTanker.IsSelected && !picCamp.IsSelected)
+                    !picTanker.IsSelected && !picCamp.IsSelected && !fullUnit)
                 {
                     picTanker.IsSelected = true;
                 }
@@ -357,7 +361,7 @@ namespace StrategyChessClient.Controls
             return true;
         }
 
-        private void PictureBox_OnSelectChanged(PictureBox sender, bool selected)
+        private void PictureBox_OnSelectChanged(CustomPictureBox sender, bool selected)
         {
             if (sender == picAmbusher)
             {
