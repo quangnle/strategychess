@@ -23,6 +23,7 @@ namespace StrategyChessCore.Definitions.Units
 
         public virtual List<IUnit> GetAllTargets()
         {
+            if (Unit.CurrentCoolDown > 0) return null;
             return BoardHandler.GetEnemyAround(Unit, Unit.Range);
         }
 

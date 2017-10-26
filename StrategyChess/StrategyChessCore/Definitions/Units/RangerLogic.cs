@@ -17,6 +17,8 @@ namespace StrategyChessCore.Definitions.Units
         /// <returns></returns>
         public override List<IUnit> GetAllTargets()
         {
+            if (Unit.CurrentCoolDown > 0) return null;
+
             var adjacents = BoardHandler.GetEnemyAround(Unit, 1);
 
             // if there's enemy adjacent to the unit
