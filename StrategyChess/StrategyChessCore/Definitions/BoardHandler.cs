@@ -107,7 +107,9 @@ namespace StrategyChessCore.Definitions
 
         public List<Block> GetEmptyBlocksAround(Block block, int radius)
         {   
-            var inRangeBlocks = _board.Blocks.Where(b => (block.Column - radius <= 0) && (block.Row - radius <= 0) && GetUnitAt(b) == null).ToList();
+            var inRangeBlocks = _board.Blocks.Where(b => (Math.Abs(block.Column - b.Column) <= radius) && 
+                                                         (Math.Abs(block.Row - b.Row) <= radius) && 
+                                                         GetUnitAt(b) == null).ToList();
             return inRangeBlocks;
         }
 
