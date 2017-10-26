@@ -191,7 +191,7 @@ namespace StrategyChessCore
                         var moveSuccess = logic.Move(row, col);
                         if (moveSuccess)
                         {
-                            var cnt = _boardHandler.GetEnemyAround(unit, unit.Range).Count;
+                            var cnt = GetEnemyAround(unit).Count;
                             if (cnt == 0)
                                 _currentTeam.ActionableUnits.Clear();
                             else

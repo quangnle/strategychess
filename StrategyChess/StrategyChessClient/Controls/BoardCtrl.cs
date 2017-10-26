@@ -215,7 +215,7 @@ namespace StrategyChessClient.Controls
             var availMoves = GameController.GetMovableBlocks(unit);
             if (availMoves == null || availMoves.Count <= 0)
                 return;
-
+            
             foreach (var bl in availMoves)
             {
                 var model = GetTeamViewModel(unit.Team);
