@@ -213,7 +213,10 @@ namespace StrategyChessClient.Controls
         private void UpdateMovableCells(IUnit unit)
         {
             var availMoves = GameController.GetMovableBlocks(unit);
-            if (availMoves != null)
+            if (availMoves == null || availMoves.Count <= 0)
+                return;
+
+            foreach (var bl in availMoves)
             {
                 foreach (var bl in availMoves)
                 {
@@ -228,7 +231,10 @@ namespace StrategyChessClient.Controls
         {
             // draw attackable targets
             var targets = GameController.GetEnemyAround(unit);
-            if (targets != null)
+            if (targets == null || targets.Count <= 0)
+                return;
+
+            foreach (var target in targets)
             {
                 foreach (var target in targets)
                 {
