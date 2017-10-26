@@ -53,7 +53,7 @@ namespace StrategyChessGraphics
             for (int i = 0; i < _unit.CurrentCoolDown; i++)
             {
                 var x = _rect.X + xMargin;
-                var y = (_rect.Y + _rect.Width - yMargin) - (i + 1) * (size * yGap);
+                var y = (_rect.Y + _rect.Width - yMargin) - (i + 1) * (size + yGap);
                 g.FillRectangle(br, new Rectangle(x, y, size, size));
             }
         }
