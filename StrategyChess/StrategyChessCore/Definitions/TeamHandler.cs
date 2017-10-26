@@ -21,7 +21,7 @@ namespace StrategyChessCore.Definitions
 
         public static List<IUnit> GetUnitsAround(Team team, int row, int col, int radius)
         {
-            return team.Units.Where(u => (Math.Abs(u.Row - row) < radius) && (Math.Abs(u.Column - col) < radius)).ToList();
+            return team.Units.Where(u => (Math.Abs(u.Row - row) <= radius) && (Math.Abs(u.Column - col) <= radius)).ToList();
         }
 
         public static List<IUnit> GetCamps(Team team)
