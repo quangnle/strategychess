@@ -145,7 +145,7 @@ namespace StrategyChessClient
                 _gameController = new GameController(20, 6, 2);
                 _boardCtrl.GameController = _gameController;
                 _boardCtrl.ClearAllChessPieces();
-                _boardCtrl.RemoveInitAreaLocation();
+                _boardCtrl.RefreshState();
                 _upperTeamCtrl.GameController = _gameController;
                 _lowerTeamCtrl.GameController = _gameController;
             }

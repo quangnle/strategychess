@@ -183,14 +183,19 @@ namespace StrategyChessCore
                 {
                     if (_currentTeam.CanMoveUnit) // move
                     {
-                        var cnt = _boardHandler.GetEnemyAround(unit, unit.Range).Count;
-                        if (cnt == 0)
-                            _currentTeam.ActionableUnits.Clear();
-                        else
-                            _currentTeam.ActionableUnits = _currentTeam.ActionableUnits.Where(u => u.Id == unit.Id).ToList();
+                        var moveSuccess = logic.Move(row, col);
+                        if (moveSuccess)
+                        {
+                            var cnt = _boardHandler.GetEnemyAround(unit, unit.Range).Count;
+                            if (cnt == 0)
+                                _currentTeam.ActionableUnits.Clear();
+                            else
+                                _currentTeam.ActionableUnits = _currentTeam.ActionableUnits.Where(u => u.Id == unit.Id).ToList();
 
-                        _currentTeam.CanMoveUnit = false;
-                        return logic.Move(row, col);
+                            _currentTeam.CanMoveUnit = false;
+                            return true;
+                        }
+                        return moveSuccess;
                     }
                     else return false;
                 }
@@ -232,7 +237,7 @@ namespace StrategyChessCore
         public void NextTeam()
         {
             UpdateCooldown();
-            _currentTeam.Units.Clear();
+            _currentTeam.ActionableUnits.Clear();
             _currentTeam.CanMoveUnit = false;
 
             if (_currentTeam.Name == _boardHandler.UpperTeam.Name) _currentTeam = _boardHandler.LowerTeam;

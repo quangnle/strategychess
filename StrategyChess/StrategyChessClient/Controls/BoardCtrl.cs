@@ -141,6 +141,11 @@ namespace StrategyChessClient.Controls
 
             Invalidate();
         }
+
+        public void RefreshState()
+        {
+            _boardGr.RefreshState();
+        }
         #endregion
 
         #region Window Event Handlers
@@ -273,6 +278,9 @@ namespace StrategyChessClient.Controls
                                 //chessPiece
                                 UpdateChessPiece(_selectedUnit, _selectedCell);
                                 UpdateTargetCells(_selectedUnit);
+                                GameController.NextTeam();
+                                _selectedCell = null;
+                                _selectedUnit = null;
                             }
                             else
                                 _selectedUnit = null;
