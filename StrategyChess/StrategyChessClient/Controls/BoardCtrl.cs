@@ -293,20 +293,34 @@ namespace StrategyChessClient.Controls
                                 //chessPiece
                                 UpdateChessPiece(_beginUnit, _selectedCell);
                                 UpdateTargetCells(_beginUnit);
-                                NextTeam(_beginUnit.Team);
+
+                                var enemyUnits = GameController.GetEnemyAround(_beginUnit, _beginUnit.Range);
+                                if (enemyUnits == null || enemyUnits.Count <= 0)
+                                    NextTeam(_beginUnit.Team);
+                                else //Can attack enemy or next
+                                {
+
+                                }
                             }
                         }
-                        else //Change select unit or Attack
+                        else
                         {
-                            if (unit.Team.Name == GameController.CurrentTeam.Name &&
-                                unit != _beginUnit && unit.GetType() != typeof(Camp)) //change select unit
+                            if (unit.Team.Name == GameController.CurrentTeam.Name)
                             {
-                                _boardGr.RefreshState();
-                                _beginCell = _selectedCell;
-                                _beginCell.Selected = true;
-                                _beginUnit = unit;
-                                UpdateMovableCells(_beginUnit);
-                                UpdateTargetCells(_beginUnit);
+                                if (!(unit is Camp))
+                                {
+                                    if (unit == _beginUnit) //Unselect unit
+                                        RefreshState();
+                                    else //Change select unit
+                                    {
+                                        _boardGr.RefreshState();
+                                        _beginCell = _selectedCell;
+                                        _beginCell.Selected = true;
+                                        _beginUnit = unit;
+                                        UpdateMovableCells(_beginUnit);
+                                        UpdateTargetCells(_beginUnit);
+                                    }
+                                }
                             }
                             else //attack
                             {

@@ -410,7 +410,7 @@ namespace StrategyChessClient.Controls
             if (btnReady.Text == "Waiting")
                 return;
 
-            if (btnReady.Text == "Skip")
+            if (btnReady.Text == "Next")
             {
                 GameController.NextTeam();
                 if (OnSkipEvent != null)

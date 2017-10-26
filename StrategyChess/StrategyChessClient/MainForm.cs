@@ -200,7 +200,7 @@ namespace StrategyChessClient
                     _lowerTeamCtrl.EnableReadyButton = true;
                     _upperTeamCtrl.EnableReadyButton = true;
 
-                    _lowerTeamCtrl.ReadyButton.Text = "Skip";
+                    _lowerTeamCtrl.ReadyButton.Text = "Next";
                     _upperTeamCtrl.ReadyButton.Text = "Waiting";
 
                     _lowerTeamCtrl.VisibleTurn = true;
@@ -261,13 +261,13 @@ namespace StrategyChessClient
                 _lowerTeamCtrl.Waiting();
                 _upperTeamCtrl.Attack();
                 _lowerTeamCtrl.ReadyButton.Text = "Waiting";
-                _upperTeamCtrl.ReadyButton.Text = "Skip";
+                _upperTeamCtrl.ReadyButton.Text = "Next";
             }
             else
             {
                 _upperTeamCtrl.Waiting();
                 _lowerTeamCtrl.Attack();
-                _lowerTeamCtrl.ReadyButton.Text = "Skip";
+                _lowerTeamCtrl.ReadyButton.Text = "Next";
                 _upperTeamCtrl.ReadyButton.Text = "Waiting";
             }
             
