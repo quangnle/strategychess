@@ -32,8 +32,7 @@ namespace StrategyChessCore.Definitions.Units
         }
 
         public virtual bool Attack(int row, int col)
-        {
-
+        {   
             var target = GetAllTargets().FirstOrDefault(u => u.Row == row && u.Column == col);
             if (target != null)
             {
