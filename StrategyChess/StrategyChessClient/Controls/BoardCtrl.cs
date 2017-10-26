@@ -70,6 +70,15 @@ namespace StrategyChessClient.Controls
             _chessPieces.Add(chessPiece);
         }
 
+        private void UpdateChessPiece(IUnit unit, Cell cell)
+        {
+            var chessPiece = _chessPieces.FirstOrDefault(x => x.Unit.Id == unit.Id);
+            chessPiece.Rect = cell.Rect;
+            chessPiece.Unit = unit;
+            cell.Selected = false;
+            _boardGr.RefreshState();
+        }
+        
         private void RemoveChessPiece(int row, int col)
         {
             var chessPiece = _chessPieces.FirstOrDefault(x => x.Unit.Row == row && x.Unit.Column == col);
@@ -197,7 +206,9 @@ namespace StrategyChessClient.Controls
             var availMoves = GameController.GetMovableBlocks(unit);
             foreach (var bl in availMoves)
             {
+                var model = GetTeamViewModel(unit.Team);
                 _boardGr[bl.Row, bl.Column].Movable = true;
+                _boardGr[bl.Row, bl.Column].MovableColor = model.MovableColor;
             }
         }
 
@@ -207,7 +218,9 @@ namespace StrategyChessClient.Controls
             var targets = GameController.GetEnemyAround(unit, unit.Range);
             foreach (var target in targets)
             {
+                var model = GetTeamViewModel(unit.Team);
                 _boardGr[target.Row, target.Column].Attackable = true;
+                _boardGr[target.Row, target.Column].AttackableColor = model.AttackableColor;
             }
         }
         
@@ -257,6 +270,8 @@ namespace StrategyChessClient.Controls
                             var result = GameController.MakeAMove(_selectedUnit, _selectedCell.Row, _selectedCell.Column);
                             if (result)
                             {
+                                //chessPiece
+                                UpdateChessPiece(_selectedUnit, _selectedCell);
                                 UpdateTargetCells(_selectedUnit);
                             }
                         } 

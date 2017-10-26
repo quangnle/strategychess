@@ -86,5 +86,15 @@ namespace StrategyChessGraphics
         {
             return GetCell(new Point(x, y));
         }
+
+        public void RefreshState()
+        {
+            foreach (var cell in _cells)
+            {
+                cell.Selected = false;
+                cell.Movable = false;
+                cell.Attackable = false;
+            }
+        }
     }
 }

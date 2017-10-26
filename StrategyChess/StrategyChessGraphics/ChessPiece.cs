@@ -17,6 +17,12 @@ namespace StrategyChessGraphics
         protected IUnit _unit;
         protected Rectangle _rect;
 
+        public Rectangle Rect
+        {
+            get { return _rect; }
+            set { _rect = value; }
+        }
+
         public IUnit Unit
         {
             get { return _unit; }
