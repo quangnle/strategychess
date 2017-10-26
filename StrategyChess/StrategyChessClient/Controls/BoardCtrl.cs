@@ -330,8 +330,12 @@ namespace StrategyChessClient.Controls
                                 else
                                     GameController.MakeAMove(_beginUnit, _selectedCell.Row, _selectedCell.Column); // single attack
 
-                                RemoveChessPiece(_selectedCell.Row, _selectedCell.Column);
-                                UpdateMovableCells(_beginUnit);
+                                if (unit.HP <= 0)
+                                {
+                                    RemoveChessPiece(_selectedCell.Row, _selectedCell.Column);
+                                    UpdateMovableCells(_beginUnit);
+                                }
+                                
                                 NextTeam(_beginUnit.Team);
                             }
                         }
