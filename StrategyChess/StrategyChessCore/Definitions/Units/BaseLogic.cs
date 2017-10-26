@@ -17,7 +17,7 @@ namespace StrategyChessCore.Definitions.Units
 
         public BaseLogic(IUnit unit, BoardHandler boardHandler)
         {
-            unit = Unit;
+            Unit = unit;
             BoardHandler = boardHandler;
         }
 
@@ -48,6 +48,7 @@ namespace StrategyChessCore.Definitions.Units
                     var team = target.Team;
                     team.Units.Remove(target);
                 }
+                Unit.CurrentCoolDown = Unit.CoolDown;
                 return true;
             }
 

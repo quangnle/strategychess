@@ -38,6 +38,8 @@ namespace StrategyChessCore
             {
                 State = GameState.Playing;
                 _currentTeam = _boardHandler.LowerTeam;
+                _currentTeam.ActionableUnits.AddRange(TeamHandler.GetUnits(_currentTeam));
+                _currentTeam.CanMoveUnit = true;
                 return true;
             }
 
@@ -75,7 +77,6 @@ namespace StrategyChessCore
             if ((TeamHandler.GetCamps(team).Count == _maxCamps) && (TeamHandler.GetUnits(team).Count == _maxUnits))
             {
                 team.Ready = true;
-                team.ActionableUnits.AddRange(TeamHandler.GetUnits(team));
                 return true;
             }   
             return false;
@@ -154,7 +155,7 @@ namespace StrategyChessCore
         public bool MakeAMove(IUnit unit, int row, int col)
         {
             // check if the game is still on going
-            if (State == GameState.Playing)
+            if (State != GameState.Playing)
                 return false;
 
             // check if the current turn is unit's team
@@ -217,14 +218,14 @@ namespace StrategyChessCore
         {
             for (int i = 0; i < _boardHandler.UpperTeam.Units.Count; i++)
             {
-                if (_boardHandler.UpperTeam.Units[i].CoolDown > 0)
-                    _boardHandler.UpperTeam.Units[i].CoolDown--;
+                if (_boardHandler.UpperTeam.Units[i].CurrentCoolDown > 0)
+                    _boardHandler.UpperTeam.Units[i].CurrentCoolDown--;
             }
 
             for (int i = 0; i < _boardHandler.LowerTeam.Units.Count; i++)
             {
-                if (_boardHandler.LowerTeam.Units[i].CoolDown > 0)
-                    _boardHandler.LowerTeam.Units[i].CoolDown--;
+                if (_boardHandler.LowerTeam.Units[i].CurrentCoolDown > 0)
+                    _boardHandler.LowerTeam.Units[i].CurrentCoolDown--;
             }
         }
 

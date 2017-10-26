@@ -250,8 +250,7 @@ namespace StrategyChessClient.Controls
                         }
                     }
                     else
-                    {
-                        GameController.MakeAMove(_selectedUnit, _selectedCell.Row, _selectedCell.Column);
+                    {   
                         var unit = GameController.GetUnitAt(_selectedCell.Row, _selectedCell.Column);
                         if (unit == null) // move
                         {

@@ -32,6 +32,7 @@ namespace StrategyChessCore.Definitions.Units
                         }
                     }
 
+                    Unit.CurrentCoolDown = Unit.CoolDown;
                     return true;
                 }
             }
