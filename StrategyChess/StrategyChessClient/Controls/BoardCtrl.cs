@@ -215,15 +215,12 @@ namespace StrategyChessClient.Controls
             var availMoves = GameController.GetMovableBlocks(unit);
             if (availMoves == null || availMoves.Count <= 0)
                 return;
-
+            
             foreach (var bl in availMoves)
             {
-                foreach (var bl in availMoves)
-                {
-                    var model = GetTeamViewModel(unit.Team);
-                    _boardGr[bl.Row, bl.Column].Movable = true;
-                    _boardGr[bl.Row, bl.Column].MovableColor = model.MovableColor;
-                }
+                var model = GetTeamViewModel(unit.Team);
+                _boardGr[bl.Row, bl.Column].Movable = true;
+                _boardGr[bl.Row, bl.Column].MovableColor = model.MovableColor;
             }
         }
 
@@ -236,12 +233,9 @@ namespace StrategyChessClient.Controls
 
             foreach (var target in targets)
             {
-                foreach (var target in targets)
-                {
-                    var model = GetTeamViewModel(unit.Team);
-                    _boardGr[target.Row, target.Column].Attackable = true;
-                    _boardGr[target.Row, target.Column].AttackableColor = model.AttackableColor;
-                }
+                var model = GetTeamViewModel(unit.Team);
+                _boardGr[target.Row, target.Column].Attackable = true;
+                _boardGr[target.Row, target.Column].AttackableColor = model.AttackableColor;
             }
         }
 
