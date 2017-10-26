@@ -274,10 +274,30 @@ namespace StrategyChessClient.Controls
                                 UpdateChessPiece(_selectedUnit, _selectedCell);
                                 UpdateTargetCells(_selectedUnit);
                             }
+                            else
+                                _selectedUnit = null;
                         } 
                         else
                         {
-                            var result = GameController.MakeAMove(_selectedUnit, _selectedCell.Row, _selectedCell.Column);
+                            if (unit.Id != _selectedUnit.Id)
+                            {
+                                if (unit.Team.Name != _selectedUnit.Team.Name)
+                                {
+                                    if (_selectedUnit is Tanker)
+                                        GameController.MakeAMove(_selectedUnit, -1, -1); // AOE
+                                    else
+                                        GameController.MakeAMove(_selectedUnit, _selectedCell.Row, _selectedCell.Column); // single attack
+                                }   
+                                else
+                                {
+                                    _selectedUnit = unit;
+                                    // draw movable area
+                                    _selectedCell.Selected = true;
+
+                                    UpdateMovableCells(_selectedUnit);
+                                    UpdateTargetCells(_selectedUnit);
+                                }
+                            }
                         }
                     }
                 }
