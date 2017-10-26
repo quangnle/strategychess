@@ -25,7 +25,8 @@ namespace StrategyChessCore.Definitions.Units
             HP = 2;
             Speed = 3;
             Range = 5;
-            CoolDown = 2;
+
+            CoolDown = 3;
             CurrentCoolDown = 0;
         }
     }

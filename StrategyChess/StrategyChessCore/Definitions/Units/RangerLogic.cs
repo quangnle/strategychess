@@ -22,7 +22,7 @@ namespace StrategyChessCore.Definitions.Units
             // if there's enemy adjacent to the unit
             if (adjacents != null && adjacents.Count > 0)
             {
-                Unit.CurrentCoolDown = Unit.CurrentCoolDown == 2 ? 2 : 1;
+                Unit.CurrentCoolDown = Unit.CurrentCoolDown == Unit.CoolDown ? Unit.CoolDown : 2;
                 return null;
             }
 
