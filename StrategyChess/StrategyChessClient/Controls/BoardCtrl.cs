@@ -332,14 +332,28 @@ namespace StrategyChessClient.Controls
                             else //attack
                             {
                                 if (_beginUnit is Tanker)
-                                    GameController.MakeAMove(_beginUnit, -1, -1); // AOE
+                                {
+                                    var enemyUnits = GameController.GetEnemyAround(_beginUnit);
+                                    if (GameController.MakeAMove(_beginUnit, -1, -1)) // AOE
+                                    {
+                                        if (enemyUnits != null && enemyUnits.Count > 0)
+                                        {
+                                            foreach (var enemyUnit in enemyUnits.Where(x => x.HP <= 0).ToList())
+                                            {
+                                                RemoveChessPiece(enemyUnit.Row, enemyUnit.Column);
+                                            }
+                                        }
+                                    }
+                                }
                                 else
+                                {
                                     GameController.MakeAMove(_beginUnit, _selectedCell.Row, _selectedCell.Column); // single attack
 
-                                if (unit.HP <= 0)
-                                {
-                                    RemoveChessPiece(_selectedCell.Row, _selectedCell.Column);
-                                    UpdateMovableCells(_beginUnit);
+                                    if (unit.HP <= 0)
+                                    {
+                                        RemoveChessPiece(_selectedCell.Row, _selectedCell.Column);
+                                        //UpdateMovableCells(_beginUnit);
+                                    }
                                 }
                                 
                                 NextTeam(_beginUnit.Team);
