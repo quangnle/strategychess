@@ -301,7 +301,9 @@ namespace StrategyChessClient.Controls
 
                                     var enemyUnits = GameController.GetEnemyAround(_beginUnit);
                                     if (enemyUnits == null || enemyUnits.Count <= 0)
+                                    {
                                         NextTeam(_beginUnit.Team);
+                                    }
                                     else //Only attack enemy or next turn
                                     {
                                         _onlyAttack = true;
@@ -350,10 +352,7 @@ namespace StrategyChessClient.Controls
                                     GameController.MakeAMove(_beginUnit, _selectedCell.Row, _selectedCell.Column); // single attack
 
                                     if (unit.HP <= 0)
-                                    {
                                         RemoveChessPiece(_selectedCell.Row, _selectedCell.Column);
-                                        //UpdateMovableCells(_beginUnit);
-                                    }
                                 }
                                 
                                 NextTeam(_beginUnit.Team);
