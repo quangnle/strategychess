@@ -213,6 +213,9 @@ namespace StrategyChessClient.Controls
         private void UpdateMovableCells(IUnit unit)
         {
             var availMoves = GameController.GetMovableBlocks(unit);
+            if (availMoves == null || availMoves.Count <= 0)
+                return;
+
             foreach (var bl in availMoves)
             {
                 var model = GetTeamViewModel(unit.Team);
@@ -225,6 +228,9 @@ namespace StrategyChessClient.Controls
         {
             // draw attackable targets
             var targets = GameController.GetEnemyAround(unit);
+            if (targets == null || targets.Count <= 0)
+                return;
+
             foreach (var target in targets)
             {
                 var model = GetTeamViewModel(unit.Team);
