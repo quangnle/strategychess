@@ -37,7 +37,7 @@ namespace StrategyChessClient
         #region UI Command
         private void InitGame()
         {
-            _gameController = new GameController(20, 6, 2);
+            _gameController = new GameController(10, 12, 6, 2);
             _boardCtrl.GameController = _gameController;
             _boardCtrl.OnPlaceUnitEvent += _boardCtrl_OnPlaceUnitEvent;
             _boardCtrl.OnRemoveUnitEvent += _boardCtrl_OnRemoveUnitEvent;
@@ -145,7 +145,7 @@ namespace StrategyChessClient
 
                 _upperTeamCtrl.VisibleTurn = false;
                 _lowerTeamCtrl.VisibleTurn = false;
-                _gameController = new GameController(20, 6, 2);
+                _gameController = new GameController(10, 12, 6, 2);
                 _boardCtrl.GameController = _gameController;
                 _boardCtrl.ClearAllChessPieces();
                 _boardCtrl.RefreshState();

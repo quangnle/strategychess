@@ -45,16 +45,16 @@ namespace StrategyChessCore.Definitions
             if (team.Name == UpperTeam.Name)
             {
                 fromRow = 0;
-                toRow = _board.Size / 4;
+                toRow = 3;
                 fromCol = 0;
-                toCol = _board.Size;
+                toCol = _board.Width;
             }
             else
             {
-                fromRow = _board.Size * 3 / 4;
-                toRow = _board.Size;
+                fromRow = _board.Height - 3;
+                toRow = _board.Height;
                 fromCol = 0;
-                toCol = _board.Size;
+                toCol = _board.Width;
             }
 
             var result = _board.Blocks.Where(b => (b.Column >= fromCol && b.Column < toCol) && 

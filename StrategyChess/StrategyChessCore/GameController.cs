@@ -23,9 +23,9 @@ namespace StrategyChessCore
             get { return _currentTeam; }
         }
 
-        public GameController(int size, int maxUnits, int maxCamps)
+        public GameController(int width, int height, int maxUnits, int maxCamps)
         {            
-            _boardHandler = new BoardHandler(new Board(size));
+            _boardHandler = new BoardHandler(new Board(width, height));
 
             _maxUnits = maxUnits;
             _maxCamps = maxCamps;

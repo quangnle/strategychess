@@ -13,17 +13,19 @@ namespace StrategyChessCore.Definitions
             get { return Blocks.FirstOrDefault(b => b.Row == row && b.Column == column); }
         }
 
-        public int Size { get; internal set; }
-        
+        public int Width { get; internal set; }
+        public int Height { get; internal set; }
+
         public List<Block> Blocks { get; set; }
 
-        public Board(int size)
+        public Board(int width, int height)
         {
-            Size = size;
+            Width = width;
+            Height = height;
             Blocks = new List<Block>();
-            for (int r = 0; r < size; r++)
+            for (int r = 0; r < height; r++)
             {
-                for (int c = 0; c < size; c++)
+                for (int c = 0; c < width; c++)
                 {
                     var b = new Block { Row = r, Column = c};
                     Blocks.Add(b);
