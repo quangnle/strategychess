@@ -24,7 +24,7 @@ namespace StrategyChessCore.Definitions.Units
             // if there's enemy adjacent to the unit
             if (adjacents != null && adjacents.Count > 0)
             {
-                Unit.CurrentCoolDown = Unit.CurrentCoolDown == Unit.CoolDown ? Unit.CoolDown : 2;
+                Unit.CurrentCoolDown = Unit.CurrentCoolDown == Unit.CoolDown ? Unit.CoolDown : Unit.CoolDown - 1;
                 return null;
             }
 

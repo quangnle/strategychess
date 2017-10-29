@@ -25,7 +25,7 @@ namespace StrategyChessCore.Definitions.Units
             // default values
             HP = 5;
             Range = 1;
-            Speed = 1;
+            Speed = 2;
             
             CoolDown = 3;
             CurrentCoolDown = 0;
