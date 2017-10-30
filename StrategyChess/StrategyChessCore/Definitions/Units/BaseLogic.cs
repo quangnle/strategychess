@@ -21,10 +21,23 @@ namespace StrategyChessCore.Definitions.Units
             BoardHandler = boardHandler;
         }
 
+        public virtual List<IUnit> GetAllTargets(int row, int col)
+        {
+            if (Unit.CurrentCoolDown > 0) return null;
+            var team = BoardHandler.GetOpponent(Unit.Team);
+            var enemies = TeamHandler.GetUnitsAround(team, row, col, Unit.Range);
+            return enemies;
+        }
+
         public virtual List<IUnit> GetAllTargets()
         {
             if (Unit.CurrentCoolDown > 0) return null;
             return BoardHandler.GetEnemyAround(Unit, Unit.Range);
+        }
+
+        public virtual List<Block> GetAllMovableBlocks(int row, int col)
+        {
+            return BoardHandler.GetEmptyGroundBlocksWithinDistance(BoardHandler.Board[row, col], Unit.Speed);
         }
 
         public virtual List<Block> GetAllMoveableBlocks()

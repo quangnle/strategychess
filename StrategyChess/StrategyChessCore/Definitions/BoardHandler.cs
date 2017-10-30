@@ -113,7 +113,7 @@ namespace StrategyChessCore.Definitions
             return inRangeBlocks;
         }
 
-        private Team GetOpponent(Team team)
+        public Team GetOpponent(Team team)
         {
             if (team.Name == UpperTeam.Name)
                 return LowerTeam;
