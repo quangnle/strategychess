@@ -117,6 +117,18 @@ namespace StrategyChessCore
             return _boardHandler.GetEmptyGroundBlocksWithinDistance(_boardHandler.Board[unit.Row, unit.Column] , unit.Speed);
         }
 
+        public List<Block> GetMovableBlocks(IUnit unit, int row, int col)
+        {
+            var logic = CreateLogic(unit);
+            return logic.GetAllMovableBlocks(row, col);
+        }
+
+        public List<IUnit> GetEnemyAround(IUnit unit, int row, int col)
+        {
+            var logic = CreateLogic(unit);
+            return logic.GetAllTargets(row, col);
+        }
+
         public List<IUnit> GetEnemyAround(IUnit unit)
         {
             var logic = CreateLogic(unit);

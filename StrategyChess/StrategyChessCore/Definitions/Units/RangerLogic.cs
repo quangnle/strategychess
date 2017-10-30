@@ -10,6 +10,18 @@ namespace StrategyChessCore.Definitions.Units
     {
         public RangerLogic(Ranger unit, BoardHandler boardHandler) : base(unit, boardHandler) { }
 
+        public override List<IUnit> GetAllTargets(int row, int col)
+        {
+            if (Unit.CurrentCoolDown > 0) return null;
+
+            var team = BoardHandler.GetOpponent(Unit.Team);
+            var adjacents = TeamHandler.GetUnitsAround(team, row, col, 1);
+
+            if (adjacents != null && adjacents.Count > 0) return null;
+
+            return base.GetAllTargets(row, col);
+        }
+
         /// <summary>
         /// A ranger wont be able to shoot if there is an enemy adjacent to it
         /// </summary>
