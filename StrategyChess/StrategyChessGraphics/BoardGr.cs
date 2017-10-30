@@ -13,8 +13,10 @@ namespace StrategyChessGraphics
 {
     public class BoardGr
     {
-        private int _cellSize = 35;
-        private int _size;
+        private int _cellWidth = 35;
+        private int _cellHeight = 35;
+        private int _width;
+        private int _height;
         private List<Cell> _cells;
         private Font _font = new Font("Arial", 9);
 
@@ -28,9 +30,12 @@ namespace StrategyChessGraphics
             get { return _cells.FirstOrDefault(x => x.Row == row && x.Column == col); }
         }
 
-        public BoardGr(int size)
+        public BoardGr(int width, int height, int cellWidth, int cellHeight)
         {
-            _size = size;
+            _width = width;
+            _height = height;
+            _cellWidth = cellWidth;
+            _cellHeight = cellHeight;
             Init();
         }
 
@@ -39,18 +44,18 @@ namespace StrategyChessGraphics
             _cells = new List<Cell>();
 
             var y = 0;
-            for (int r = 0; r < _size; r++)
+            for (int r = 0; r < _height; r++)
             {
                 var x = 0;
-                for (int c = 0; c < _size; c++)
+                for (int c = 0; c < _width; c++)
                 {
-                    var rect = new Rectangle(x, y, _cellSize, _cellSize);
+                    var rect = new Rectangle(x, y, _cellWidth, _cellHeight);
                     var cell = new Cell(rect, r, c);
                     _cells.Add(cell);
-                    x += _cellSize;
+                    x += _cellWidth;
                 }
 
-                y += _cellSize;
+                y += _cellHeight;
             }
         }
 
@@ -65,15 +70,21 @@ namespace StrategyChessGraphics
             // draw index
             var x = 0;
             var y = 0;
-            var right = (_size * _cellSize) + 5;
-            var bottom = (_size * _cellSize) + 5;
+            var right = (_width * _cellWidth) + 5;
+            var bottom = (_height * _cellHeight) + 5;
             
-            for (int i = 0; i < _size; i++)
+            for (int i = 0; i < _height; i++)
             {
-                g.DrawString($"{i + 1}", _font, Brushes.Black, new Point(right, y + 8));
-                g.DrawString($"{i + 1}", _font, Brushes.Black, new Point(x + 8, bottom));
-                y += _cellSize;
-                x += _cellSize;
+                var yy = y + (_cellHeight / 2) - 5;
+                g.DrawString($"{i + 1}", _font, Brushes.Black, new Point(right, yy));
+                y += _cellHeight;
+            }
+
+            for (int i = 0; i < _width; i++)
+            {
+                var xx = x + (_cellWidth / 2) - 10;
+                g.DrawString($"{i + 1}", _font, Brushes.Black, new Point(xx, bottom));
+                x += _cellWidth;
             }
         }
 

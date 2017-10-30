@@ -50,9 +50,9 @@
             this.pPlayer.BackColor = System.Drawing.Color.White;
             this.pPlayer.Controls.Add(this.tableLayoutPanel1);
             this.pPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pPlayer.Location = new System.Drawing.Point(725, 0);
+            this.pPlayer.Location = new System.Drawing.Point(631, 0);
             this.pPlayer.Name = "pPlayer";
-            this.pPlayer.Size = new System.Drawing.Size(307, 725);
+            this.pPlayer.Size = new System.Drawing.Size(303, 689);
             this.pPlayer.TabIndex = 0;
             // 
             // tableLayoutPanel1
@@ -69,7 +69,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 104F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(307, 725);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(303, 689);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // customPanel3
@@ -77,9 +77,9 @@
             this.customPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.customPanel3.Controls.Add(this._lowerTeamCtrl);
             this.customPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel3.Location = new System.Drawing.Point(3, 417);
+            this.customPanel3.Location = new System.Drawing.Point(3, 399);
             this.customPanel3.Name = "customPanel3";
-            this.customPanel3.Size = new System.Drawing.Size(301, 305);
+            this.customPanel3.Size = new System.Drawing.Size(297, 287);
             this.customPanel3.TabIndex = 2;
             // 
             // _lowerTeamCtrl
@@ -98,7 +98,7 @@
             this._lowerTeamCtrl.Name = "_lowerTeamCtrl";
             this._lowerTeamCtrl.RangerCount = 0;
             this._lowerTeamCtrl.RangerImage = null;
-            this._lowerTeamCtrl.Size = new System.Drawing.Size(299, 303);
+            this._lowerTeamCtrl.Size = new System.Drawing.Size(295, 285);
             this._lowerTeamCtrl.TabIndex = 1;
             this._lowerTeamCtrl.TankerCount = 0;
             this._lowerTeamCtrl.TankerImage = null;
@@ -111,7 +111,7 @@
             this.customPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.customPanel2.Location = new System.Drawing.Point(3, 3);
             this.customPanel2.Name = "customPanel2";
-            this.customPanel2.Size = new System.Drawing.Size(301, 304);
+            this.customPanel2.Size = new System.Drawing.Size(297, 286);
             this.customPanel2.TabIndex = 1;
             // 
             // _upperTeamCtrl
@@ -130,7 +130,7 @@
             this._upperTeamCtrl.Name = "_upperTeamCtrl";
             this._upperTeamCtrl.RangerCount = 0;
             this._upperTeamCtrl.RangerImage = null;
-            this._upperTeamCtrl.Size = new System.Drawing.Size(299, 302);
+            this._upperTeamCtrl.Size = new System.Drawing.Size(295, 284);
             this._upperTeamCtrl.TabIndex = 0;
             this._upperTeamCtrl.TankerCount = 0;
             this._upperTeamCtrl.TankerImage = null;
@@ -141,9 +141,9 @@
             this.pGameSetting.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pGameSetting.Controls.Add(this._gameSettingCtrl);
             this.pGameSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pGameSetting.Location = new System.Drawing.Point(3, 313);
+            this.pGameSetting.Location = new System.Drawing.Point(3, 295);
             this.pGameSetting.Name = "pGameSetting";
-            this.pGameSetting.Size = new System.Drawing.Size(301, 98);
+            this.pGameSetting.Size = new System.Drawing.Size(297, 98);
             this.pGameSetting.TabIndex = 0;
             // 
             // _gameSettingCtrl
@@ -152,7 +152,7 @@
             this._gameSettingCtrl.Dock = System.Windows.Forms.DockStyle.Fill;
             this._gameSettingCtrl.Location = new System.Drawing.Point(0, 0);
             this._gameSettingCtrl.Name = "_gameSettingCtrl";
-            this._gameSettingCtrl.Size = new System.Drawing.Size(299, 96);
+            this._gameSettingCtrl.Size = new System.Drawing.Size(295, 96);
             this._gameSettingCtrl.TabIndex = 0;
             // 
             // _boardCtrl
@@ -163,7 +163,7 @@
             this._boardCtrl.Location = new System.Drawing.Point(0, 0);
             this._boardCtrl.LowerTeamVM = null;
             this._boardCtrl.Name = "_boardCtrl";
-            this._boardCtrl.Size = new System.Drawing.Size(725, 725);
+            this._boardCtrl.Size = new System.Drawing.Size(631, 689);
             this._boardCtrl.TabIndex = 1;
             this._boardCtrl.UpperTeamVM = null;
             // 
@@ -171,7 +171,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1032, 725);
+            this.ClientSize = new System.Drawing.Size(934, 689);
             this.Controls.Add(this.pPlayer);
             this.Controls.Add(this._boardCtrl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;

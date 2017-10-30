@@ -37,7 +37,7 @@ namespace StrategyChessClient
         #region UI Command
         private void InitGame()
         {
-            _gameController = new GameController(10, 12, 6, 2);
+            _gameController = new GameController(Global.BoardWidth, Global.BoardHeight, Global.MaxUnits, Global.MaxCamps);
             _boardCtrl.GameController = _gameController;
             _boardCtrl.OnPlaceUnitEvent += _boardCtrl_OnPlaceUnitEvent;
             _boardCtrl.OnRemoveUnitEvent += _boardCtrl_OnRemoveUnitEvent;
@@ -62,6 +62,8 @@ namespace StrategyChessClient
                 SelectedChessPieceImage = Properties.Resources.Tanker_Green
             };
 
+            _lowerTeamCtrl.MaxUnits = Global.MaxUnits;
+            _lowerTeamCtrl.MaxCamps = Global.MaxCamps;
             _lowerTeamCtrl.Model = lowerModel;
             _lowerTeamCtrl.GameController = _gameController;
             _lowerTeamCtrl.AllowSelectUnit(false);
@@ -78,6 +80,8 @@ namespace StrategyChessClient
                 SelectedChessPieceImage = Properties.Resources.Tanker_Blue
             };
 
+            _upperTeamCtrl.MaxUnits = Global.MaxUnits;
+            _upperTeamCtrl.MaxCamps = Global.MaxCamps;
             _upperTeamCtrl.GameController = _gameController;
             _upperTeamCtrl.Model = upperModel;
             _upperTeamCtrl.AllowSelectUnit(false);
@@ -145,7 +149,7 @@ namespace StrategyChessClient
 
                 _upperTeamCtrl.VisibleTurn = false;
                 _lowerTeamCtrl.VisibleTurn = false;
-                _gameController = new GameController(10, 12, 6, 2);
+                _gameController = new GameController(Global.BoardWidth, Global.BoardHeight, Global.MaxUnits, Global.MaxCamps);
                 _boardCtrl.GameController = _gameController;
                 _boardCtrl.ClearAllChessPieces();
                 _boardCtrl.RefreshState();

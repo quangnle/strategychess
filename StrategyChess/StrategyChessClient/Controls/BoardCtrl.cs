@@ -15,6 +15,7 @@ namespace StrategyChessClient.Controls
     public delegate void PlaceUnitHandler(UnitType type, string teamName);
     public delegate void RemoveUnitHandler(UnitType type, string teamName);
     public delegate void NextTeamHandler(string teamName);
+
     public class BoardCtrl : CustomPanel
     {
         #region Members
@@ -36,11 +37,12 @@ namespace StrategyChessClient.Controls
         #region Constructor
         public BoardCtrl()
         {
-            _boardGr = new BoardGr(20);
+            _boardGr = new BoardGr(Global.BoardWidth, Global.BoardHeight, Global.CellWidth, Global.CellHeight);
             this.BackColor = System.Drawing.Color.White;
             this.Paint += BoardCtrl_Paint;
             this.DoubleClick += BoardCtrl_DoubleClick;
             this.MouseDown += BoardCtrl_MouseDown;
+            this.MouseMove += BoardCtrl_MouseMove;
         }
         #endregion
 
@@ -215,12 +217,12 @@ namespace StrategyChessClient.Controls
             var availMoves = GameController.GetMovableBlocks(unit);
             if (availMoves == null || availMoves.Count <= 0)
                 return;
-            
             foreach (var bl in availMoves)
             {
                 var model = GetTeamViewModel(unit.Team);
-                _boardGr[bl.Row, bl.Column].Movable = true;
-                _boardGr[bl.Row, bl.Column].MovableColor = model.MovableColor;
+                var cell = _boardGr[bl.Row, bl.Column];
+                cell.Movable = true;
+                cell.MovableColor = model.MovableColor;
             }
         }
 
@@ -234,8 +236,9 @@ namespace StrategyChessClient.Controls
             foreach (var target in targets)
             {
                 var model = GetTeamViewModel(unit.Team);
-                _boardGr[target.Row, target.Column].Attackable = true;
-                _boardGr[target.Row, target.Column].AttackableColor = model.AttackableColor;
+                var cell = _boardGr[target.Row, target.Column];
+                cell.Attackable = true;
+                cell.AttackableColor = model.AttackableColor;
             }
         }
 
@@ -345,6 +348,8 @@ namespace StrategyChessClient.Controls
                                                 RemoveChessPiece(enemyUnit.Row, enemyUnit.Column);
                                             }
                                         }
+
+                                        NextTeam(_beginUnit.Team);
                                     }
                                 }
                                 else
@@ -353,9 +358,9 @@ namespace StrategyChessClient.Controls
 
                                     if (unit.HP <= 0)
                                         RemoveChessPiece(_selectedCell.Row, _selectedCell.Column);
+
+                                    NextTeam(_beginUnit.Team);
                                 }
-                                
-                                NextTeam(_beginUnit.Team);
                             }
                         }
                     }
@@ -373,6 +378,18 @@ namespace StrategyChessClient.Controls
             Invalidate();
         }
 
+        private void BoardCtrl_MouseMove(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (_beginUnit == null) return;
+
+            var selectedCell = _boardGr.GetCell(new System.Drawing.Point(e.X, e.Y));
+            if (selectedCell == null) return;
+
+            var unit = GameController.GetUnitAt(selectedCell.Row, selectedCell.Column);
+            if (unit != null) return;
+
+
+        }
         #endregion
     }
 }
