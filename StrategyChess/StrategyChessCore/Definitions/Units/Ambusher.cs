@@ -22,10 +22,10 @@ namespace StrategyChessCore.Definitions.Units
             Id = id;
 
             // default values
-            HP = 3;
-            Speed = 4;
-            Range = 1;
-            CoolDown = 3;
+            HP = GameConfig.AmbusherHp;
+            Speed = GameConfig.AmbusherSpeed;
+            Range = GameConfig.AmbusherRange;
+            CoolDown = GameConfig.AmbusherCoolDown;
             CurrentCoolDown = 0;
         }
     }

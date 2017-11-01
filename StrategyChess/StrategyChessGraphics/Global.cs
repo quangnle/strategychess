@@ -19,6 +19,7 @@ namespace StrategyChessGraphics
         public static Color AttackableColor = Color.FromArgb(100, 255, 0, 0);
         public static int BoardWidth = 10;
         public static int BoardHeight = 12;
+        public static int InitHeight = 3;
         public static int CellWidth = 60;
         public static int CellHeight = 55;
         public static int MaxUnits = 6;

@@ -53,11 +53,10 @@
     <Compile Include="Definitions\Block.cs" />
     <Compile Include="Definitions\Board.cs" />
     <Compile Include="Definitions\BoardHandler.cs" />
+    <Compile Include="GameConfig.cs" />
     <Compile Include="GameController.cs" />
-    <Compile Include="GameMsg.cs" />
     <Compile Include="Definitions\Units\IUnit.cs" />
     <Compile Include="GameState.cs" />
-    <Compile Include="NetworkProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Definitions\Units\BaseLogic.cs" />
     <Compile Include="Definitions\Units\Ranger.cs" />

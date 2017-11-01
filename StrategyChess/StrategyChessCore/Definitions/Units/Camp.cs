@@ -22,10 +22,10 @@ namespace StrategyChessCore.Definitions.Units
             Id = id;
 
             // default values
-            HP = 5;
-            Speed = 0;
-            Range = 0;
-            CoolDown = 0;
+            HP = GameConfig.CampHp;
+            Speed = GameConfig.CampSpeed;
+            Range = GameConfig.CampRange;
+            CoolDown = GameConfig.CampCoolDown;
             CurrentCoolDown = 0;
         }
     }

@@ -22,11 +22,10 @@ namespace StrategyChessCore.Definitions.Units
             Id = id;
 
             // default values
-            HP = 2;
-            Speed = 3;
-            Range = 5;
-
-            CoolDown = 4;
+            HP = GameConfig.RangerHp;
+            Speed = GameConfig.RangerSpeed;
+            Range = GameConfig.RangerRange;
+            CoolDown = GameConfig.RangerCoolDown;
             CurrentCoolDown = 0;
         }
     }

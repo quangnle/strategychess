@@ -13,6 +13,7 @@ using StrategyChessClient.Controls;
 using StrategyChessCore.Definitions;
 using StrategyChessCore;
 using StrategyChessClient.ViewModels;
+using System.Configuration;
 
 namespace StrategyChessClient
 {
@@ -35,8 +36,42 @@ namespace StrategyChessClient
         #endregion
 
         #region UI Command
+        private void LoadConfiguration()
+        {
+            Global.BoardWidth = Convert.ToInt32(ConfigurationManager.AppSettings["width"]);
+            Global.BoardHeight = Convert.ToInt32(ConfigurationManager.AppSettings["height"]);
+            Global.InitHeight = Convert.ToInt32(ConfigurationManager.AppSettings["initheight"]);
+
+            Global.CellHeight = Convert.ToInt32(ConfigurationManager.AppSettings["cellheight"]);
+            Global.CellWidth = Convert.ToInt32(ConfigurationManager.AppSettings["cellwidth"]);
+            Global.MaxCamps = Convert.ToInt32(ConfigurationManager.AppSettings["maxcamps"]);
+            Global.MaxUnits = Convert.ToInt32(ConfigurationManager.AppSettings["maxunits"]);
+
+            GameConfig.CampHp = Convert.ToInt32(ConfigurationManager.AppSettings["camp.hp"]); ;
+            GameConfig.CampSpeed = Convert.ToInt32(ConfigurationManager.AppSettings["camp.speed"]); ;
+            GameConfig.CampRange = Convert.ToInt32(ConfigurationManager.AppSettings["camp.range"]); ;
+            GameConfig.CampCoolDown = Convert.ToInt32(ConfigurationManager.AppSettings["camp.cooldown"]); ;
+
+            GameConfig.RangerHp = Convert.ToInt32(ConfigurationManager.AppSettings["ranger.hp"]); ;
+            GameConfig.RangerSpeed = Convert.ToInt32(ConfigurationManager.AppSettings["ranger.speed"]); ;
+            GameConfig.RangerRange = Convert.ToInt32(ConfigurationManager.AppSettings["ranger.range"]); ;
+            GameConfig.RangerCoolDown = Convert.ToInt32(ConfigurationManager.AppSettings["ranger.cooldown"]); ;
+
+            GameConfig.TankerHp = Convert.ToInt32(ConfigurationManager.AppSettings["tanker.hp"]); ;
+            GameConfig.TankerSpeed = Convert.ToInt32(ConfigurationManager.AppSettings["tanker.speed"]); ;
+            GameConfig.TankerRange = Convert.ToInt32(ConfigurationManager.AppSettings["tanker.range"]); ;
+            GameConfig.TankerCoolDown = Convert.ToInt32(ConfigurationManager.AppSettings["tanker.cooldown"]); ;
+
+            GameConfig.AmbusherHp = Convert.ToInt32(ConfigurationManager.AppSettings["ambusher.hp"]); ;
+            GameConfig.AmbusherSpeed = Convert.ToInt32(ConfigurationManager.AppSettings["ambusher.speed"]); ;
+            GameConfig.AmbusherRange = Convert.ToInt32(ConfigurationManager.AppSettings["ambusher.range"]); ;
+            GameConfig.AmbusherCoolDown = Convert.ToInt32(ConfigurationManager.AppSettings["ambusher.cooldown"]); ;
+        }
+
         private void InitGame()
         {
+            LoadConfiguration();
+
             _gameController = new GameController(Global.BoardWidth, Global.BoardHeight, Global.MaxUnits, Global.MaxCamps);
             _boardCtrl.GameController = _gameController;
             _boardCtrl.OnPlaceUnitEvent += _boardCtrl_OnPlaceUnitEvent;

@@ -23,11 +23,10 @@ namespace StrategyChessCore.Definitions.Units
             Id = id;
 
             // default values
-            HP = 5;
-            Range = 1;
-            Speed = 2;
-            
-            CoolDown = 3;
+            HP = GameConfig.TankerHp;
+            Speed = GameConfig.TankerSpeed;
+            Range = GameConfig.TankerRange;
+            CoolDown = GameConfig.TankerCoolDown;
             CurrentCoolDown = 0;
         }
     }
