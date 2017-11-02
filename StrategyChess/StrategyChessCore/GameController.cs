@@ -88,14 +88,17 @@ namespace StrategyChessCore
             if (team != null)
             {
                 var availBlocks = _boardHandler.GetInitArea(team);
-                if (availBlocks.Exists(b => b.Column == col && b.Row == row) && 
-                    (team.Units.Count < _maxUnits + _maxCamps))
+                if (availBlocks.Exists(b => b.Column == col && b.Row == row))                     
                 {
-                    unit.Row = row;
-                    unit.Column = col;
-                    unit.Team = team;
-                    team.Units.Add(unit);
-                    return true;
+                    if (((unit is Camp) && TeamHandler.GetCamps(team).Count < _maxCamps) ||
+                        (!(unit is Camp) && TeamHandler.GetUnits(team).Count < _maxUnits))
+                    {
+                        unit.Row = row;
+                        unit.Column = col;
+                        unit.Team = team;
+                        team.Units.Add(unit);
+                        return true;
+                    }
                 }   
             }
 
