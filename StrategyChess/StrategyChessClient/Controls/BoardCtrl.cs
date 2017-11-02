@@ -37,7 +37,6 @@ namespace StrategyChessClient.Controls
         #region Constructor
         public BoardCtrl()
         {
-            _boardGr = new BoardGr(GameConfig.BoardWidth, GameConfig.BoardHeight, Global.CellWidth, Global.CellHeight);
             this.BackColor = System.Drawing.Color.White;
             this.Paint += BoardCtrl_Paint;
             this.DoubleClick += BoardCtrl_DoubleClick;
@@ -51,6 +50,11 @@ namespace StrategyChessClient.Controls
         #endregion
 
         #region UI Command
+        public void InitBoard()
+        {
+            _boardGr = new BoardGr(GameConfig.BoardWidth, GameConfig.BoardHeight, Global.CellWidth, Global.CellHeight);
+        }
+
         public void ClearAllChessPieces()
         {
             _chessPieces.Clear();
@@ -177,6 +181,8 @@ namespace StrategyChessClient.Controls
         #region Window Event Handlers
         private void BoardCtrl_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
         {
+            if (_boardGr == null) return;
+
             _boardGr.Draw(e.Graphics);
 
             //Draw chess piece

@@ -73,6 +73,7 @@ namespace StrategyChessClient
             LoadConfiguration();
 
             _gameController = new GameController(GameConfig.BoardWidth, GameConfig.BoardHeight, GameConfig.MaxUnits, GameConfig.MaxCamps);
+            _boardCtrl.InitBoard();
             _boardCtrl.GameController = _gameController;
             _boardCtrl.OnPlaceUnitEvent += _boardCtrl_OnPlaceUnitEvent;
             _boardCtrl.OnRemoveUnitEvent += _boardCtrl_OnRemoveUnitEvent;

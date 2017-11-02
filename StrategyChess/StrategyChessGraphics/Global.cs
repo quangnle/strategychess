@@ -18,7 +18,7 @@ namespace StrategyChessGraphics
         public static Color GameSettingBackgroundColor = Color.FromArgb(233, 231, 218); //#E9E7DA
         public static Color AttackableColor = Color.FromArgb(100, 255, 0, 0);
         
-        public static int CellWidth = 60;
+        public static int CellWidth = 55;
         public static int CellHeight = 55;
 
         
