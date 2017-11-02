@@ -38,14 +38,14 @@ namespace StrategyChessClient
         #region UI Command
         private void LoadConfiguration()
         {
-            Global.BoardWidth = Convert.ToInt32(ConfigurationManager.AppSettings["width"]);
-            Global.BoardHeight = Convert.ToInt32(ConfigurationManager.AppSettings["height"]);
-            Global.InitHeight = Convert.ToInt32(ConfigurationManager.AppSettings["initheight"]);
+            GameConfig.BoardWidth = Convert.ToInt32(ConfigurationManager.AppSettings["width"]);
+            GameConfig.BoardHeight = Convert.ToInt32(ConfigurationManager.AppSettings["height"]);
+            GameConfig.InitHeight = Convert.ToInt32(ConfigurationManager.AppSettings["initheight"]);
+            GameConfig.MaxCamps = Convert.ToInt32(ConfigurationManager.AppSettings["maxcamps"]);
+            GameConfig.MaxUnits = Convert.ToInt32(ConfigurationManager.AppSettings["maxunits"]);
 
             Global.CellHeight = Convert.ToInt32(ConfigurationManager.AppSettings["cellheight"]);
             Global.CellWidth = Convert.ToInt32(ConfigurationManager.AppSettings["cellwidth"]);
-            Global.MaxCamps = Convert.ToInt32(ConfigurationManager.AppSettings["maxcamps"]);
-            Global.MaxUnits = Convert.ToInt32(ConfigurationManager.AppSettings["maxunits"]);
 
             GameConfig.CampHp = Convert.ToInt32(ConfigurationManager.AppSettings["camp.hp"]); ;
             GameConfig.CampSpeed = Convert.ToInt32(ConfigurationManager.AppSettings["camp.speed"]); ;
@@ -72,7 +72,7 @@ namespace StrategyChessClient
         {
             LoadConfiguration();
 
-            _gameController = new GameController(Global.BoardWidth, Global.BoardHeight, Global.MaxUnits, Global.MaxCamps);
+            _gameController = new GameController(GameConfig.BoardWidth, GameConfig.BoardHeight, GameConfig.MaxUnits, GameConfig.MaxCamps);
             _boardCtrl.GameController = _gameController;
             _boardCtrl.OnPlaceUnitEvent += _boardCtrl_OnPlaceUnitEvent;
             _boardCtrl.OnRemoveUnitEvent += _boardCtrl_OnRemoveUnitEvent;
@@ -97,8 +97,8 @@ namespace StrategyChessClient
                 SelectedChessPieceImage = Properties.Resources.Tanker_Green
             };
 
-            _lowerTeamCtrl.MaxUnits = Global.MaxUnits;
-            _lowerTeamCtrl.MaxCamps = Global.MaxCamps;
+            _lowerTeamCtrl.MaxUnits = GameConfig.MaxUnits;
+            _lowerTeamCtrl.MaxCamps = GameConfig.MaxCamps;
             _lowerTeamCtrl.Model = lowerModel;
             _lowerTeamCtrl.GameController = _gameController;
             _lowerTeamCtrl.AllowSelectUnit(false);
@@ -115,8 +115,8 @@ namespace StrategyChessClient
                 SelectedChessPieceImage = Properties.Resources.Tanker_Blue
             };
 
-            _upperTeamCtrl.MaxUnits = Global.MaxUnits;
-            _upperTeamCtrl.MaxCamps = Global.MaxCamps;
+            _upperTeamCtrl.MaxUnits = GameConfig.MaxUnits;
+            _upperTeamCtrl.MaxCamps = GameConfig.MaxCamps;
             _upperTeamCtrl.GameController = _gameController;
             _upperTeamCtrl.Model = upperModel;
             _upperTeamCtrl.AllowSelectUnit(false);
@@ -184,7 +184,7 @@ namespace StrategyChessClient
 
                 _upperTeamCtrl.VisibleTurn = false;
                 _lowerTeamCtrl.VisibleTurn = false;
-                _gameController = new GameController(Global.BoardWidth, Global.BoardHeight, Global.MaxUnits, Global.MaxCamps);
+                _gameController = new GameController(GameConfig.BoardWidth, GameConfig.BoardHeight, GameConfig.MaxUnits, GameConfig.MaxCamps);
                 _boardCtrl.GameController = _gameController;
                 _boardCtrl.ClearAllChessPieces();
                 _boardCtrl.RefreshState();

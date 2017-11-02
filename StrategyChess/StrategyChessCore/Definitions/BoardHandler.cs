@@ -45,13 +45,13 @@ namespace StrategyChessCore.Definitions
             if (team.Name == UpperTeam.Name)
             {
                 fromRow = 0;
-                toRow = 3;
+                toRow = GameConfig.InitHeight;
                 fromCol = 0;
                 toCol = _board.Width;
             }
             else
             {
-                fromRow = _board.Height - 3;
+                fromRow = _board.Height - GameConfig.InitHeight;
                 toRow = _board.Height;
                 fromCol = 0;
                 toCol = _board.Width;

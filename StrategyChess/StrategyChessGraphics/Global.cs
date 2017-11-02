@@ -17,12 +17,10 @@ namespace StrategyChessGraphics
         public static Color MovableGreenColor = Color.FromArgb(200, 225, 251, 228); //#E1FBE4
         public static Color GameSettingBackgroundColor = Color.FromArgb(233, 231, 218); //#E9E7DA
         public static Color AttackableColor = Color.FromArgb(100, 255, 0, 0);
-        public static int BoardWidth = 10;
-        public static int BoardHeight = 12;
-        public static int InitHeight = 3;
+        
         public static int CellWidth = 60;
         public static int CellHeight = 55;
-        public static int MaxUnits = 6;
-        public static int MaxCamps = 1;
+
+        
     }
 }

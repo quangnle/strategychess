@@ -8,6 +8,13 @@ namespace StrategyChessCore
 {
     public class GameConfig
     {
+        public static int BoardWidth = 10;
+        public static int BoardHeight = 12;
+        public static int InitHeight = 3;
+
+        public static int MaxUnits = 6;
+        public static int MaxCamps = 1;
+
         public static int CampHp = 5;
         public static int CampSpeed = 0;
         public static int CampRange = 0;
